@@ -1,18 +1,23 @@
 import 'dart:developer';
+import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:app/enums.dart';
 import 'package:app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ImagePixelsFullSortPage extends StatelessWidget {
-  const ImagePixelsFullSortPage({super.key});
+const _kUseVertices = false;
+const _kUseVerticesRaw = true;
+
+class PixelSortingPlaygroundPage extends StatelessWidget {
+  const PixelSortingPlaygroundPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: ImagePixelsFullSort(
-        imagePath: 'assets/images/dash-bg-400p.png',
+      body: PixelSortingPlayground(
+        imagePath: 'assets/images/dash-bg-500p.png',
         tickDuration: 5,
         pixelSortStyle: PixelSortStyle.byColumn,
       ),
@@ -20,8 +25,8 @@ class ImagePixelsFullSortPage extends StatelessWidget {
   }
 }
 
-class ImagePixelsFullSort extends StatefulWidget {
-  const ImagePixelsFullSort({
+class PixelSortingPlayground extends StatefulWidget {
+  const PixelSortingPlayground({
     super.key,
     required this.imagePath,
     this.tickDuration = 100,
@@ -33,10 +38,10 @@ class ImagePixelsFullSort extends StatefulWidget {
   final PixelSortStyle pixelSortStyle;
 
   @override
-  State<ImagePixelsFullSort> createState() => _ImagePixelsFullSortState();
+  State<PixelSortingPlayground> createState() => _PixelSortingPlaygroundState();
 }
 
-class _ImagePixelsFullSortState extends State<ImagePixelsFullSort> {
+class _PixelSortingPlaygroundState extends State<PixelSortingPlayground> {
   bool _isLoadingImage = false;
   ByteData? _imageBytes;
   Size _imageSize = Size.zero;
@@ -96,7 +101,7 @@ class _ImagePixelsFullSortState extends State<ImagePixelsFullSort> {
     arr[i] = arr[j];
     arr[j] = tmp;
     setState(() {});
-    if (i != j) {
+    if (i != j && _tickDuration.inMilliseconds > 0) {
       await Future.delayed(_tickDuration);
     }
   }
@@ -181,7 +186,7 @@ class _ImagePixelsFullSortState extends State<ImagePixelsFullSort> {
   }
 
   @override
-  void didUpdateWidget(covariant ImagePixelsFullSort oldWidget) {
+  void didUpdateWidget(covariant PixelSortingPlayground oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.tickDuration != widget.tickDuration) {
       _tickDuration = Duration(milliseconds: widget.tickDuration);
@@ -280,23 +285,95 @@ class ImagePixelsFullSortPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (transposed) {
-      for (int i = 0; i < pixels.length; i++) {
-        int col = (i % imageSize.height).toInt();
-        int row = i ~/ imageSize.height;
-        canvas.drawRect(
-          Rect.fromLTWH(row.toDouble(), col.toDouble(), 1.1, 1.1),
-          Paint()..color = pixels[i].toColor(),
+      if (_kUseVertices) {
+        final offsets = generateVertexOffsets(
+          pixels.length,
+          imageSize.height.toInt(),
+          transposed: true,
         );
+        final colors = List<Color>.generate(
+            offsets.length, (i) => pixels[i ~/ 6].toColor());
+        final vertices = Vertices(
+          VertexMode.triangles,
+          offsets,
+          colors: colors,
+        );
+
+        canvas.drawVertices(vertices, BlendMode.src, Paint());
+      } else if (_kUseVerticesRaw) {
+        final vertices = generateVerticesRaw(
+          pixels.length,
+          imageSize.height.toInt(),
+          transposed: true,
+        );
+        final colorsRaw = Int32List(vertices.length ~/ 2);
+        for (int i = 0; i < colorsRaw.length; i += 6) {
+          colorsRaw[i] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 1] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 2] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 3] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 4] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 5] = pixels[i ~/ 6].toColor().value;
+        }
+        final verticesRaw = Vertices.raw(
+          VertexMode.triangles,
+          vertices,
+          colors: colorsRaw,
+        );
+
+        canvas.drawVertices(verticesRaw, BlendMode.src, Paint());
+      } else {
+        for (int i = 0; i < pixels.length; i++) {
+          int col = (i % imageSize.height).toInt();
+          int row = i ~/ imageSize.height;
+          canvas.drawRect(
+            Rect.fromLTWH(row.toDouble(), col.toDouble(), 1.1, 1.1),
+            Paint()..color = pixels[i].toColor(),
+          );
+        }
       }
     } else {
-      for (int i = 0; i < pixels.length; i++) {
-        int col = (i % imageSize.width).toInt();
-
-        int row = i ~/ imageSize.width;
-        canvas.drawRect(
-          Rect.fromLTWH(col.toDouble(), row.toDouble(), 1.1, 1.1),
-          Paint()..color = pixels[i].toColor(),
+      if (_kUseVertices) {
+        final offsets =
+            generateVertexOffsets(pixels.length, imageSize.width.toInt());
+        final colors = List<Color>.generate(
+            offsets.length, (i) => pixels[i ~/ 6].toColor());
+        final vertices = Vertices(
+          VertexMode.triangles,
+          offsets,
+          colors: colors,
         );
+
+        canvas.drawVertices(vertices, BlendMode.src, Paint());
+      } else if (_kUseVerticesRaw) {
+        final vertices =
+            generateVerticesRaw(pixels.length, imageSize.width.toInt());
+        final colorsRaw = Int32List(vertices.length ~/ 2);
+        for (int i = 0; i < colorsRaw.length; i += 6) {
+          colorsRaw[i] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 1] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 2] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 3] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 4] = pixels[i ~/ 6].toColor().value;
+          colorsRaw[i + 5] = pixels[i ~/ 6].toColor().value;
+        }
+        final verticesRaw = Vertices.raw(
+          VertexMode.triangles,
+          vertices,
+          colors: colorsRaw,
+        );
+
+        canvas.drawVertices(verticesRaw, BlendMode.src, Paint());
+      } else {
+        for (int i = 0; i < pixels.length; i++) {
+          int col = (i % imageSize.width).toInt();
+
+          int row = i ~/ imageSize.width;
+          canvas.drawRect(
+            Rect.fromLTWH(col.toDouble(), row.toDouble(), 1.1, 1.1),
+            Paint()..color = pixels[i].toColor(),
+          );
+        }
       }
     }
   }
