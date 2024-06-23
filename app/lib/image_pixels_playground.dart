@@ -1,7 +1,11 @@
-import 'package:app/image_pixels_painter.dart';
+import 'dart:ui';
+
 import 'package:app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+const _kThresholdMax = 0.6;
+const _kThresholdMin = 0.3;
 
 class ImagePixelsPlaygroundPage extends StatelessWidget {
   const ImagePixelsPlaygroundPage({super.key});
@@ -10,7 +14,7 @@ class ImagePixelsPlaygroundPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: ImagePixelsPlayground(
-        imagePath: 'assets/images/dash-bg-100p.png',
+        imagePath: 'assets/images/subway-500w.jpg',
       ),
     );
   }
@@ -131,6 +135,36 @@ class _ImagePixelsPlaygroundState extends State<ImagePixelsPlayground> {
                 ),
                 child: Image.asset(widget.imagePath),
               ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () => setState(() => zoom = 1),
+                      icon: const Icon(Icons.restart_alt_rounded),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        if (zoom > 1) {
+                          setState(() {
+                            zoom--;
+                          });
+                        }
+                      },
+                      icon: const Icon(Icons.zoom_out),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          zoom++;
+                        });
+                      },
+                      icon: const Icon(Icons.zoom_in),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -151,56 +185,78 @@ class _ImagePixelsPlaygroundState extends State<ImagePixelsPlayground> {
     if (_imageBytes == null) {
       return const Text('No Image');
     }
-    return Column(
-      children: [
-        Expanded(
-          child: Center(
-            child: Transform.scale(
-              scale: zoom,
-              child: SizedBox(
-                width: _imageSize.width,
-                height: _imageSize.height,
-                child: CustomPaint(
-                  painter: ImagePixelsPainter(
-                    pixels: _pixels,
-                    imageSize: _imageSize,
-                  ),
-                ),
-              ),
+    return Center(
+      child: Transform.scale(
+        scale: zoom,
+        child: SizedBox(
+          width: _imageSize.width,
+          height: _imageSize.height,
+          child: CustomPaint(
+            painter: ImagePixelsPlaygroundPainter(
+              pixels: _pixels,
+              imageSize: _imageSize,
+              threshold: true,
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                onPressed: () => setState(() => zoom = 1),
-                icon: const Icon(Icons.restart_alt_rounded),
-              ),
-              IconButton(
-                onPressed: () {
-                  if (zoom > 1) {
-                    setState(() {
-                      zoom--;
-                    });
-                  }
-                },
-                icon: const Icon(Icons.zoom_out),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    zoom++;
-                  });
-                },
-                icon: const Icon(Icons.zoom_in),
-              ),
-            ],
-          ),
-        )
-      ],
+      ),
     );
+  }
+}
+
+class ImagePixelsPlaygroundPainter extends CustomPainter {
+  ImagePixelsPlaygroundPainter({
+    required this.pixels,
+    required this.imageSize,
+    this.greyScale = false,
+    this.threshold = false,
+  });
+
+  final List<Color> pixels;
+  final Size imageSize;
+  final bool greyScale;
+  final bool threshold;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // for (int i = 0; i < pixels.length; i++) {
+    //   int col = (i % imageSize.width).toInt();
+    //   int row = i ~/ imageSize.width;
+    //   canvas.drawRect(
+    //     Rect.fromLTWH(col.toDouble(), row.toDouble(), 1.1, 1.1),
+    //     Paint()..color = pixels[i],
+    //   );
+    // }
+
+    final offsets =
+        generateVertexOffsets(pixels.length, imageSize.width.toInt());
+    final colors = List<Color>.generate(offsets.length, (i) {
+      final color = pixels[i ~/ 6];
+      final HSLColor hslColor = HSLColor.fromColor(color);
+      if (greyScale) {
+        return Colors.black.withOpacity(1.0 - hslColor.lightness);
+      } else if (threshold) {
+        if (hslColor.lightness > _kThresholdMin &&
+            hslColor.lightness < _kThresholdMax) {
+          return Colors.white;
+        } else {
+          return Colors.black;
+        }
+      } else {
+        return color;
+      }
+    });
+    final vertices = Vertices(
+      VertexMode.triangles,
+      offsets,
+      colors: colors,
+    );
+
+    canvas.drawVertices(vertices, BlendMode.src, Paint());
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
