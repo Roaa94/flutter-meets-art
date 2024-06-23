@@ -1,27 +1,8 @@
 import 'dart:developer';
 import 'dart:math' hide log;
 
+import 'package:app/enums.dart';
 import 'package:flutter/material.dart';
-
-enum SortingState {
-  pivotIndex,
-  pivotValue,
-  partition,
-  idle;
-
-  Color get color {
-    switch (this) {
-      case pivotIndex:
-        return Colors.red;
-      case pivotValue:
-        return Colors.green;
-      case partition:
-        return Colors.blue;
-      case idle:
-        return Colors.white;
-    }
-  }
-}
 
 class QuickSortBarsPage extends StatelessWidget {
   const QuickSortBarsPage({super.key});

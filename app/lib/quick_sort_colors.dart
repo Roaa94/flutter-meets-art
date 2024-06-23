@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:math' hide log;
 
+import 'package:app/enums.dart';
 import 'package:app/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +12,10 @@ class QuickSortColorsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: QuickSortColors(
-        count: 500,
+        count: 200,
         tickDuration: 5,
+        colorSortProperty: ColorSortProperty.hue,
+        initialHue: 360,
       ),
     );
   }
@@ -23,10 +26,14 @@ class QuickSortColors extends StatefulWidget {
     super.key,
     this.count = 100,
     this.tickDuration = 100,
+    this.colorSortProperty = ColorSortProperty.hue,
+    this.initialHue = 360.0,
   });
 
   final int count;
   final int tickDuration;
+  final double initialHue;
+  final ColorSortProperty colorSortProperty;
 
   @override
   State<QuickSortColors> createState() => _QuickSortColorsState();
@@ -42,6 +49,11 @@ class _QuickSortColorsState extends State<QuickSortColors>
     values = generateRandomHSLColors(
       random,
       widget.count,
+      randomHue: widget.colorSortProperty == ColorSortProperty.hue,
+      randomSaturation:
+          widget.colorSortProperty == ColorSortProperty.saturation,
+      randomLightness: widget.colorSortProperty == ColorSortProperty.lightness,
+      initialHue: widget.initialHue,
     );
   }
 
@@ -70,11 +82,24 @@ class _QuickSortColorsState extends State<QuickSortColors>
     ]);
   }
 
+  double _getValue(HSLColor color) {
+    switch (widget.colorSortProperty) {
+      case ColorSortProperty.hue:
+        return color.hue;
+      case ColorSortProperty.saturation:
+        return color.saturation;
+      case ColorSortProperty.lightness:
+        return color.lightness;
+    }
+  }
+
   Future<int> _partition(List<HSLColor> arr, int start, int end) async {
     int pivotIndex = start;
     final pivotValue = arr[end];
+    final pivotValueToCompare = _getValue(pivotValue);
     for (int i = start; i < end; i++) {
-      if (arr[i].hue < pivotValue.hue) {
+      final targetValueToCompare = _getValue(arr[i]);
+      if (targetValueToCompare < pivotValueToCompare) {
         await _swap(arr, i, pivotIndex);
         pivotIndex++;
       }
@@ -105,7 +130,7 @@ class _QuickSortColorsState extends State<QuickSortColors>
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: CustomPaint(
-        painter: QuickSortCustomPainter(
+        painter: QuickSortColorsCustomPainter(
           values: values,
         ),
       ),
@@ -113,8 +138,8 @@ class _QuickSortColorsState extends State<QuickSortColors>
   }
 }
 
-class QuickSortCustomPainter extends CustomPainter {
-  QuickSortCustomPainter({
+class QuickSortColorsCustomPainter extends CustomPainter {
+  QuickSortColorsCustomPainter({
     required this.values,
   });
 

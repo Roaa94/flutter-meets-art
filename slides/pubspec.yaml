@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   flutter_deck: ^0.14.0
   google_fonts: ^6.2.1
+  app:
+    path: ../app
 
 dev_dependencies:
   flutter_test:
