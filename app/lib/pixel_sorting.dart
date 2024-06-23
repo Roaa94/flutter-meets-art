@@ -6,6 +6,10 @@ import 'package:app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+const _kThresholdMax = 0.8;
+const _kThresholdMin = 0.2;
+const _kShowThreshold = false;
+
 class PixelSortingPage extends StatelessWidget {
   const PixelSortingPage({super.key});
 
@@ -14,8 +18,8 @@ class PixelSortingPage extends StatelessWidget {
     return const Scaffold(
       backgroundColor: Colors.white,
       body: PixelSorting(
-        imagePath: 'assets/images/subway-500w.jpg',
-        tickDuration: 5,
+        imagePath: 'assets/images/sea-1000w.jpg',
+        tickDuration: 0,
       ),
     );
   }
@@ -40,6 +44,7 @@ class _PixelSortingState extends State<PixelSorting> {
   ByteData? _imageBytes;
   Size _imageSize = Size.zero;
   List<HSLColor> _pixels = [];
+  List<int> _intervals = [];
   List<HSLColor> _transposedPixels = [];
   double zoom = 1;
   late Duration _tickDuration;
@@ -90,6 +95,29 @@ class _PixelSortingState extends State<PixelSorting> {
     }
   }
 
+  void _initIntervals() {
+    int? start;
+    int? end;
+    for (int i = 0; i < _transposedPixels.length; i++) {
+      final color = _transposedPixels[i];
+
+      if (compare(color, _kThresholdMin, _kThresholdMax)) {
+        if (start == null) {
+          start = i;
+        }
+      } else {
+        if (start != null && end == null) {
+          end = i - 1;
+        }
+      }
+      if (start != null && end != null) {
+        _intervals.addAll([start, end]);
+        start = null;
+        end = null;
+      }
+    }
+  }
+
   _swap(List<HSLColor> arr, int i, int j) async {
     final HSLColor tmp = arr[i];
     arr[i] = arr[j];
@@ -115,7 +143,7 @@ class _PixelSortingState extends State<PixelSorting> {
     int pivotIndex = start;
     final pivotValue = arr[end];
     for (int i = start; i < end; i++) {
-      if (arr[i].lightness > pivotValue.lightness) {
+      if (arr[i].lightness < pivotValue.lightness) {
         await _swap(arr, i, pivotIndex);
         pivotIndex++;
       }
@@ -138,9 +166,24 @@ class _PixelSortingState extends State<PixelSorting> {
     await Future.wait(futures);
   }
 
+  Future<void> _sortPixelsByIntervals() async {
+    if (_pixels.isEmpty || _intervals.isEmpty) return;
+    List<Future<void> Function()> futureFunctions = [];
+    for (int i = 0; i < _intervals.length; i += 2) {
+      final start = _intervals[i];
+      final end = _intervals[i + 1];
+      futureFunctions
+          .add(() async => _quickSortColors(_transposedPixels, start, end));
+    }
+    List<Future<void>> futures =
+        futureFunctions.map((futureFunction) => futureFunction()).toList();
+    await Future.wait(futures);
+  }
+
   Future<void> _handleLoadImage() async {
     await _loadImage();
     _initPixels();
+    _initIntervals();
   }
 
   @override
@@ -192,9 +235,9 @@ class _PixelSortingState extends State<PixelSorting> {
                 ),
                 IconButton(
                   onPressed: () {
-                    if (zoom > 1) {
+                    if (zoom > 0.5) {
                       setState(() {
-                        zoom--;
+                        zoom = zoom - 0.1;
                       });
                     }
                   },
@@ -203,14 +246,14 @@ class _PixelSortingState extends State<PixelSorting> {
                 IconButton(
                   onPressed: () {
                     setState(() {
-                      zoom++;
+                      zoom = zoom + 0.1;
                     });
                   },
                   icon: const Icon(Icons.zoom_in),
                 ),
                 IconButton(
                   onPressed: () {
-                    _sortPixels().then((_) {
+                    _sortPixelsByIntervals().then((_) {
                       log('Finished!');
                     });
                   },
@@ -223,7 +266,7 @@ class _PixelSortingState extends State<PixelSorting> {
         Positioned.fill(
           child: Center(
             child: Transform.scale(
-              scale: 1,
+              scale: zoom,
               child: SizedBox(
                 width: _imageSize.width,
                 height: _imageSize.height,
@@ -231,6 +274,7 @@ class _PixelSortingState extends State<PixelSorting> {
                   painter: ImagePixelsFullSortPainter(
                     pixels: _transposedPixels,
                     imageSize: _imageSize,
+                    showThreshold: _kShowThreshold,
                   ),
                 ),
               ),
@@ -246,10 +290,12 @@ class ImagePixelsFullSortPainter extends CustomPainter {
   ImagePixelsFullSortPainter({
     required this.pixels,
     required this.imageSize,
+    this.showThreshold = false,
   });
 
   final List<HSLColor> pixels;
   final Size imageSize;
+  final bool showThreshold;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -260,7 +306,15 @@ class ImagePixelsFullSortPainter extends CustomPainter {
     );
     final colorsRaw = Int32List(vertices.length ~/ 2);
     for (int i = 0; i < colorsRaw.length; i += 6) {
-      final color = pixels[i ~/ 6].toColor().value;
+      int color = pixels[i ~/ 6].toColor().value;
+
+      if (showThreshold) {
+        if (compare(pixels[i ~/ 6], _kThresholdMin, _kThresholdMax)) {
+          color = Colors.white.value;
+        } else {
+          color = Colors.black.value;
+        }
+      }
 
       colorsRaw[i] = color;
       colorsRaw[i + 1] = color;
@@ -282,4 +336,9 @@ class ImagePixelsFullSortPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
   }
+}
+
+bool compare(HSLColor color, double min, double max) {
+  final brightness = 1 - color.lightness;
+  return brightness <= max && brightness >= min;
 }
