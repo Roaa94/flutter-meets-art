@@ -25,3 +25,10 @@ enum SortingState {
     }
   }
 }
+
+enum PixelSortStyle {
+  full,
+  byRow,
+  byColumn,
+  byInterval;
+}
