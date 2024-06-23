@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -9,12 +8,12 @@ class BubbleSortPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
+    return const Scaffold(
+      backgroundColor: Colors.black,
       body: BubbleSortBars(
-        min: 20,
-        max: size.height - 50,
-        count: 50,
+        count: 30,
+        colorSortingBar: true,
+        tickDuration: 50,
       ),
     );
   }
@@ -23,14 +22,14 @@ class BubbleSortPage extends StatelessWidget {
 class BubbleSortBars extends StatefulWidget {
   const BubbleSortBars({
     super.key,
-    this.min = 0,
-    this.max = 200,
     this.count = 100,
+    this.colorSortingBar = false,
+    this.tickDuration = 100,
   });
 
-  final double min;
-  final double max;
   final int count;
+  final bool colorSortingBar;
+  final int tickDuration;
 
   @override
   State<BubbleSortBars> createState() => _BubbleSortBarsState();
@@ -40,45 +39,48 @@ class _BubbleSortBarsState extends State<BubbleSortBars>
     with SingleTickerProviderStateMixin {
   late final Ticker _ticker;
   final random = Random(3);
-  late Float32List barHeights;
+  late List<double> values;
   Duration _lastTick = Duration.zero;
-  final Duration _tickInterval = const Duration(milliseconds: 500);
+  late Duration _tickInterval;
 
-  int j = 0;
-  int i = 0;
+  int i = 0; // Outer loop
+  int j = 0; // Inner loop
 
   _initBars() {
-    barHeights = Float32List(widget.count);
-    for (int i = 0; i < barHeights.length; i++) {
-      barHeights[i] = widget.min + (random.nextDouble() * widget.max);
-    }
+    // Generate a list of random double values ranging from 0.0 to 1.0
+    i = 0;
+    j = 0;
+    values = List.generate(
+      widget.count,
+      (i) => random.nextDouble(),
+    );
     // _bubbleSort();
   }
 
-  _swap(Float32List arr, int i, int j) {
+  _swap(List<double> arr, int i, int j) {
     final double tmp = arr[i];
     arr[i] = arr[j];
     arr[j] = tmp;
   }
 
   _bubbleSort() {
-    for (int i = 0; i < barHeights.length; i++) {
-      for (int j = 0; j < barHeights.length - i - 1; j++) {
-        final a = barHeights[j];
-        final b = barHeights[j + 1];
+    for (int i = 0; i < values.length; i++) {
+      for (int j = 0; j < values.length - i - 1; j++) {
+        final a = values[j];
+        final b = values[j + 1];
         if (a > b) {
-          _swap(barHeights, j, j + 1);
+          _swap(values, j, j + 1);
         }
       }
     }
   }
 
   _bubbleSortTick() {
-    if (j < barHeights.length - i - 1) {
-      final a = barHeights[j];
-      final b = barHeights[j + 1];
+    if (j < values.length - i - 1) {
+      final a = values[j];
+      final b = values[j + 1];
       if (a > b) {
-        _swap(barHeights, j, j + 1);
+        _swap(values, j, j + 1);
       }
       j++;
     } else {
@@ -89,7 +91,7 @@ class _BubbleSortBarsState extends State<BubbleSortBars>
   }
 
   void _onTick(Duration elapsed) {
-    if (i < barHeights.length) {
+    if (i < values.length) {
       final elapsedDelta = elapsed - _lastTick;
       if (elapsedDelta >= _tickInterval) {
         _lastTick += _tickInterval;
@@ -101,9 +103,23 @@ class _BubbleSortBarsState extends State<BubbleSortBars>
   @override
   void initState() {
     super.initState();
+    _tickInterval = Duration(milliseconds: widget.tickDuration);
     _ticker = createTicker(_onTick);
     _initBars();
     _ticker.start();
+  }
+
+  @override
+  void didUpdateWidget(covariant BubbleSortBars oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.tickDuration != widget.tickDuration) {
+      _tickInterval = Duration(milliseconds: widget.tickDuration);
+      // _initBars();
+    }
+    if(oldWidget.count != widget.count) {
+      _initBars();
+      //..
+    }
   }
 
   @override
@@ -115,14 +131,12 @@ class _BubbleSortBarsState extends State<BubbleSortBars>
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
-      child: ColoredBox(
-        color: Colors.black,
-        child: CustomPaint(
-          painter: BubbleSortCustomPainter(
-            barHeights: barHeights,
-            activeBarIndex: j,
-            swappedBarIndex: i,
-          ),
+      child: CustomPaint(
+        painter: BubbleSortCustomPainter(
+          values: values,
+          activeBarIndex: j,
+          swappedBarIndex: i,
+          colorSortingBar: widget.colorSortingBar,
         ),
       ),
     );
@@ -131,40 +145,34 @@ class _BubbleSortBarsState extends State<BubbleSortBars>
 
 class BubbleSortCustomPainter extends CustomPainter {
   BubbleSortCustomPainter({
-    required this.barHeights,
+    required this.values,
     this.activeBarIndex = 0,
     this.swappedBarIndex = 0,
+    this.colorSortingBar = false,
   });
 
-  final Float32List barHeights;
+  final List<double> values;
   final int activeBarIndex;
   final int swappedBarIndex;
+  final bool colorSortingBar;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final barWidth = size.width / barHeights.length;
-    for (int i = 0; i < barHeights.length; i++) {
+    const padding = 4;
+    final barWidth = size.width / values.length;
+    for (int i = 0; i < values.length; i++) {
+      final barHeight = values[i] * size.height;
       canvas.drawRect(
         Rect.fromLTWH(
-          i * barWidth,
-          size.height - barHeights[i],
-          barWidth,
-          barHeights[i],
-        ),
-        Paint()..color = i == activeBarIndex ? Colors.red : Colors.white,
-      );
-
-      canvas.drawRect(
-        Rect.fromLTWH(
-          i * barWidth,
-          size.height - barHeights[i],
-          barWidth,
-          barHeights[i],
+          i * (barWidth + padding),
+          size.height - barHeight,
+          barWidth - padding,
+          barHeight,
         ),
         Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2
-          ..color = Colors.black,
+          ..color = i == activeBarIndex && colorSortingBar
+              ? Colors.red
+              : Colors.white,
       );
     }
   }
