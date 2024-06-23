@@ -1,4 +1,4 @@
-import 'package:app/bubble_sort.dart';
+import 'package:app/quick_sort_colors.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +11,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: BubbleSortPage(),
+      home: QuickSortColorsPage(),
     );
   }
 }
