@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_deck: ^0.14.0
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -18,3 +19,16 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
