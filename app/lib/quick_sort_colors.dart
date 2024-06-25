@@ -3,6 +3,7 @@ import 'dart:math' hide log;
 
 import 'package:app/enums.dart';
 import 'package:app/utils.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 
 class QuickSortColorsPage extends StatelessWidget {
@@ -44,6 +45,9 @@ class _QuickSortColorsState extends State<QuickSortColors>
   final random = Random(4);
   late List<HSLColor> values;
   late Duration _tickDuration;
+  final _completer = CancelableCompleter(
+    onCancel: () => log('Canceled!'),
+  );
 
   _initColors() {
     values = generateRandomHSLColors(
@@ -58,7 +62,8 @@ class _QuickSortColorsState extends State<QuickSortColors>
   }
 
   _runQuickSort() async {
-    await _quickSort(values, 0, values.length - 1);
+    _completer.complete(_quickSort(values, 0, values.length - 1));
+    await _completer.operation.value;
     log('Finished!');
   }
 
@@ -66,7 +71,7 @@ class _QuickSortColorsState extends State<QuickSortColors>
     final HSLColor tmp = arr[i];
     arr[i] = arr[j];
     arr[j] = tmp;
-    if(mounted) setState(() {});
+    setState(() {});
     await Future.delayed(_tickDuration);
   }
 
@@ -121,6 +126,12 @@ class _QuickSortColorsState extends State<QuickSortColors>
     if (oldWidget.tickDuration != widget.tickDuration) {
       _tickDuration = Duration(milliseconds: widget.tickDuration);
     }
+  }
+
+  @override
+  void dispose() {
+    _completer.operation.cancel();
+    super.dispose();
   }
 
   @override

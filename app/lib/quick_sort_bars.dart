@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:math' hide log;
 
 import 'package:app/enums.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 
 class QuickSortBarsPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class QuickSortBarsPage extends StatelessWidget {
       backgroundColor: Colors.black,
       body: QuickSortBars(
         count: 30,
-        tickDuration: 500,
+        tickDuration: 300,
       ),
     );
   }
@@ -39,6 +40,9 @@ class _QuickSortBarsState extends State<QuickSortBars>
   late List<double> values;
   late List<SortingState> states;
   late Duration _tickDuration;
+  final _completer = CancelableCompleter(
+    onCancel: () => log('Canceled!'),
+  );
 
   _initValues() {
     values = List.generate(
@@ -49,17 +53,18 @@ class _QuickSortBarsState extends State<QuickSortBars>
   }
 
   _runQuickSort() async {
-    await _quickSort(values, 0, values.length - 1);
+    _completer.complete(_quickSort(values, 0, values.length - 1));
+    await _completer.operation.value;
     log('Finished!');
     states.fillRange(0, values.length, SortingState.idle);
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   _swap(List<double> arr, int i, int j) async {
     final double tmp = arr[i];
     arr[i] = arr[j];
     arr[j] = tmp;
-    if (mounted) setState(() {});
+    setState(() {});
     await Future.delayed(_tickDuration);
   }
 
@@ -113,6 +118,12 @@ class _QuickSortBarsState extends State<QuickSortBars>
     if (oldWidget.tickDuration != widget.tickDuration) {
       _tickDuration = Duration(milliseconds: widget.tickDuration);
     }
+  }
+
+  @override
+  void dispose() {
+    _completer.operation.cancel();
+    super.dispose();
   }
 
   @override
