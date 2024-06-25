@@ -52,14 +52,14 @@ class _QuickSortBarsState extends State<QuickSortBars>
     await _quickSort(values, 0, values.length - 1);
     log('Finished!');
     states.fillRange(0, values.length, SortingState.idle);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   _swap(List<double> arr, int i, int j) async {
     final double tmp = arr[i];
     arr[i] = arr[j];
     arr[j] = tmp;
-    setState(() {});
+    if (mounted) setState(() {});
     await Future.delayed(_tickDuration);
   }
 

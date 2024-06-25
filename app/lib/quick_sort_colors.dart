@@ -60,14 +60,13 @@ class _QuickSortColorsState extends State<QuickSortColors>
   _runQuickSort() async {
     await _quickSort(values, 0, values.length - 1);
     log('Finished!');
-    setState(() {});
   }
 
   _swap(List<HSLColor> arr, int i, int j) async {
     final HSLColor tmp = arr[i];
     arr[i] = arr[j];
     arr[j] = tmp;
-    setState(() {});
+    if(mounted) setState(() {});
     await Future.delayed(_tickDuration);
   }
 
