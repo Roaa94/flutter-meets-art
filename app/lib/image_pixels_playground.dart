@@ -214,16 +214,16 @@ class ImagePixelsPlaygroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // for (int i = 0; i < pixels.length; i++) {
-    //   int col = (i % imageSize.width).toInt();
-    //   int row = i ~/ imageSize.width;
+    //   double x = i % imageSize.width;
+    //   double y = i / imageSize.width;
     //   canvas.drawRect(
-    //     Rect.fromLTWH(col.toDouble(), row.toDouble(), 1.1, 1.1),
+    //     Rect.fromLTWH(x, y, 1.1, 1.1),
     //     Paint()..color = pixels[i],
     //   );
     // }
 
     final offsets =
-        generateVertexOffsets(pixels.length, imageSize.width.toInt());
+        generateVertexOffsets(pixels.length, imageSize.width);
     final colors = List<Color>.generate(offsets.length, (i) {
       final color = pixels[i ~/ 6];
       final HSLColor hslColor = HSLColor.fromColor(color);

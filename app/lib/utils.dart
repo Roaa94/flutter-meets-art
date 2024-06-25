@@ -30,16 +30,16 @@ List<HSLColor> generateRandomHSLColors(
 
 List<Offset> generateVertexOffsets(
   int length,
-  int width, {
+  double width, {
   bool transposed = false,
 }) {
   final offsets = List<Offset>.filled(length * 6, Offset.zero);
   for (int i = 0; i < length; i++) {
-    int col = i % width;
-    int row = i ~/ width;
+    double x = i % width;
+    double y = i / width;
     const pixelSize = 1.0;
-    final left = transposed ? row.toDouble() : col.toDouble();
-    final top = transposed ? col.toDouble() : row.toDouble();
+    final left = transposed ? y : x;
+    final top = transposed ? x : y;
     final bottom = top + pixelSize;
     final right = left + pixelSize;
 

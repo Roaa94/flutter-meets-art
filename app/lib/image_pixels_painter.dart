@@ -23,8 +23,7 @@ class ImagePixelsPainter extends CustomPainter {
     //   );
     // }
 
-    final offsets =
-        generateVertexOffsets(pixels.length, imageSize.width.toInt());
+    final offsets = generateVertexOffsets(pixels.length, imageSize.width);
     final colors = List<Color>.generate(offsets.length, (i) => pixels[i ~/ 6]);
     final vertices = Vertices(
       VertexMode.triangles,

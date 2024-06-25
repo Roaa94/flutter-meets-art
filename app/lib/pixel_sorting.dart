@@ -18,8 +18,8 @@ class PixelSortingPage extends StatelessWidget {
     return const Scaffold(
       backgroundColor: Colors.white,
       body: PixelSorting(
-        imagePath: 'assets/images/sea-1000w.jpg',
-        tickDuration: 0,
+        imagePath: 'assets/images/colored-buildings-700w.png',
+        tickDuration: 5,
       ),
     );
   }
@@ -44,7 +44,7 @@ class _PixelSortingState extends State<PixelSorting> {
   ByteData? _imageBytes;
   Size _imageSize = Size.zero;
   List<HSLColor> _pixels = [];
-  List<int> _intervals = [];
+  final List<int> _intervals = [];
   List<HSLColor> _transposedPixels = [];
   double zoom = 1;
   late Duration _tickDuration;
@@ -102,9 +102,7 @@ class _PixelSortingState extends State<PixelSorting> {
       final color = _transposedPixels[i];
 
       if (compare(color, _kThresholdMin, _kThresholdMax)) {
-        if (start == null) {
-          start = i;
-        }
+        start ??= i;
       } else {
         if (start != null && end == null) {
           end = i - 1;

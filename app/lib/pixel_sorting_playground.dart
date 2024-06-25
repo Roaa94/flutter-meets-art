@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' hide log;
 import 'dart:typed_data';
 import 'dart:ui';
 
@@ -17,7 +18,7 @@ class PixelSortingPlaygroundPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: PixelSortingPlayground(
-        imagePath: 'assets/images/dash-bg-500p.png',
+        imagePath: 'assets/images/dash-bg-400p.png',
         tickDuration: 5,
         pixelSortStyle: PixelSortStyle.byColumn,
       ),
@@ -47,8 +48,9 @@ class _PixelSortingPlaygroundState extends State<PixelSortingPlayground> {
   Size _imageSize = Size.zero;
   List<HSLColor> _pixels = [];
   List<HSLColor> _transposedPixels = [];
-  double zoom = 2;
+  double zoom = 1;
   late Duration _tickDuration;
+  final random = Random(2);
 
   Future<void> _loadImage() async {
     setState(() {
@@ -153,7 +155,9 @@ class _PixelSortingPlaygroundState extends State<PixelSortingPlayground> {
     for (int i = 0; i < _imageSize.height.toInt(); i++) {
       final start = i * _imageSize.width.toInt();
       final end = start + _imageSize.width.toInt() - 1;
+      // if (random.nextBool()) {
       futureFunctions.add(() async => _quickSortColors(_pixels, start, end));
+      // }
     }
     List<Future<void>> futures =
         futureFunctions.map((futureFunction) => futureFunction()).toList();
@@ -176,6 +180,7 @@ class _PixelSortingPlaygroundState extends State<PixelSortingPlayground> {
   Future<void> _handleLoadImage() async {
     await _loadImage();
     _initPixels();
+    _sortPixels();
   }
 
   @override
@@ -288,7 +293,7 @@ class ImagePixelsFullSortPainter extends CustomPainter {
       if (_kUseVertices) {
         final offsets = generateVertexOffsets(
           pixels.length,
-          imageSize.height.toInt(),
+          imageSize.height,
           transposed: true,
         );
         final colors = List<Color>.generate(
@@ -334,8 +339,7 @@ class ImagePixelsFullSortPainter extends CustomPainter {
       }
     } else {
       if (_kUseVertices) {
-        final offsets =
-            generateVertexOffsets(pixels.length, imageSize.width.toInt());
+        final offsets = generateVertexOffsets(pixels.length, imageSize.width);
         final colors = List<Color>.generate(
             offsets.length, (i) => pixels[i ~/ 6].toColor());
         final vertices = Vertices(
