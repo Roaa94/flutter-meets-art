@@ -13,6 +13,8 @@ dependencies:
   google_fonts: ^6.2.1
   app:
     path: ../app
+  device_frame: ^1.2.0
+  syntax_highlight: ^0.4.0
 
 dev_dependencies:
   flutter_test:
@@ -33,4 +35,13 @@ flutter:
         - asset: assets/fonts/Poppins-Medium.ttf
           weight: 500
         - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono-Regular.ttf
+        - asset: assets/fonts/JetBrainsMono-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/JetBrainsMono-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/JetBrainsMono-Light.ttf
           weight: 300

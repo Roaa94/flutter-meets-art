@@ -1,13 +1,32 @@
 import 'package:app/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
+import 'package:slides/code.dart';
+import 'package:slides/code_highlight.dart';
+import 'package:syntax_highlight/syntax_highlight.dart';
 
-void main() {
-  runApp(const SlidesApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Highlighter.initialize([
+    'dart',
+    'yaml',
+    'sql',
+    'json',
+  ]);
+  var darkTheme = await HighlighterTheme.loadDarkTheme();
+  final dartDarkHighlighter = Highlighter(
+    language: 'dart',
+    theme: darkTheme,
+  );
+  runApp(
+    SlidesApp(dartHighlighter: dartDarkHighlighter),
+  );
 }
 
 class SlidesApp extends StatelessWidget {
-  const SlidesApp({super.key});
+  const SlidesApp({super.key, required this.dartHighlighter});
+
+  final Highlighter dartHighlighter;
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +52,21 @@ class SlidesApp extends StatelessWidget {
         ),
         PlaceholderSlide('Introduction'),
         PlaceholderSlide(
-          'SECTION 1: VISUALIZING ALGORITHMS',
+          'SECTION 1: CREATIVE CODING AS A LEARNING TOOL',
           subtitle: 'Introduction (why?)',
         ),
         PlaceholderSlide('1.1 Bubble Sort'),
         PlaceholderSlide(
           '1.1 Bubble Sort 1/n',
-          subtitle: '(Explain the algorithm)',
+          subtitle: '(Explain the algorithm with image)',
         ),
         PlaceholderSlide(
           '1.1 Bubble Sort 2/n',
           subtitle: '(Code for single-run execution)',
+          content: CodeHighlight(
+            dartHighlighter,
+            code: singleRunBubbleSortCode,
+          ),
         ),
         PlaceholderSlide(
           '1.1 Bubble Sort 3/n',
@@ -127,7 +150,14 @@ class SlidesApp extends StatelessWidget {
         ),
         PlaceholderSlide('SECTION 2: ALGORITHMIC ART'),
         PlaceholderSlide('2.1 Reading Image Pixels'),
-        //
+        PlaceholderSlide(
+          '2.1 Reading Image Pixels 1/n',
+          subtitle: 'Decoding an image from an asset file',
+          content: CodeHighlight(
+            dartHighlighter,
+            code: loadImageAssetCode,
+          ),
+        ),
       ],
     );
   }
@@ -179,9 +209,12 @@ class PlaceholderSlideContent extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineLarge,
+          Padding(
+            padding: const EdgeInsets.only(top: 50.0),
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
           ),
           if (subtitle != null)
             Padding(
@@ -191,7 +224,7 @@ class PlaceholderSlideContent extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
-          if (content != null) Expanded(child: content!),
+          if (content != null) Expanded(child: Center(child: content!)),
         ],
       ),
     );
