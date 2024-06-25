@@ -6,7 +6,7 @@ class CodeHighlight extends StatelessWidget {
     this.highlighter, {
     super.key,
     required this.code,
-    this.fontSize = 20,
+    this.fontSize = 25,
   });
 
   final Highlighter highlighter;
@@ -16,17 +16,14 @@ class CodeHighlight extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
-        top: 30,
-        right: 40,
-      ),
+      padding: const EdgeInsets.all(30),
       color: Colors.black,
       child: Text.rich(
         highlighter.highlight(code),
         style: TextStyle(
           fontSize: fontSize,
           fontFamily: 'JetBrainsMono',
-          height: 1.5,
+          height: 1.8,
         ),
       ),
     );

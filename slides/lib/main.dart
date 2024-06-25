@@ -124,6 +124,75 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
       tickDuration: 10,
     ),
   ),
+  PlaceholderSlide('1. Closing'),
+];
+
+final pixelSortingSlides = <FlutterDeckSlideWidget>[
+  // Todo: reconsider the title
+  PlaceholderSlide('SECTION 2: GLITCH ART WITH PIXEL SORTING'),
+  PlaceholderSlide('2.1 Reading Image Pixels'),
+  PlaceholderSlide(
+    '2.1 Reading Image Pixels 1/n',
+    subtitle: 'Decoding an image from an asset file',
+    content: CodeHighlight(
+      dartHighlighter,
+      code: loadImageAssetCode,
+    ),
+  ),
+  PlaceholderSlide(
+    '2.1 Reading Image Pixels 2/n',
+    subtitle: 'Explain image byte data (with illustration)',
+  ),
+  PlaceholderSlide(
+    '2.1 Reading Image Pixels 3/n',
+    subtitle: 'Reading pixel colors list from image bytes',
+    content: CodeHighlight(
+      dartHighlighter,
+      code: loadImagePixelColorsCode,
+    ),
+  ),
+  PlaceholderSlide(
+    '2.1 Reading Image Pixels 4/n',
+    subtitle: 'Painting image pixel with canvas.drawRect',
+    content: CodeHighlight(
+      dartHighlighter,
+      code: paintImagePixelsCode,
+    ),
+  ),
+  PlaceholderSlide(
+    '2.1 Reading Image Pixels 5/n',
+    subtitle: 'Show a small painted image with zoom in/out for illustration',
+  ),
+  PlaceholderSlide('2.2 Sorting the Pixels'),
+  PlaceholderSlide(
+    '2.2 Sorting the Pixels 1/n',
+    subtitle: 'Use HSLColor',
+  ),
+  PlaceholderSlide(
+    '2.2 Sorting the Pixels 2/n',
+    subtitle: 'Quick sort swap snippet, swapping based on color.lightness',
+  ),
+  PlaceholderSlide(
+    '2.2 Sorting the Pixels 3/n',
+    subtitle: 'Code to sort by row',
+  ),
+  PlaceholderSlide(
+    '2.2 Sorting the Pixels 4/n',
+    subtitle: 'Show simulation of image sorted by row',
+  ),
+  PlaceholderSlide(
+    '2.2 Sorting the Pixels 5/n - 1 (possibilities)',
+    subtitle: 'Show simulation of image sorted by column',
+  ),
+  PlaceholderSlide(
+    '2.2 Sorting the Pixels 5/n - 2 (possibilities)',
+    subtitle: 'Show simulation of image sorted by interval',
+  ),
+  PlaceholderSlide(
+    '2.2 Sorting the Pixels 5/n - 3 (possibilities)',
+    subtitle: 'Show simulation of image sorted by interval',
+  ),
+  PlaceholderSlide('2. Closing'),
 ];
 
 class SlidesApp extends StatelessWidget {
@@ -153,16 +222,7 @@ class SlidesApp extends StatelessWidget {
         ),
         PlaceholderSlide('Introduction'),
         ...creativeCodingAsALearningToolSlides,
-        PlaceholderSlide('SECTION 2: ALGORITHMIC ART'),
-        PlaceholderSlide('2.1 Reading Image Pixels'),
-        PlaceholderSlide(
-          '2.1 Reading Image Pixels 1/n',
-          subtitle: 'Decoding an image from an asset file',
-          content: CodeHighlight(
-            dartHighlighter,
-            code: loadImageAssetCode,
-          ),
-        ),
+        ...pixelSortingSlides,
       ],
     );
   }
