@@ -6,7 +6,7 @@ class CodeHighlight extends StatelessWidget {
     this.highlighter, {
     super.key,
     required this.code,
-    this.fontSize = 25,
+    this.fontSize = 27,
   });
 
   final Highlighter highlighter;
@@ -23,7 +23,7 @@ class CodeHighlight extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
           fontFamily: 'JetBrainsMono',
-          height: 1.8,
+          height: 1.9,
         ),
       ),
     );
