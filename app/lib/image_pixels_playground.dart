@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 const _kThresholdMax = 0.6;
 const _kThresholdMin = 0.3;
+const _kShowThreshold = false;
 
 class ImagePixelsPlaygroundPage extends StatelessWidget {
   const ImagePixelsPlaygroundPage({super.key});
@@ -14,7 +15,7 @@ class ImagePixelsPlaygroundPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: ImagePixelsPlayground(
-        imagePath: 'assets/images/subway-500w.jpg',
+        imagePath: 'assets/images/dash-bg-400p.png',
       ),
     );
   }
@@ -36,7 +37,7 @@ class _ImagePixelsPlaygroundState extends State<ImagePixelsPlayground> {
   bool _isLoadingImage = false;
   ByteData? _imageBytes;
   Size _imageSize = Size.zero;
-  List<Color> _pixels = [];
+  List<Color>? _pixelColors;
   double zoom = 1;
 
   Future<void> _loadImage() async {
@@ -49,33 +50,26 @@ class _ImagePixelsPlaygroundState extends State<ImagePixelsPlayground> {
     int imgWidth = decodedImage.width;
     int imgHeight = decodedImage.height;
 
-    setState(() {
+    if (imageBytes != null) {
       _imageBytes = imageBytes;
+      _pixelColors = _getPixelColorsFromByteData(imageBytes, imgWidth);
       _imageSize = Size(imgWidth.toDouble(), imgHeight.toDouble());
-      _isLoadingImage = false;
-    });
+    }
+    _isLoadingImage = false;
+    setState(() {});
   }
 
-  _initPixels() {
-    if (_imageBytes == null) {
-      return;
-    }
-    _pixels = List.filled(_imageBytes!.lengthInBytes ~/ 4, Colors.black);
-    for (int i = 0; i < _imageBytes!.lengthInBytes; i++) {
-      int col = (i ~/ 4) % _imageSize.width.floor();
-      int row = (i ~/ 4) ~/ _imageSize.width;
-      int index = ((row * _imageSize.width.floor()) + col) * 4;
+  List<Color> _getPixelColorsFromByteData(ByteData bytes, int imageWidth) {
+    final pixelColors = List.filled(bytes.lengthInBytes ~/ 4, Colors.white);
+    for (int i = 0; i < bytes.lengthInBytes; i++) {
+      int x = (i ~/ 4) % imageWidth;
+      int y = (i ~/ 4) ~/ imageWidth;
+      int index = ((y * imageWidth) + x) * 4;
 
-      if (index >= 0 && index + 4 <= _imageBytes!.lengthInBytes) {
-        final rgbaColor = _imageBytes!.getUint32(index);
-        _pixels[i ~/ 4] = Color(rgbaToArgb(rgbaColor));
-      }
+      final rgbaColor = bytes.getUint32(index);
+      pixelColors[i ~/ 4] = Color(rgbaToArgb(rgbaColor));
     }
-  }
-
-  Future<void> _handleLoadImage() async {
-    await _loadImage();
-    _initPixels();
+    return pixelColors;
   }
 
   @override
@@ -99,7 +93,7 @@ class _ImagePixelsPlaygroundState extends State<ImagePixelsPlayground> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: _handleLoadImage,
+                onTap: _loadImage,
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -125,7 +119,7 @@ class _ImagePixelsPlaygroundState extends State<ImagePixelsPlayground> {
                   'Image Size: Size(${_imageSize.width}, ${_imageSize.height})'),
               Text('Image byte length: ${_imageBytes?.lengthInBytes ?? 0}'),
               Text('Pixel count: ${(_imageBytes?.lengthInBytes ?? 0) ~/ 4}'),
-              Text('Pixel colors: ${_pixels.length}'),
+              Text('Pixel colors: ${_pixelColors?.length ?? 'null'}'),
               const SizedBox(height: 10),
               const Text('Original Image'),
               Padding(
@@ -182,7 +176,7 @@ class _ImagePixelsPlaygroundState extends State<ImagePixelsPlayground> {
     if (_isLoadingImage) {
       return const CircularProgressIndicator();
     }
-    if (_imageBytes == null) {
+    if (_imageBytes == null || _pixelColors == null) {
       return const Text('No Image');
     }
     return Center(
@@ -193,9 +187,9 @@ class _ImagePixelsPlaygroundState extends State<ImagePixelsPlayground> {
           height: _imageSize.height,
           child: CustomPaint(
             painter: ImagePixelsPlaygroundPainter(
-              pixels: _pixels,
+              pixels: _pixelColors!,
               imageSize: _imageSize,
-              threshold: true,
+              threshold: _kShowThreshold,
             ),
           ),
         ),
