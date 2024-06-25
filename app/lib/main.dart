@@ -1,4 +1,4 @@
-import 'package:app/pixel_sorting_playground.dart';
+import 'package:app/app.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +11,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: PixelSortingPlaygroundPage(),
+      home: QuickSortBarsPage(),
     );
   }
 }
