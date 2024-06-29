@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/styles/text_styles.dart';
-import 'package:slides/templates/template_slide.dart';
+import 'package:slides/templates/build_template_slide.dart';
 
 class SectionTitleSlide extends FlutterDeckSlideWidget {
   SectionTitleSlide(
@@ -19,8 +19,9 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
 
   @override
   FlutterDeckSlide build(BuildContext context) {
-    return TemplateSlide(
-      title,
+    return buildTemplateSlide(
+      context,
+      title: title,
       showHeader: false,
       content: Center(
         child: Text(
@@ -28,6 +29,6 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
           style: TextStyles.title,
         ),
       ),
-    ).build(context);
+    );
   }
 }

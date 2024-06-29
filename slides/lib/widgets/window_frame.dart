@@ -8,10 +8,12 @@ class WindowFrame extends StatelessWidget {
     super.key,
     this.child,
     this.margin,
+    this.label = 'Demo',
   });
 
   final Widget? child;
   final EdgeInsetsGeometry? margin;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class WindowFrame extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(9),
         border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        color: Colors.black,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -42,23 +45,24 @@ class WindowFrame extends StatelessWidget {
               color: Colors.white,
             ),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
+                const Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 6.0),
+                    padding: EdgeInsets.only(left: 6.0),
                     child: Row(
                       children: [
-                        _buildWindowButton(const Color(0xfff45d55)),
-                        _buildWindowButton(const Color(0xfff3b52e)),
-                        _buildWindowButton(const Color(0xff29c040)),
+                        WindowButton(Color(0xfff45d55)),
+                        WindowButton(Color(0xfff3b52e)),
+                        WindowButton(Color(0xff29c040)),
                       ],
                     ),
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   child: Center(
                     child: Text(
-                      'Demo',
+                      label,
                       style: TextStyles.windowTitle,
                     ),
                   ),
@@ -86,8 +90,15 @@ class WindowFrame extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildWindowButton(Color color) {
+class WindowButton extends StatelessWidget {
+  const WindowButton(this.color, {super.key});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: barHeight * 0.55,
       height: barHeight * 0.55,

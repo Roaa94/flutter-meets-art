@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TextStyles {
@@ -6,8 +5,13 @@ class TextStyles {
   static const codeFontFamily = 'JetBrainsMono';
 
   static const footer = TextStyle(
+      fontFamily: defaultFontFamily, fontSize: 16, fontWeight: FontWeight.w300);
+
+  static const label = TextStyle(
     fontFamily: defaultFontFamily,
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: FontWeight.w300,
+    color: Color(0x88ffffff),
   );
 
   static const windowTitle = TextStyle(

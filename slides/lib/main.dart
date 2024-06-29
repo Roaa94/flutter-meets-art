@@ -8,7 +8,6 @@ import 'package:slides/slides/03-stipple-art/slides.dart';
 import 'package:slides/slides/04-gpu-art/slides.dart';
 import 'package:slides/slides/05-ui-art/slides.dart';
 import 'package:slides/slides/06-conclusion/slides.dart';
-import 'package:slides/styles/text_styles.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
 final highlighterProvider = Provider<Highlighter>(

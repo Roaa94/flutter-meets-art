@@ -4,9 +4,9 @@ import 'package:slides/templates/placeholder_slide.dart';
 
 final introductionSlides = <FlutterDeckSlideWidget>[
   SplashSlide(),
-  PlaceholderSlide(
-    'Code Meets Art: Flutter For Creative Coding',
-    subtitle: '(speaker info &  splash demo as dimmed bg)',
-  ),
-  PlaceholderSlide('Talk Introduction'),
+  // PlaceholderSlide(
+  //   'Code Meets Art: Flutter For Creative Coding',
+  //   subtitle: '(speaker info &  splash demo as dimmed bg)',
+  // ),
+  // PlaceholderSlide('Talk Introduction'),
 ];
