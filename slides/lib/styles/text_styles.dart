@@ -15,6 +15,18 @@ class TextStyles {
     fontWeight: FontWeight.w500,
   );
 
+  static const h1 = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 32,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const h2 = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 30,
+    fontWeight: FontWeight.w400,
+  );
+
   static const subtitle = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 22,

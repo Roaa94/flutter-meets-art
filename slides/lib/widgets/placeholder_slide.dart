@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/styles/text_styles.dart';
+import 'package:slides/widgets/template_slide.dart';
 
 class PlaceholderSlide extends FlutterDeckSlideWidget {
   PlaceholderSlide(this.title, {this.subtitle, this.content})
@@ -17,13 +18,16 @@ class PlaceholderSlide extends FlutterDeckSlideWidget {
 
   @override
   FlutterDeckSlide build(BuildContext context) {
-    return FlutterDeckSlide.blank(
-      builder: (context) => PlaceholderSlideContent(
+    return TemplateSlide(
+      title,
+      subtitle: subtitle,
+      showHeader: false,
+      content: PlaceholderSlideContent(
         title,
         subtitle: subtitle,
         content: content,
       ),
-    );
+    ).build(context);
   }
 }
 

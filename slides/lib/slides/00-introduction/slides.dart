@@ -8,5 +8,5 @@ final introductionSlides = <FlutterDeckSlideWidget>[
     'Code Meets Art: Flutter For Creative Coding',
     subtitle: '(speaker info &  splash demo as dimmed bg)',
   ),
-  PlaceholderSlide('Introduction'),
+  PlaceholderSlide('Talk Introduction'),
 ];

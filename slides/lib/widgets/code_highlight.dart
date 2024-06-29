@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides/main.dart';
 
 class CodeHighlight extends ConsumerWidget {
-  const CodeHighlight({
+  const CodeHighlight(
+    this.code, {
     super.key,
-    required this.code,
     this.fontSize = 27,
   });
 
