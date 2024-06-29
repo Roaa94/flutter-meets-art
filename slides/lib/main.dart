@@ -1,12 +1,17 @@
-import 'package:app/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides/code.dart';
-import 'package:slides/code_highlight.dart';
-import 'package:slides/placeholder_slide.dart';
+import 'package:slides/slides/00-introduction/slides.dart';
+import 'package:slides/slides/01-cc-as-as-learning-tool/slides.dart';
+import 'package:slides/styles/text_styles.dart';
+import 'package:slides/widgets/code_highlight.dart';
+import 'package:slides/widgets/placeholder_slide.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
-late final Highlighter dartHighlighter;
+final highlighterProvider = Provider<Highlighter>(
+  (_) => throw UnimplementedError(),
+);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,113 +22,20 @@ void main() async {
     'json',
   ]);
   var darkTheme = await HighlighterTheme.loadDarkTheme();
-  dartHighlighter = Highlighter(
+  final dartHighlighter = Highlighter(
     language: 'dart',
     theme: darkTheme,
   );
-  runApp(const SlidesApp());
-}
 
-final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
-  PlaceholderSlide(
-    'SECTION 1: CREATIVE CODING AS A LEARNING TOOL',
-    subtitle: 'Introduction (why?)',
-  ),
-  PlaceholderSlide('1.1 Bubble Sort'),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 1/n',
-    subtitle: '(Explain the algorithm with image)',
-  ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 2/n',
-    subtitle: '(Code for single-run execution)',
-    content: CodeHighlight(
-      dartHighlighter,
-      code: singleRunBubbleSortCode,
+  runApp(
+    ProviderScope(
+      overrides: [
+        highlighterProvider.overrideWithValue(dartHighlighter),
+      ],
+      child: const SlidesApp(),
     ),
-  ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 3/n',
-    subtitle: '(Code for generating random floats)',
-  ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 4/n - 1',
-    subtitle:
-        '(Code for painting the bars with the CustomPainter using the random floats list)',
-  ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 4/n - 2',
-    subtitle: 'Show random height bars',
-    content: const BubbleSortBars(
-      autoRun: false,
-      count: 20,
-    ),
-  ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 5/n - 1',
-    subtitle:
-        '(Code for using one-time execution of bubble sort to sort the bars)',
-  ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 5/n - 2',
-    subtitle: 'Show sorted bars',
-    content: const BubbleSortBars(
-      autoRun: false,
-      initSorted: true,
-      count: 20,
-    ),
-  ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 6/n - 1',
-    subtitle:
-        '(Code to run by ticks step 1 - initialize a ticker with custom tick duration)',
-  ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 6/n - 2',
-    subtitle:
-        '(Code to run by ticks step 2 - adjust sorting code to run by tick)',
-  ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 7/n',
-    subtitle: 'Run final bubble sort bars simulation',
-    content: const BubbleSortBars(
-      count: 20,
-      autoRun: true,
-      colorSortingBar: true,
-      tickDuration: 300,
-    ),
-  ),
-  PlaceholderSlide('1.2 Quick Sort'),
-  PlaceholderSlide(
-    '1.2 Quick Sort 1/n',
-    subtitle:
-        'Start complicated algorithm explanation - show highly complex image',
-  ),
-  PlaceholderSlide(
-    '1.2 Quick Sort 2/n',
-    subtitle: 'Show slowed-down simulation and explain the algorithm',
-    content: const QuickSortBars(),
-  ),
-  PlaceholderSlide('1.3 Sorting Colors'),
-  PlaceholderSlide(
-    '1.3 Sorting Colors 1/n',
-    subtitle:
-        'Code for generating random HSL color (with option to randomize either hue/saturation/lightness)',
-  ),
-  PlaceholderSlide(
-    '1.3 Sorting Colors 2/n',
-    subtitle: 'Code for comparing hsl colors by hue/saturation/lightness',
-  ),
-  PlaceholderSlide(
-    '1.3 Sorting Colors 3/n',
-    subtitle:
-        'Show simulation, has controls to experiment with generating/sorting by hue/saturation/lightness',
-    content: const QuickSortColors(
-      tickDuration: 10,
-    ),
-  ),
-  PlaceholderSlide('1. Closing'),
-];
+  );
+}
 
 final pixelSortingSlides = <FlutterDeckSlideWidget>[
   // Todo: reconsider the title
@@ -132,8 +44,7 @@ final pixelSortingSlides = <FlutterDeckSlideWidget>[
   PlaceholderSlide(
     '2.1 Reading Image Pixels 1/n',
     subtitle: 'Decoding an image from an asset file',
-    content: CodeHighlight(
-      dartHighlighter,
+    content: const CodeHighlight(
       code: loadImageAssetCode,
     ),
   ),
@@ -144,16 +55,14 @@ final pixelSortingSlides = <FlutterDeckSlideWidget>[
   PlaceholderSlide(
     '2.1 Reading Image Pixels 3/n',
     subtitle: 'Reading pixel colors list from image bytes',
-    content: CodeHighlight(
-      dartHighlighter,
+    content: const CodeHighlight(
       code: loadImagePixelColorsCode,
     ),
   ),
   PlaceholderSlide(
     '2.1 Reading Image Pixels 4/n',
     subtitle: 'Painting image pixel with canvas.drawRect',
-    content: CodeHighlight(
-      dartHighlighter,
+    content: const CodeHighlight(
       code: paintImagePixelsCode,
     ),
   ),
@@ -211,14 +120,17 @@ class SlidesApp extends StatelessWidget {
         controls: FlutterDeckControlsConfiguration(
           presenterToolbarVisible: true,
         ),
+        footer: FlutterDeckFooterConfiguration(
+          showSlideNumbers: true,
+          widget: Text(
+            '@roaakdm',
+            style: TextStyles.footer,
+          ),
+        ),
+        // transition: FlutterDeckTransition.fade(),
       ),
       slides: [
-        PlaceholderSlide('Splash Demo Slide'),
-        PlaceholderSlide(
-          'Code Meets Art: Flutter For Creative Coding',
-          subtitle: '(speaker info &  splash demo as dimmed bg)',
-        ),
-        PlaceholderSlide('Introduction'),
+        ...introductionSlides,
         ...creativeCodingAsALearningToolSlides,
         ...pixelSortingSlides,
         PlaceholderSlide('SECTION 3: STIPPLE ART'),
@@ -261,25 +173,23 @@ class SlidesApp extends StatelessWidget {
         PlaceholderSlide(
           '3.2. The Voronoi Diagram 3/n - (delaunay - 3)',
           subtitle: 'Delaunay class code (input list)',
-          content: CodeHighlight(
-            dartHighlighter,
-            code: delaunayClassInputCode,
-          ),
+          // content: CodeHighlight(
+          //   dartHighlighter,
+          //   code: delaunayClassInputCode,
+          // ),
         ),
         PlaceholderSlide(
           '3.2. The Voronoi Diagram 3/n - (delaunay - 4)',
           subtitle:
               'Code for generating random points over width & height in Float32List',
-          content: CodeHighlight(
-            dartHighlighter,
+          content: const CodeHighlight(
             code: randomRawPointsGenerationCode,
           ),
         ),
         PlaceholderSlide(
           '3.2. The Voronoi Diagram 3/n - (delaunay - 5)',
           subtitle: 'Initialize delaunay with seed points, call update',
-          content: CodeHighlight(
-            dartHighlighter,
+          content: const CodeHighlight(
             code: initDelaunayCode,
           ),
         ),

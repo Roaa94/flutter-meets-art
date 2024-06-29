@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:syntax_highlight/syntax_highlight.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides/main.dart';
 
-class CodeHighlight extends StatelessWidget {
-  const CodeHighlight(
-    this.highlighter, {
+class CodeHighlight extends ConsumerWidget {
+  const CodeHighlight({
     super.key,
     required this.code,
     this.fontSize = 27,
   });
 
-  final Highlighter highlighter;
   final String code;
   final double fontSize;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.all(30),
-      color: Colors.black,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Text.rich(
-        highlighter.highlight(code),
+        ref.watch(highlighterProvider).highlight(code),
         style: TextStyle(
           fontSize: fontSize,
           fontFamily: 'JetBrainsMono',
