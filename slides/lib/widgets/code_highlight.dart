@@ -19,6 +19,14 @@ class CodeHighlight extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 40,
+            spreadRadius: 10,
+          ),
+        ],
       ),
       child: Text.rich(
         ref.watch(highlighterProvider).highlight(code),

@@ -154,7 +154,7 @@ class QuickSortCustomPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     const padding = 4;
     final barWidth =
-        (size.width - (padding * values.length - 1)) / values.length;
+        (size.width - (padding * (values.length - 1))) / values.length;
     for (int i = 0; i < values.length; i++) {
       double left = i * (barWidth + padding);
       final barHeight = values[i] * size.height;

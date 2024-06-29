@@ -1,6 +1,6 @@
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/00-introduction/splash_slide.dart';
-import 'package:slides/widgets/placeholder_slide.dart';
+import 'package:slides/templates/placeholder_slide.dart';
 
 final introductionSlides = <FlutterDeckSlideWidget>[
   SplashSlide(),

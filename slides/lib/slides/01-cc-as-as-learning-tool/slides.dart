@@ -1,10 +1,12 @@
 import 'package:app/app.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/01-cc-as-as-learning-tool/code.dart';
-import 'package:slides/widgets/code_slide.dart';
-import 'package:slides/widgets/placeholder_slide.dart';
-import 'package:slides/widgets/section_title_slide.dart';
-import 'package:slides/widgets/template_slide.dart';
+import 'package:slides/templates/code_slide.dart';
+import 'package:slides/templates/placeholder_slide.dart';
+import 'package:slides/templates/section_title_slide.dart';
+import 'package:slides/templates/template_slide.dart';
+import 'package:slides/widgets/window_frame.dart';
 
 final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
   // 01
@@ -33,9 +35,12 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
   PlaceholderSlide(
     '1.1 Bubble Sort 4/n - 2',
     subtitle: 'Show random height bars',
-    content: const BubbleSortBars(
-      autoRun: false,
-      count: 20,
+    content: const WindowFrame(
+      margin: EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
+      child: BubbleSortBars(
+        autoRun: false,
+        count: 20,
+      ),
     ),
   ),
   PlaceholderSlide(
@@ -46,10 +51,13 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
   PlaceholderSlide(
     '1.1 Bubble Sort 5/n - 2',
     subtitle: 'Show sorted bars',
-    content: const BubbleSortBars(
-      autoRun: false,
-      initSorted: true,
-      count: 20,
+    content: const WindowFrame(
+      margin: EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
+      child: BubbleSortBars(
+        autoRun: false,
+        initSorted: true,
+        count: 20,
+      ),
     ),
   ),
   PlaceholderSlide(

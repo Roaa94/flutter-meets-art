@@ -1,8 +1,8 @@
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/02-pixel-sorting/code.dart';
 import 'package:slides/widgets/code_highlight.dart';
-import 'package:slides/widgets/placeholder_slide.dart';
-import 'package:slides/widgets/section_title_slide.dart';
+import 'package:slides/templates/placeholder_slide.dart';
+import 'package:slides/templates/section_title_slide.dart';
 
 final pixelSortingSlides = <FlutterDeckSlideWidget>[
   SectionTitleSlide('2. GLITCH ART WITH PIXEL SORTING'),

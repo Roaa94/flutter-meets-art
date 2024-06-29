@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
-import 'package:slides/widgets/placeholder_slide.dart';
+import 'package:slides/templates/placeholder_slide.dart';
 
 class CCAsALearningToolTitleSlide extends FlutterDeckSlideWidget {
   CCAsALearningToolTitleSlide()

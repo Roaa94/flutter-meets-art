@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class TextStyles {
   static const defaultFontFamily = 'Poppins';
@@ -7,6 +8,13 @@ class TextStyles {
   static const footer = TextStyle(
     fontFamily: defaultFontFamily,
     fontSize: 16,
+  );
+
+  static const windowTitle = TextStyle(
+    fontFamily: defaultFontFamily,
+    fontSize: 16,
+    color: Colors.black,
+    fontWeight: FontWeight.w500,
   );
 
   static const title = TextStyle(

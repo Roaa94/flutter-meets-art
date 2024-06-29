@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
-import 'package:slides/widgets/code_highlight.dart';
-import 'package:slides/widgets/template_slide.dart';
+import 'package:slides/styles/text_styles.dart';
+import 'package:slides/templates/template_slide.dart';
 
-class CodeSlide extends FlutterDeckSlideWidget {
-  CodeSlide(
-    this.code, {
+class SectionTitleSlide extends FlutterDeckSlideWidget {
+  SectionTitleSlide(
+    this.title, {
     this.subtitle,
-    required this.title,
-    this.codeFontSize = 27,
   }) : super(
           configuration: FlutterDeckSlideConfiguration(
             route: '/${title.toLowerCase().replaceAll(' ', '')}',
@@ -18,18 +16,16 @@ class CodeSlide extends FlutterDeckSlideWidget {
 
   final String title;
   final String? subtitle;
-  final String code;
-  final double codeFontSize;
 
   @override
   FlutterDeckSlide build(BuildContext context) {
     return TemplateSlide(
       title,
-      showHeader: true,
+      showHeader: false,
       content: Center(
-        child: CodeHighlight(
-          code,
-          fontSize: codeFontSize,
+        child: Text(
+          title,
+          style: TextStyles.title,
         ),
       ),
     ).build(context);

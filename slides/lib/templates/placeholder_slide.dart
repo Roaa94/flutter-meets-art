@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/styles/text_styles.dart';
-import 'package:slides/widgets/template_slide.dart';
+import 'package:slides/templates/template_slide.dart';
 
 class PlaceholderSlide extends FlutterDeckSlideWidget {
   PlaceholderSlide(this.title, {this.subtitle, this.content})

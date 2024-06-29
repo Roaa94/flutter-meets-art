@@ -1,7 +1,10 @@
+import 'package:app/app.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/03-stipple-art/code.dart';
-import 'package:slides/widgets/placeholder_slide.dart';
-import 'package:slides/widgets/section_title_slide.dart';
+import 'package:slides/templates/placeholder_slide.dart';
+import 'package:slides/templates/section_title_slide.dart';
+import 'package:slides/templates/template_slide.dart';
 
 import '../../widgets/code_highlight.dart';
 
@@ -16,10 +19,15 @@ final stippleArtSlides = <FlutterDeckSlideWidget>[
     '3.1. Introduction 2/n',
     subtitle: 'How do we approach this? (problem breakdown and initial goal)',
   ),
-  PlaceholderSlide('3.2. The Voronoi Diagram'),
-  PlaceholderSlide(
-    '3.2. The Voronoi Diagram 1/n',
-    subtitle: 'Explanation over illustration',
+  SectionTitleSlide('The Voronoi Diagram'),
+  TemplateSlide(
+    'The Voronoi Diagram',
+    route: 'voronoi-diagram-demo',
+    content: VoronoiPainterWrapper(
+      size: Size(700, 500),
+      showSeedPoints: true,
+      pointsCount: 10,
+    ),
   ),
   PlaceholderSlide(
     '3.2. The Voronoi Diagram 2/n - 1',

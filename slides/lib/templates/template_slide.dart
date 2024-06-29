@@ -8,9 +8,12 @@ class TemplateSlide extends FlutterDeckSlideWidget {
     this.subtitle,
     this.content,
     this.showHeader = true,
+    this.route,
   }) : super(
           configuration: FlutterDeckSlideConfiguration(
-            route: '/${title.toLowerCase().replaceAll(' ', '')}',
+            route: route != null
+                ? '/$route'
+                : '/${title.toLowerCase().replaceAll(' ', '')}',
             title: '$title${subtitle == null ? '' : ' - $subtitle'}',
           ),
         );
@@ -19,6 +22,7 @@ class TemplateSlide extends FlutterDeckSlideWidget {
   final String? subtitle;
   final Widget? content;
   final bool showHeader;
+  final String? route;
 
   @override
   FlutterDeckSlide build(BuildContext context) {
