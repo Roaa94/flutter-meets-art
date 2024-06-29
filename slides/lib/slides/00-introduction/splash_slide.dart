@@ -5,16 +5,19 @@ class SplashSlide extends FlutterDeckSlideWidget {
   SplashSlide()
       : super(
           configuration: const FlutterDeckSlideConfiguration(
-            route: '/splash',
-            title: 'Splash',
+            route: '/splash-artwork',
+            title: 'Splash Artwork',
           ),
         );
 
   @override
   FlutterDeckSlide build(BuildContext context) {
     return FlutterDeckSlide.custom(
-      builder: (context) => const Center(
-        child: Text('<splash>'),
+      builder: (context) => SizedBox.expand(
+        child: Container(
+          color: Colors.grey,
+          child: const Center(child: Text('<splash artwork>')),
+        ),
       ),
     );
   }
