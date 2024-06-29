@@ -13,14 +13,16 @@ FlutterDeckSlide buildTemplateSlide(
   final speakerInfo = flutterDeck.speakerInfo;
 
   return FlutterDeckSlide.template(
-    headerBuilder: showHeader && title != null
+    headerBuilder: showHeader
         ? (context) {
             return Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 12.0,
                 horizontal: 15.0,
               ),
-              child: Text(title, style: TextStyles.h1),
+              child: title != null
+                  ? Text(title, style: TextStyles.h1)
+                  : Container(),
             );
           }
         : null,

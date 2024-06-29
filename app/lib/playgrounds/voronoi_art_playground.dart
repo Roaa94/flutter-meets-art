@@ -1,4 +1,4 @@
-import 'package:app/widgets/voronoi/grid_voronoi.dart';
+import 'package:app/widgets/voronoi/interactive_spiral_voronoi.dart';
 import 'package:flutter/material.dart';
 
 class VoronoiArtPlaygroundPage extends StatelessWidget {
@@ -9,7 +9,7 @@ class VoronoiArtPlaygroundPage extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: GridVoronoi(size: screenSize),
+      body: InteractiveSpiralVoronoi(size: screenSize),
     );
   }
 }

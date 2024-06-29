@@ -17,9 +17,9 @@ class VoronoiSpiralPatternSlide extends FlutterDeckSlideWidget {
   FlutterDeckSlide build(BuildContext context) {
     return buildTemplateSlide(
       context,
-      title: 'Voronoi Spiral Patterns',
       showHeader: true,
       content: WindowFrame(
+        label: 'Voronoi',
         margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
         child: SizedBox.expand(
           // Todo: add controls

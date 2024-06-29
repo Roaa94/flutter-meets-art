@@ -6,31 +6,39 @@ import 'package:app/delaunay/voronoi.dart';
 import 'package:app/utils.dart';
 import 'package:flutter/material.dart';
 
-class SpiralVoronoi extends StatelessWidget {
-  const SpiralVoronoi({
+class InteractiveSpiralVoronoi extends StatefulWidget {
+  const InteractiveSpiralVoronoi({
     super.key,
     required this.size,
-    this.pointsCount = 1400,
-    this.angleIncrement = 18,
-    this.radiusIncrement = 1,
   });
 
   final Size size;
-  final int pointsCount;
-  final double angleIncrement;
-  final double radiusIncrement;
+
+  @override
+  State<InteractiveSpiralVoronoi> createState() =>
+      _InteractiveSpiralVoronoiState();
+}
+
+class _InteractiveSpiralVoronoiState extends State<InteractiveSpiralVoronoi> {
+  Offset _mouseOffset = Offset.zero;
+  final pointsCount = 1400;
+  final radiusIncrement = 1.0;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
-      child: CustomPaint(
-        painter: SpiralVoronoiPainter(
-          seedPoints: generateSpiralPoints(
-            pointsCount: pointsCount,
-            angleIncrement: angleIncrement,
-            radiusIncrement: radiusIncrement,
-            center: Offset(size.width / 2, size.height / 2),
-            bounds: size,
+      child: MouseRegion(
+        onEnter: (event) => setState(() => _mouseOffset = event.localPosition),
+        onHover: (event) => setState(() => _mouseOffset = event.localPosition),
+        child: CustomPaint(
+          painter: InteractiveSpiralVoronoiPainter(
+            seedPoints: generateSpiralPoints(
+              pointsCount: pointsCount,
+              angleIncrement: 10,
+              radiusIncrement: 1,
+              center: _mouseOffset,
+              bounds: widget.size,
+            ),
           ),
         ),
       ),
@@ -38,8 +46,8 @@ class SpiralVoronoi extends StatelessWidget {
   }
 }
 
-class SpiralVoronoiPainter extends CustomPainter {
-  SpiralVoronoiPainter({
+class InteractiveSpiralVoronoiPainter extends CustomPainter {
+  InteractiveSpiralVoronoiPainter({
     required this.seedPoints,
   });
 
@@ -86,6 +94,6 @@ class SpiralVoronoiPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }

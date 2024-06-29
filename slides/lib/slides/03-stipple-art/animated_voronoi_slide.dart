@@ -4,12 +4,12 @@ import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/templates/build_template_slide.dart';
 import 'package:slides/widgets/window_frame.dart';
 
-class VoronoiGridPatternSlide extends FlutterDeckSlideWidget {
-  const VoronoiGridPatternSlide()
+class AnimatedVoronoiSlide extends FlutterDeckSlideWidget {
+  const AnimatedVoronoiSlide()
       : super(
           configuration: const FlutterDeckSlideConfiguration(
-            route: '/voronoi-grid-pattern-demo',
-            title: 'Voronoi Grid Patterns',
+            route: '/animated-voronoi-demo',
+            title: 'Animated Voronoi Demo',
           ),
         );
 
@@ -22,13 +22,10 @@ class VoronoiGridPatternSlide extends FlutterDeckSlideWidget {
         label: 'Voronoi',
         margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
         child: SizedBox.expand(
-          // Todo: add controls
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return GridVoronoi(
+              return AnimatedSpiralVoronoi(
                 size: constraints.biggest,
-                cellSize: 50,
-                cellIncrementFactor: 0.5,
               );
             },
           ),
