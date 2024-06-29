@@ -386,3 +386,66 @@ Float32List generateGridPoints({
 
   return Float32List.fromList(list);
 }
+
+Float32List calcCentroids(List<List<Offset>> cells, {bool precise = true}) {
+  final centroids = Float32List(cells.length * 2);
+  for (int i = 0; i < cells.length * 2; i += 2) {
+    final centroid = calcCentroid(cells[i ~/ 2]);
+    centroids[i] = centroid.dx;
+    centroids[i + 1] = centroid.dy;
+  }
+  return centroids;
+}
+
+Offset calcCentroid(List<Offset> cell, {bool precise = true}) {
+  Offset centroid = Offset.zero;
+  double area = 0.0;
+  for (int i = 0; i < cell.length; i++) {
+    if (precise) {
+      final v0 = cell[i];
+      final v1 = cell[(i + 1) % cell.length];
+      final crossValue = v0.dx * v1.dy - v1.dx * v0.dy;
+      area += crossValue;
+      centroid += Offset(
+        (v0.dx + v1.dx) * crossValue,
+        (v0.dy + v1.dy) * crossValue,
+      );
+    } else {
+      centroid += Offset(cell[i].dx, cell[i].dy);
+    }
+  }
+  if (precise) {
+    area /= 2;
+    centroid = Offset(
+      centroid.dx / (6 * area),
+      centroid.dy / (6 * area),
+    );
+
+    if (centroid.dx.isInfinite ||
+        centroid.dx.isNaN ||
+        centroid.dy.isInfinite ||
+        centroid.dy.isNaN) {
+      centroid = Offset.zero;
+    }
+  } else {
+    centroid = Offset(
+      centroid.dx / cell.length,
+      centroid.dy / cell.length,
+    );
+  }
+  return centroid;
+}
+
+Float32List lerpPoints(Float32List a, Float32List b, double value) {
+  assert(a.length == b.length);
+  final newPoints = Float32List(a.length);
+  for (int i = 0; i < a.length; i++) {
+    final lerp = lerpDouble(
+      a[i],
+      b[i],
+      value,
+    );
+    newPoints[i] = lerp ?? a[i];
+  }
+  return newPoints;
+}

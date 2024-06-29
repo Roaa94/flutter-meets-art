@@ -96,3 +96,87 @@ for (int j = 0; j < voronoi.cells.length; j++) {
       ..color = Colors.black,
   );
 }''';
+
+const voronoiStateInitializationCode1 = '''
+// Widget state
+late Float32List points;
+late Float32List centroids;
+late Delaunay delaunay;
+late Voronoi voronoi;
+
+void _calculate() {
+  delaunay = Delaunay(points);
+  delaunay.update();
+  voronoi = delaunay.voronoi(
+    const Point(0, 0),
+    Point(widget.size.width, widget.size.height),
+  );
+  centroids = calcCentroids(voronoi.cells);
+}''';
+
+const voronoiStateInitializationCode2 = '''
+void _calculate() {
+  delaunay = Delaunay(points);
+  delaunay.update();
+  voronoi = delaunay.voronoi(
+    const Point(0, 0),
+    Point(widget.size.width, widget.size.height),
+  );
+  centroids = calcCentroids(voronoi.cells);
+}
+
+@override
+void initState() {
+  super.initState();
+  points = generateRandomPoints(
+    random: random,
+    canvasSize: widget.size,
+    count: widget.pointsCount,
+  );
+  _calculate();
+}''';
+
+const updateVoronoiRelaxationCode = '''
+void _update() {
+  points = lerpPoints(points, centroids, 0.01);
+  _calculate();
+  setState(() {});
+}''';
+
+const voronoiRelaxationTickerCode1 = '''
+class _VoronoiRelaxationState extends State<VoronoiRelaxation>
+    with SingleTickerProviderStateMixin { // ⬅️ Add mixin
+    //...
+}''';
+
+const voronoiRelaxationTickerCode2 = '''
+class _VoronoiRelaxationState extends State<VoronoiRelaxation>
+    with SingleTickerProviderStateMixin {
+    late final Ticker _ticker;
+    //...
+    
+    @override
+    void initState() {
+      super.initState();
+      //...
+      _ticker = createTicker((_) => _update()); // ⬅️ Update on tick
+      _ticker.start();
+    }
+
+    //...
+}''';
+
+const voronoiRelaxationTickerCode3 = '''
+class _VoronoiRelaxationState extends State<VoronoiRelaxation>
+    with SingleTickerProviderStateMixin {
+    late final Ticker _ticker;
+    //...
+    
+    @override
+    void dispose() {
+      _ticker.dispose();
+      super.dispose();
+    }
+    
+    //...
+}''';
