@@ -12,7 +12,7 @@ class GridVoronoi extends StatelessWidget {
     required this.size,
     this.cellIncrementFactor = 0.1,
     this.cellSize = 50,
-  });
+  }) : assert(cellIncrementFactor <= 1.0 && cellIncrementFactor > 0);
 
   final Size size;
   final double cellIncrementFactor;
@@ -26,6 +26,7 @@ class GridVoronoi extends StatelessWidget {
           seedPoints: generateGridPoints(
             canvasSize: size,
             cellSize: cellSize,
+            cellIncrementFactor: cellIncrementFactor,
           ),
         ),
       ),
@@ -48,7 +49,7 @@ class GridVoronoiPainter extends CustomPainter {
     final colors = generateIncrementalHSLColors(
       seedPoints.length,
       initialHue: 360,
-      saturation: 0.6,
+      saturation: 0.5,
     );
 
     final Voronoi voronoi = delaunay.voronoi(

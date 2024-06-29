@@ -52,7 +52,8 @@ class SpiralVoronoiPainter extends CustomPainter {
 
     final colors = generateIncrementalHSLColors(
       seedPoints.length,
-      initialHue: 360,
+      initialHue: 350,
+      saturation: 0.6,
     );
 
     final Voronoi voronoi = delaunay.voronoi(
@@ -73,23 +74,14 @@ class SpiralVoronoiPainter extends CustomPainter {
         Paint()..color = colors[j],
       );
 
-      // canvas.drawPath(
-      //   path,
-      //   Paint()
-      //     ..style = PaintingStyle.stroke
-      //     ..strokeWidth = 3
-      //     ..color = Colors.black,
-      // );
+      canvas.drawPath(
+        path,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1
+          ..color = colors[j],
+      );
     }
-
-    // canvas.drawRawPoints(
-    //   PointMode.points,
-    //   delaunay.coords,
-    //   Paint()
-    //     ..strokeWidth = 12
-    //     ..strokeCap = StrokeCap.round
-    //     ..color = Colors.black,
-    // );
   }
 
   @override

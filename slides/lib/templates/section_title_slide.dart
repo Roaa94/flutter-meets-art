@@ -23,10 +23,14 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
       context,
       title: title,
       showHeader: false,
-      content: Center(
-        child: Text(
-          title,
-          style: TextStyles.title,
+      content: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 200.0),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyles.title,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

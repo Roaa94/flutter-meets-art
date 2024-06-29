@@ -2,7 +2,9 @@ import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/03-stipple-art/code.dart';
 import 'package:slides/slides/03-stipple-art/delaunay_triangulation_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_diagram_slide.dart';
+import 'package:slides/slides/03-stipple-art/voronoi_grid_pattern_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_on_delaunay_slide.dart';
+import 'package:slides/slides/03-stipple-art/voronoi_spiral_pattern_slide.dart';
 import 'package:slides/templates/code_slide.dart';
 import 'package:slides/templates/image_slide.dart';
 import 'package:slides/templates/placeholder_slide.dart';
@@ -65,6 +67,7 @@ final stippleArtSlides = <FlutterDeckSlideWidget>[
     route: 'painting-voronoi-polygons-2',
     codeFontSize: 24,
   ),
-  // Todo: Voronoi art slides
+  const VoronoiGridPatternSlide(),
+  const VoronoiSpiralPatternSlide(),
   SectionTitleSlide('LLoyd\'s Algorithm'),
 ];
