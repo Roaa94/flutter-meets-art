@@ -8,12 +8,12 @@ class WindowFrame extends StatelessWidget {
     super.key,
     this.child,
     this.margin,
-    this.label = 'Demo',
+    this.label,
   });
 
   final Widget? child;
   final EdgeInsetsGeometry? margin;
-  final String label;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class WindowFrame extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: Text(
-                      label,
+                      label ?? 'Demo',
                       style: TextStyles.windowTitle,
                     ),
                   ),

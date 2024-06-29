@@ -180,3 +180,22 @@ class _VoronoiRelaxationState extends State<VoronoiRelaxation>
     
     //...
 }''';
+
+const generateRandomPointsFromPixelsCode = '''
+Float32List generateRandomPointsFromPixels(
+    ByteData bytes, Size size, int pointsCount, Random random) {
+  final list = <double>[];
+  for (int i = 0; i < pointsCount; i++) {
+    final x = size.width * random.nextDouble();
+    final y = size.height * random.nextDouble();
+    final offset = Offset(x, y);
+    final color = 
+       getPixelColorFromBytes(bytes: bytes, offset: offset, size: size);
+
+    final brightness = color.computeLuminance();
+    if (random.nextDouble() > brightness) {
+      list.addAll([offset.dx, offset.dy]);
+    }
+  }
+  return Float32List.fromList(list);
+}''';

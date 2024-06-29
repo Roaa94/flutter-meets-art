@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
-import 'package:slides/styles/text_styles.dart';
 import 'package:slides/templates/build_template_slide.dart';
+import 'package:slides/widgets/window_frame.dart';
 
-class SectionTitleSlide extends FlutterDeckSlideWidget {
-  SectionTitleSlide(
+class DemoSlide extends FlutterDeckSlideWidget {
+  DemoSlide(
     this.title, {
     this.subtitle,
+    this.label,
+    this.showHeader = true,
+    this.child,
     this.route,
   }) : super(
           configuration: FlutterDeckSlideConfiguration(
@@ -20,22 +23,20 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
   final String title;
   final String? subtitle;
   final String? route;
+  final String? label;
+  final bool showHeader;
+  final Widget? child;
 
   @override
   FlutterDeckSlide build(BuildContext context) {
     return buildTemplateSlide(
       context,
+      showHeader: showHeader,
       title: title,
-      showHeader: false,
-      content: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 200.0),
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyles.title,
-            textAlign: TextAlign.center,
-          ),
-        ),
+      content: WindowFrame(
+        label: label,
+        margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
+        child: child,
       ),
     );
   }

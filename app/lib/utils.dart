@@ -449,3 +449,97 @@ Float32List lerpPoints(Float32List a, Float32List b, double value) {
   }
   return newPoints;
 }
+
+Float32List generateRandomPointsFromPixels(
+    ByteData bytes, Size size, int pointsCount, Random random) {
+  final list = <double>[];
+  for (int i = 0; i < pointsCount; i++) {
+    final x = size.width * random.nextDouble();
+    final y = size.height * random.nextDouble();
+    final offset = Offset(x, y);
+    final color =
+        getPixelColorFromBytes(bytes: bytes, offset: offset, size: size);
+    final brightness = color.computeLuminance();
+    if (random.nextDouble() > brightness) {
+      list.addAll([offset.dx, offset.dy]);
+    } else {
+      i--;
+    }
+  }
+  return Float32List.fromList(list);
+}
+
+Color getPixelColorFromBytes({
+  required ByteData bytes,
+  required Offset offset,
+  required Size size,
+}) {
+  final pixelDataOffset = getBitmapPixelOffset(
+    imageWidth: size.width.toInt(),
+    x: offset.dx.toInt(),
+    y: offset.dy.toInt(),
+  );
+
+  // Check if pixelDataOffset is within valid range
+  if (pixelDataOffset < 0 || pixelDataOffset + 4 > bytes.lengthInBytes) {
+    return Colors.black.withOpacity(0.5);
+  }
+
+  final rgbaColor = bytes.getUint32(pixelDataOffset);
+  return Color(rgbaToArgb(rgbaColor));
+}
+
+int getBitmapPixelOffset({
+  required int imageWidth,
+  required int x,
+  required int y,
+}) {
+  return ((y * imageWidth) + x) * 4;
+}
+
+Float32List calcWeightedCentroids(
+  Delaunay delaunay,
+  Size size,
+  ByteData bytes,
+) {
+  final weightedCentroids = Float32List(delaunay.coords.length);
+  final weights = Float32List(delaunay.coords.length ~/ 2);
+  int delaunayIndex = 0;
+  int pixelsCount = (size.width * size.height).toInt();
+  for (int p = 0; p < pixelsCount; p++) {
+    int i = p % size.width.toInt();
+    int j = p ~/ size.width;
+
+    final color = getPixelColorFromBytes(
+      bytes: bytes,
+      offset: Offset(i.toDouble(), j.toDouble()),
+      size: size,
+    );
+
+    final brightness =
+        0.2126 * color.red + 0.7152 * color.green + 0.0722 * color.blue;
+    final weight = 1 - brightness / 255;
+
+    delaunayIndex = delaunay.find(
+      i.toDouble(),
+      j.toDouble(),
+      delaunayIndex,
+    );
+
+    weightedCentroids[2 * delaunayIndex] += (i * weight);
+    weightedCentroids[2 * delaunayIndex + 1] += (j * weight);
+    weights[delaunayIndex] += weight;
+  }
+
+  for (int i = 0; i < weightedCentroids.length; i += 2) {
+    if (weights[i ~/ 2] > 0) {
+      weightedCentroids[i] /= weights[i ~/ 2];
+      weightedCentroids[i + 1] /= weights[i ~/ 2];
+    } else {
+      weightedCentroids[i] = delaunay.coords[i];
+      weightedCentroids[i + 1] = delaunay.coords[i + 1];
+    }
+  }
+
+  return weightedCentroids;
+}

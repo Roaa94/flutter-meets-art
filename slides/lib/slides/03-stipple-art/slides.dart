@@ -1,15 +1,20 @@
+import 'package:app/widgets/voronoi/weighted_voronoi_stippling.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_relaxation_slide.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_slide.dart';
 import 'package:slides/slides/03-stipple-art/code.dart';
 import 'package:slides/slides/03-stipple-art/delaunay_triangulation_slide.dart';
 import 'package:slides/slides/03-stipple-art/interactive_voronoi_slide.dart';
+import 'package:slides/slides/03-stipple-art/randomized_image_stippling_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_diagram_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_grid_pattern_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_on_delaunay_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_relaxation_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_spiral_pattern_slide.dart';
+import 'package:slides/slides/03-stipple-art/weighted_voronoi_stippling_slide.dart';
 import 'package:slides/templates/code_slide.dart';
+import 'package:slides/templates/demo_slide.dart';
 import 'package:slides/templates/image_slide.dart';
 import 'package:slides/templates/placeholder_slide.dart';
 import 'package:slides/templates/section_title_slide.dart';
@@ -112,4 +117,50 @@ final stippleArtSlides = <FlutterDeckSlideWidget>[
     codeFontSize: 20,
   ),
   const AnimatedVoronoiRelaxationSlide(),
+  SectionTitleSlide('Weighted Voronoi Stippling'),
+  CodeSlide(
+    generateRandomPointsFromPixelsCode,
+    title: 'Image Pixels Random Point Generation',
+    codeFontSize: 20,
+  ),
+  const RandomizedImageStipplingSlide(),
+  DemoSlide(
+    'Randomized Image Stippling Relaxation',
+    child: const ColoredBox(
+      color: Colors.white,
+      child: WeightedVoronoiStippling(
+        showImage: false,
+        showVoronoiPolygons: false,
+        pointsCount: 2000,
+        paintColors: false,
+        animate: true,
+        weightedCentroids: false,
+      ),
+    ),
+  ),
+  PlaceholderSlide('Weights Calculation (with voronoi demo explanation)'),
+  CodeSlide(
+    '',
+    title: 'Weighted Centroids Calculation',
+  ),
+  DemoSlide(
+    'Weighted Image Stippling',
+    route: 'weighted-image-stippling-1',
+    child: const ColoredBox(
+      color: Colors.white,
+      child: WeightedVoronoiStippling(
+        showImage: false,
+        showVoronoiPolygons: false,
+        pointsCount: 2000,
+        paintColors: false,
+        animate: true,
+        weightedCentroids: true,
+      ),
+    ),
+  ),
+  const WeightedVoronoiStipplingSlide(),
+  SectionTitleSlide(
+    'What if you are the Art?',
+    route: 'audience-is-art',
+  ),
 ];
