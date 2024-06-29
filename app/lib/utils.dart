@@ -30,6 +30,27 @@ List<HSLColor> generateRandomHSLColors(
   });
 }
 
+List<Color> generateRandomColors(
+  Random random,
+  int n, {
+  bool randomHue = true,
+  bool randomSaturation = false,
+  bool randomLightness = false,
+  double initialHue = 360.0,
+}) {
+  return List<Color>.generate(n, (index) {
+    return HSLColor.fromAHSL(
+      1.0, // Opacity
+      // from 0 to 360
+      randomHue ? random.nextDouble() * initialHue : initialHue,
+      // from 0 to 1, default should be 1
+      randomSaturation ? random.nextDouble() : 1.0,
+      // from 0 to 1, default should be 0.5
+      randomLightness ? random.nextDouble() : 0.5,
+    ).toColor();
+  });
+}
+
 List<Offset> generateVertexOffsets(
   int length,
   double width, {
@@ -104,8 +125,10 @@ Float32List generateRandomPoints({
 }) {
   final points = Float32List(count * 2);
   for (int i = 0; i < points.length; i += 2) {
-    points[i] = padding + random.nextDouble() * (canvasSize.width - padding * 2);
-    points[i + 1] = padding + random.nextDouble() * (canvasSize.height - padding *2);
+    points[i] =
+        padding + random.nextDouble() * (canvasSize.width - padding * 2);
+    points[i + 1] =
+        padding + random.nextDouble() * (canvasSize.height - padding * 2);
   }
   return points;
 }
@@ -240,13 +263,13 @@ Float32List reflectRawPoints({
 }
 
 Point<double> calculateCircumcenter(
-    double x1,
-    double y1,
-    double x2,
-    double y2,
-    double x3,
-    double y3,
-    ) {
+  double x1,
+  double y1,
+  double x2,
+  double y2,
+  double x3,
+  double y3,
+) {
   final double dx = x2 - x1;
   final double dy = y2 - y1;
   final double ex = x3 - x1;

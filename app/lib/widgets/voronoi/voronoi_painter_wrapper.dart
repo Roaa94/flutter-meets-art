@@ -11,19 +11,19 @@ class VoronoiPainterWrapper extends StatefulWidget {
     required this.size,
     this.pointsCount = 5,
     this.showSeedPoints = false,
-    this.showDelaunayTriangles = false,
-    this.showCircumcircles = false,
-    this.showVoronoiPolygons = false,
-    this.fillVoronoiPolygons = false,
+    this.paintDelaunayTriangles = false,
+    this.paintCircumcircles = false,
+    this.paintVoronoiPolygonEdges = false,
+    this.paintVoronoiPolygonFills = false,
   });
 
   final Size size;
   final int pointsCount;
   final bool showSeedPoints;
-  final bool showDelaunayTriangles;
-  final bool showCircumcircles;
-  final bool showVoronoiPolygons;
-  final bool fillVoronoiPolygons;
+  final bool paintDelaunayTriangles;
+  final bool paintCircumcircles;
+  final bool paintVoronoiPolygonEdges;
+  final bool paintVoronoiPolygonFills;
 
   @override
   State<VoronoiPainterWrapper> createState() => _VoronoiPainterWrapperState();
@@ -31,13 +31,21 @@ class VoronoiPainterWrapper extends StatefulWidget {
 
 class _VoronoiPainterWrapperState extends State<VoronoiPainterWrapper> {
   late Float32List _seedPoints;
-  final random = Random(3);
+  late List<Color> _colors;
+  final random = Random(5);
 
   void _generatePoints() {
     _seedPoints = generateRandomPoints(
       random: random,
       canvasSize: widget.size,
       count: widget.pointsCount,
+    );
+    _colors = generateRandomColors(
+      random,
+      _seedPoints.length,
+      randomHue: false,
+      randomLightness: true,
+      initialHue: 310,
     );
   }
 
@@ -67,13 +75,13 @@ class _VoronoiPainterWrapperState extends State<VoronoiPainterWrapper> {
       height: widget.size.height,
       child: CustomPaint(
         painter: VoronoiPainter(
-          random: random,
+          colors: _colors,
           seedPoints: _seedPoints,
           showSeedPoints: widget.showSeedPoints,
-          showDelaunayTriangles: widget.showDelaunayTriangles,
-          showCircumcircles: widget.showCircumcircles,
-          showVoronoiPolygons: widget.showVoronoiPolygons,
-          fillVoronoiPolygons: widget.fillVoronoiPolygons,
+          paintDelaunayTriangles: widget.paintDelaunayTriangles,
+          paintCircumcircles: widget.paintCircumcircles,
+          paintVoronoiPolygonEdges: widget.paintVoronoiPolygonEdges,
+          paintVoronoiPolygonFills: widget.paintVoronoiPolygonFills,
         ),
       ),
     );

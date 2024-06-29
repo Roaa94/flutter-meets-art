@@ -49,3 +49,50 @@ for (int i = 0; i < triangles.length; i += 3) {
       ..color = Colors.black,
   );
 }''';
+
+const delaunayVoronoiExtensionCode = '''
+class Delaunay {
+  Delaunay(Float32List coords);
+  //...
+  //...
+  voronoi(Point min, Point max) {
+    return Voronoi(delaunay: this, min: min, max: max);
+  }
+}''';
+
+const initializeVoronoiCode = '''
+final delaunay = Delaunay(seedPoints);
+delaunay.update();
+
+final Voronoi voronoi = delaunay.voronoi(
+  const Point(0, 0),
+  Point(size.width, size.height),
+);''';
+
+const paintVoronoiEdgesCode1 = '''
+for (int j = 0; j < voronoi.cells.length; j++) {
+  final path = Path()
+    ..moveTo(voronoi.cells[j][0].dx, voronoi.cells[j][0].dy);
+  for (int i = 1; i < voronoi.cells[j].length; i++) {
+    path.lineTo(voronoi.cells[j][i].dx, voronoi.cells[j][i].dy);
+  }
+  
+}''';
+
+const paintVoronoiEdgesCode2 = '''
+for (int j = 0; j < voronoi.cells.length; j++) {
+  final path = Path()
+    ..moveTo(voronoi.cells[j][0].dx, voronoi.cells[j][0].dy);
+  for (int i = 1; i < voronoi.cells[j].length; i++) {
+    path.lineTo(voronoi.cells[j][i].dx, voronoi.cells[j][i].dy);
+  }
+  path.close();
+
+  canvas.drawPath(
+    path,
+    Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..color = Colors.black,
+  );
+}''';

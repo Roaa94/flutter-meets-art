@@ -4,12 +4,12 @@ import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/templates/build_template_slide.dart';
 import 'package:slides/widgets/window_frame.dart';
 
-class VoronoiDiagramSlide extends FlutterDeckSlideWidget {
-  const VoronoiDiagramSlide()
+class VoronoiOnDelaunaySlide extends FlutterDeckSlideWidget {
+  const VoronoiOnDelaunaySlide()
       : super(
           configuration: const FlutterDeckSlideConfiguration(
-            route: '/voronoi-diagram-demo',
-            title: 'Voronoi Diagram Demo',
+            route: '/voronoi-on-delaunay-demo',
+            title: 'Voronoi As the Delaunay Dual Graph',
           ),
         );
 
@@ -17,7 +17,7 @@ class VoronoiDiagramSlide extends FlutterDeckSlideWidget {
   FlutterDeckSlide build(BuildContext context) {
     return buildTemplateSlide(
       context,
-      title: 'The Voronoi Diagram',
+      title: 'Voronoi As the Delaunay Dual Graph',
       showHeader: true,
       content: WindowFrame(
         margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
@@ -25,12 +25,14 @@ class VoronoiDiagramSlide extends FlutterDeckSlideWidget {
           padding: const EdgeInsets.all(8.0),
           color: Colors.white,
           child: SizedBox.expand(
+            // Todo: add controls
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return VoronoiPainterWrapper(
                   size: constraints.biggest,
                   showSeedPoints: true,
-                  pointsCount: 40,
+                  pointsCount: 5,
+                  paintDelaunayTriangles: true,
                   paintVoronoiPolygonEdges: true,
                 );
               },

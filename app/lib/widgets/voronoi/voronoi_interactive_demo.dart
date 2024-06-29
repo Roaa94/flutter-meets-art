@@ -31,10 +31,10 @@ class _VoronoiInteractiveDemoState extends State<VoronoiInteractiveDemo> {
   final random = Random(3);
   int _pointsCount = 100;
   bool _showSeedPoints = true;
-  bool _showDelaunayTriangles = false;
-  bool _showCircumcircles = false;
-  bool _showVoronoiPolygons = true;
-  bool _fillVoronoiPolygons = false;
+  bool _paintDelaunayTriangles = false;
+  bool _paintCircumcircles = false;
+  bool _paintVoronoiPolygonEdges = true;
+  bool _paintVoronoiPolygonFills = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,40 +67,40 @@ class _VoronoiInteractiveDemoState extends State<VoronoiInteractiveDemo> {
                         controlAffinity: ListTileControlAffinity.leading,
                       ),
                       CheckboxListTile(
-                        value: _showDelaunayTriangles,
+                        value: _paintDelaunayTriangles,
                         onChanged: (value) {
                           if (value != null) {
-                            setState(() => _showDelaunayTriangles = value);
+                            setState(() => _paintDelaunayTriangles = value);
                           }
                         },
                         title: const Text('Show Delaunay triangles'),
                         controlAffinity: ListTileControlAffinity.leading,
                       ),
                       CheckboxListTile(
-                        value: _showVoronoiPolygons,
+                        value: _paintVoronoiPolygonEdges,
                         onChanged: (value) {
                           if (value != null) {
-                            setState(() => _showVoronoiPolygons = value);
+                            setState(() => _paintVoronoiPolygonEdges = value);
                           }
                         },
                         title: const Text('Show Voronoi polygons'),
                         controlAffinity: ListTileControlAffinity.leading,
                       ),
                       CheckboxListTile(
-                        value: _fillVoronoiPolygons,
+                        value: _paintVoronoiPolygonFills,
                         onChanged: (value) {
                           if (value != null) {
-                            setState(() => _fillVoronoiPolygons = value);
+                            setState(() => _paintVoronoiPolygonFills = value);
                           }
                         },
                         title: const Text('Fill Voronoi polygons'),
                         controlAffinity: ListTileControlAffinity.leading,
                       ),
                       CheckboxListTile(
-                        value: _showCircumcircles,
+                        value: _paintCircumcircles,
                         onChanged: (value) {
                           if (value != null) {
-                            setState(() => _showCircumcircles = value);
+                            setState(() => _paintCircumcircles = value);
                           }
                         },
                         title: const Text('Show circumcircles'),
@@ -153,10 +153,10 @@ class _VoronoiInteractiveDemoState extends State<VoronoiInteractiveDemo> {
                 size: widget.size,
                 pointsCount: _pointsCount,
                 showSeedPoints: _showSeedPoints,
-                showDelaunayTriangles: _showDelaunayTriangles,
-                showCircumcircles: _showCircumcircles,
-                showVoronoiPolygons: _showVoronoiPolygons,
-                fillVoronoiPolygons: _fillVoronoiPolygons,
+                paintDelaunayTriangles: _paintDelaunayTriangles,
+                paintCircumcircles: _paintCircumcircles,
+                paintVoronoiPolygonEdges: _paintVoronoiPolygonEdges,
+                paintVoronoiPolygonFills: _paintVoronoiPolygonFills,
               ),
             ),
           ),
