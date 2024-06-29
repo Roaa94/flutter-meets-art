@@ -20,6 +20,7 @@ class WeightedVoronoiStippling extends StatefulWidget {
     this.animate = false,
     this.weightedCentroids = false,
     this.pointStrokeWidth = 5,
+    this.imagePath = 'assets/images/dash.jpg',
   });
 
   final int pointsCount;
@@ -30,6 +31,7 @@ class WeightedVoronoiStippling extends StatefulWidget {
   final bool animate;
   final bool weightedCentroids;
   final double pointStrokeWidth;
+  final String imagePath;
 
   @override
   State<WeightedVoronoiStippling> createState() =>
@@ -43,8 +45,6 @@ class _WeightedVoronoiStipplingState extends State<WeightedVoronoiStippling>
   Size _imageSize = const Size(0, 0);
   final random = Random(1);
   late final Ticker _ticker;
-
-  static const imagePath = 'assets/images/dash.jpg';
 
   late Float32List points;
   late Float32List centroids;
@@ -81,11 +81,11 @@ class _WeightedVoronoiStipplingState extends State<WeightedVoronoiStippling>
     setState(() {});
   }
 
-  Future<void> _loadImagePixels(String imageAssetPath) async {
+  Future<void> _loadImagePixels() async {
     setState(() {
       _isLoadingImage = true;
     });
-    final img = await rootBundle.load(imageAssetPath);
+    final img = await rootBundle.load(widget.imagePath);
     var decodedImage = await decodeImageFromList(img.buffer.asUint8List());
     final imageBytes = await decodedImage.toByteData();
     int imgWidth = decodedImage.width;
@@ -102,7 +102,7 @@ class _WeightedVoronoiStipplingState extends State<WeightedVoronoiStippling>
   void initState() {
     super.initState();
     _ticker = createTicker((_) => _update());
-    _loadImagePixels(imagePath).then((_) {
+    _loadImagePixels().then((_) {
       if (_imageSize == const Size(0, 0) || _imageBytes == null) {
         return;
       }
@@ -138,7 +138,7 @@ class _WeightedVoronoiStipplingState extends State<WeightedVoronoiStippling>
             if (widget.showImage)
               Positioned.fill(
                 child: Image.asset(
-                  imagePath,
+                  widget.imagePath,
                   package: 'app',
                 ),
               ),
