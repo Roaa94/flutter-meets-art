@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:app/delaunay.dart';
+import 'package:app/delaunay/delaunay.dart';
 import 'package:flutter/material.dart';
 
 int rgbaToArgb(int rgbaColor) {
@@ -100,11 +100,12 @@ Float32List generateRandomPoints({
   required Random random,
   required Size canvasSize,
   required int count,
+  double padding = 10,
 }) {
   final points = Float32List(count * 2);
   for (int i = 0; i < points.length; i += 2) {
-    points[i] = random.nextDouble() * canvasSize.width;
-    points[i + 1] = random.nextDouble() * canvasSize.height;
+    points[i] = padding + random.nextDouble() * (canvasSize.width - padding * 2);
+    points[i + 1] = padding + random.nextDouble() * (canvasSize.height - padding *2);
   }
   return points;
 }
@@ -201,4 +202,70 @@ void paintDelaunay({
   final circumradius = sqrt(dx1 * dx1 + dy1 * dy1);
 
   return (Point<double>(x, y), circumradius);
+}
+
+Float32List reflectRawPoints({
+  required Float32List originalPoints,
+  required Size bounds,
+}) {
+  final int length = originalPoints.length;
+  final Float32List reflectedPoints = Float32List(length * 5);
+
+  for (int i = 0; i < length; i += 2) {
+    final double x = originalPoints[i];
+    final double y = originalPoints[i + 1];
+
+    // Original point
+    reflectedPoints[i] = x;
+    reflectedPoints[i + 1] = y;
+
+    // Top reflection
+    reflectedPoints[length + i] = x;
+    reflectedPoints[length + i + 1] = -y;
+
+    // Bottom reflection
+    reflectedPoints[2 * length + i] = x;
+    reflectedPoints[2 * length + i + 1] = 2 * bounds.height - y;
+
+    // Left reflection
+    reflectedPoints[3 * length + i] = -x;
+    reflectedPoints[3 * length + i + 1] = y;
+
+    // Right reflection
+    reflectedPoints[4 * length + i] = 2 * bounds.width - x;
+    reflectedPoints[4 * length + i + 1] = y;
+  }
+
+  return reflectedPoints;
+}
+
+Point<double> calculateCircumcenter(
+    double x1,
+    double y1,
+    double x2,
+    double y2,
+    double x3,
+    double y3,
+    ) {
+  final double dx = x2 - x1;
+  final double dy = y2 - y1;
+  final double ex = x3 - x1;
+  final double ey = y3 - y1;
+
+  final ab = (dx * ey - dy * ex) * 2;
+
+  if (ab.abs() < 1e-9) {
+    final cx = (x1 + x2 + x3) / 3;
+    final cy = (y1 + y2 + y3) / 3;
+    return Point<double>(cx, cy);
+  }
+
+  final double bl = dx * dx + dy * dy;
+  final double cl = ex * ex + ey * ey;
+  final double d = 0.5 / (dx * ey - dy * ex);
+
+  final double x = x1 + (ey * bl - dy * cl) * d;
+  final double y = y1 + (dx * cl - ex * bl) * d;
+
+  return Point<double>(x, y);
 }

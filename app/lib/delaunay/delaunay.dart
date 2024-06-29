@@ -5,6 +5,8 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:app/delaunay/voronoi.dart';
+
 final double _epsilon = pow(2.0, -52) as double;
 final Uint32List _edgeStack = Uint32List(512);
 
@@ -131,6 +133,8 @@ class Delaunay {
   /// The indices in [coords] of the points on the convex hull of the input
   /// data, counter-clockwise.
   Uint32List get hull => _hull;
+
+  Int32List get inedges => _inedges;
 
   /// `coords[i]` in the form of a `Point<double>`.
   Point<double> getPoint(int i) => Point<double>(
@@ -897,5 +901,9 @@ class Delaunay {
     } while (e != e0);
 
     return c;
+  }
+
+  voronoi(Point min, Point max) {
+    return Voronoi(delaunay: this, min: min, max: max);
   }
 }

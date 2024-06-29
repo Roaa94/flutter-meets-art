@@ -21,9 +21,7 @@ void main() async {
     language: 'dart',
     theme: darkTheme,
   );
-  runApp(
-    SlidesApp(),
-  );
+  runApp(const SlidesApp());
 }
 
 final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
