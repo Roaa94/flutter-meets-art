@@ -21,7 +21,7 @@ class Voronoi {
   late Float32List _circumcenters;
   late Delaunay _reflectedDelaunay;
 
-  late List<Offset> _edges;
+  late Float32List _edges;
   late List<List<Offset>> _cells;
 
   late Size _size;
@@ -30,7 +30,7 @@ class Voronoi {
 
   Delaunay get reflectedDelaunay => _reflectedDelaunay;
 
-  List<Offset> get edges => _edges;
+  Float32List get edges => _edges;
 
   List<List<Offset>> get cells => _cells;
 
@@ -78,16 +78,21 @@ class Voronoi {
   void _computeEdges() {
     final halfEdges = delaunay.halfEdges;
     final triangles = delaunay.triangles;
-    _edges = <Offset>[];
+    final list = <double>[];
 
     for (var e = 0; e < triangles.length; e++) {
       if (e < halfEdges[e]) {
         final j = e ~/ 3 * 2;
         final k = halfEdges[e] ~/ 3 * 2;
-        _edges.add(Offset(_circumcenters[j], _circumcenters[j + 1]));
-        _edges.add(Offset(_circumcenters[k], _circumcenters[k + 1]));
+        list.addAll([
+          _circumcenters[j],
+          _circumcenters[j + 1],
+          _circumcenters[k],
+          _circumcenters[k + 1],
+        ]);
       }
     }
+    _edges = Float32List.fromList(list);
   }
 
   void _computeReflectedDelaunay() {

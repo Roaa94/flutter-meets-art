@@ -30,6 +30,48 @@ List<HSLColor> generateRandomHSLColors(
   });
 }
 
+List<Color> generateIncrementalHSLColors(
+  int n, {
+  double initialHue = 360.0,
+  double saturation = 1.0,
+}) {
+  return List<Color>.generate(n, (index) {
+    return HSLColor.fromAHSL(
+      1.0, // Opacity
+      // from 0 to 360
+      initialHue * (1 - (index / n)),
+      // from 0 to 1, default should be 1
+      saturation,
+      // from 0 to 1, default should be 0.5
+      // 0.5 * (1 - (index / n)),
+      0.5,
+    ).toColor();
+  });
+}
+
+List<Color> generateAlternatingColors(
+  int n,
+  Color color1,
+  Color color2,
+) {
+  final list = <Color>[];
+  for (int i = 0; i < n; i += 2) {
+    list.addAll([color1, color2]);
+  }
+  return list;
+}
+
+List<Color> generateIncrementalColors(int n, {double initialHue = 360.0}) {
+  return List<Color>.generate(n, (index) {
+    return Color.fromARGB(
+      255,
+      (255 * (index / n)).toInt(),
+      0,
+      0,
+    );
+  });
+}
+
 List<Color> generateRandomColors(
   Random random,
   int n, {
@@ -291,4 +333,56 @@ Point<double> calculateCircumcenter(
   final double y = y1 + (dx * cl - ex * bl) * d;
 
   return Point<double>(x, y);
+}
+
+Float32List generateSpiralPoints({
+  int pointsCount = 10,
+  double radiusIncrement = 1,
+  double angleIncrement = 1,
+  Offset center = Offset.zero,
+  required Size bounds,
+}) {
+  final List<double> points = [];
+  double radius = 0.0;
+  double angle = 0.0;
+
+  for (int i = 0; i < pointsCount; i++) {
+    final double x = center.dx + radius * cos(angle);
+    final double y = center.dy + radius * sin(angle);
+
+    // Check if the point is within the bounds
+    if (x >= 0 && x <= bounds.width && y >= 0 && y <= bounds.height) {
+      points.add(x);
+      points.add(y);
+    }
+
+    radius += radiusIncrement;
+    angle += angleIncrement;
+  }
+
+  return Float32List.fromList(points);
+}
+
+Float32List generateGridPoints({
+  required Size canvasSize,
+  double cellSize = 50,
+  double cellIncrementFactor = 0.1,
+}) {
+  final list = <double>[];
+  final cols = (canvasSize.width / cellSize).floor();
+  final rows = (canvasSize.height / cellSize).floor();
+
+  for (int row = 0; row < rows; row++) {
+    for (int col = 0; col < cols; col++) {
+      final centerX = col * cellSize +
+          cellSize / 2 +
+          (row.isOdd ? cellSize * cellIncrementFactor : 0);
+      final centerY = row * cellSize +
+          cellSize / 2 +
+          (col.isOdd ? cellSize * cellIncrementFactor : 0);
+      list.addAll([centerX, centerY]);
+    }
+  }
+
+  return Float32List.fromList(list);
 }
