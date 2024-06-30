@@ -16,8 +16,7 @@ class VoronoiRelaxation {
     this.weighted = false,
   })  : _coords = inputCoords,
         _centroids = Float32List(inputCoords.length),
-        _colors =
-            List<Color>.filled(inputCoords.length ~/ 2, Colors.transparent) {
+        _colors = List<Color>.filled(inputCoords.length ~/ 2, Colors.black) {
     _init();
   }
 
@@ -29,7 +28,7 @@ class VoronoiRelaxation {
 
   final Float32List _coords;
   final Float32List _centroids;
-  List<Color> _colors;
+  final List<Color> _colors;
 
   late Delaunay _delaunay;
   late Voronoi _voronoi;
@@ -116,11 +115,16 @@ class VoronoiRelaxation {
     if (bytes == null) {
       return;
     }
+
     final weightedCentroids = Float32List(delaunay.coords.length);
     final weights = Float32List(_coords.length ~/ 2);
-    final colors = List<Color>.filled(_coords.length ~/ 2, Colors.transparent);
+    final weightsR = Float32List(_coords.length ~/ 2);
+    final weightsG = Float32List(_coords.length ~/ 2);
+    final weightsB = Float32List(_coords.length ~/ 2);
+    final counts = List<int>.filled(_coords.length ~/ 2, 0);
 
     int delaunayIndex = 0;
+
     for (int p = 0; p < bytes!.lengthInBytes ~/ 4; p++) {
       int x = p % size.width.toInt();
       int y = p ~/ size.width;
@@ -131,7 +135,7 @@ class VoronoiRelaxation {
 
       final brightness =
           0.2126 * color.red + 0.7152 * color.green + 0.0722 * color.blue;
-      final w = 1 - brightness / 255;
+      final weight = 1 - brightness / 255;
 
       delaunayIndex = delaunay.find(
         x.toDouble(),
@@ -139,25 +143,13 @@ class VoronoiRelaxation {
         delaunayIndex,
       );
 
-      weightedCentroids[2 * delaunayIndex] += (x * w);
-      weightedCentroids[2 * delaunayIndex + 1] += (y * w);
-      weights[delaunayIndex] += w;
-
-      // Update color blending
-      if (weights[delaunayIndex] == w) {
-        colors[delaunayIndex] = color;
-      } else {
-        final currentColor = colors[delaunayIndex];
-        final totalWeight = weights[delaunayIndex];
-        final r = (currentColor.red * (totalWeight - w) + color.red * w) ~/
-            totalWeight;
-        final g = (currentColor.green * (totalWeight - w) + color.green * w) ~/
-            totalWeight;
-        final b = (currentColor.blue * (totalWeight - w) + color.blue * w) ~/
-            totalWeight;
-
-        colors[delaunayIndex] = Color.fromARGB(255, r, g, b);
-      }
+      weightedCentroids[2 * delaunayIndex] += (x * weight);
+      weightedCentroids[2 * delaunayIndex + 1] += (y * weight);
+      weights[delaunayIndex] += weight;
+      weightsR[delaunayIndex] += color.red * color.red * weight;
+      weightsG[delaunayIndex] += color.green * color.green * weight;
+      weightsB[delaunayIndex] += color.blue * color.blue * weight;
+      counts[delaunayIndex]++;
     }
 
     for (int i = 0; i < weightedCentroids.length; i += 2) {
@@ -172,7 +164,15 @@ class VoronoiRelaxation {
       }
     }
 
-    // Assign colors to the class variable _colors
-    _colors = colors;
+    for (int i = 0; i < _coords.length ~/ 2; i++) {
+      if (weights[i] > 0) {
+        final avgR = sqrt(weightsR[i] / weights[i]).round();
+        final avgG = sqrt(weightsG[i] / weights[i]).round();
+        final avgB = sqrt(weightsB[i] / weights[i]).round();
+        _colors[i] = Color.fromARGB(255, avgR, avgG, avgB);
+      } else {
+        _colors[i] = Colors.black;
+      }
+    }
   }
 }

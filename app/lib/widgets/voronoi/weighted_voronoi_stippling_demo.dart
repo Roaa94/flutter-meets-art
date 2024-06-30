@@ -129,9 +129,6 @@ class _WeightedVoronoiStipplingDemoState
             Positioned.fill(
               child: CustomPaint(
                 painter: StipplingCustomPainter(
-                  // points: points,
-                  // centroids: centroids,
-                  // voronoi: voronoi,
                   relaxation: _relaxation,
                   bytes: _imageBytes!,
                   paintColors: widget.paintColors,
