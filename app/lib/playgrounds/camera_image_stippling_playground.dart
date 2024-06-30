@@ -1,4 +1,5 @@
 import 'package:app/widgets/voronoi/camera_image_stippling.dart';
+import 'package:app/widgets/voronoi/camera_image_stippling_demo.dart';
 import 'package:flutter/material.dart';
 
 class CameraImageStipplingPlayground extends StatelessWidget {
@@ -7,7 +8,8 @@ class CameraImageStipplingPlayground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: CameraImageStippling(),
+      body: CameraImageStipplingDemo(),
+      // body: CameraImageStippling(),
     );
   }
 }

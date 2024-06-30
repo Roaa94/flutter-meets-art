@@ -12,11 +12,12 @@ class VoronoiRelaxation {
     this.inputCoords, {
     required this.min,
     required this.max,
-    this.bytes,
+    ByteData? bytes,
     this.weighted = false,
     this.minStroke = 4.0,
     this.maxStroke = 10.0,
   })  : _coords = inputCoords,
+        _bytes = bytes,
         _centroids = Float32List(inputCoords.length),
         _colors = Uint32List(inputCoords.length ~/ 2),
         _strokes = Float32List(inputCoords.length ~/ 2) {
@@ -26,7 +27,7 @@ class VoronoiRelaxation {
   final Float32List inputCoords;
   final Point min;
   final Point max;
-  final ByteData? bytes;
+  ByteData? _bytes;
   final bool weighted;
   final double minStroke;
   final double maxStroke;
@@ -60,14 +61,15 @@ class VoronoiRelaxation {
     _delaunay = Delaunay(_coords);
     _delaunay.update();
     _voronoi = delaunay.voronoi(min, max);
-    if (weighted && bytes != null) {
+    if (weighted && _bytes != null) {
       _calcWeightedCentroids();
     } else {
       _calcCentroids();
     }
   }
 
-  void update(double lerp) {
+  void update(double lerp, [ByteData? bytes]) {
+    _bytes = bytes;
     _lerpCoords(lerp);
     _init();
   }
@@ -119,7 +121,7 @@ class VoronoiRelaxation {
   }
 
   void _calcWeightedCentroids() {
-    if (bytes == null) {
+    if (_bytes == null) {
       return;
     }
 
@@ -134,12 +136,12 @@ class VoronoiRelaxation {
 
     int delaunayIndex = 0;
 
-    for (int p = 0; p < bytes!.lengthInBytes ~/ 4; p++) {
+    for (int p = 0; p < _bytes!.lengthInBytes ~/ 4; p++) {
       int x = p % size.width.toInt();
       int y = p ~/ size.width;
 
       final byteOffset = ((y * size.width.toInt()) + x) * 4;
-      final rgbaColor = bytes!.getUint32(byteOffset);
+      final rgbaColor = _bytes!.getUint32(byteOffset);
       final color = Color(rgbaToArgb(rgbaColor));
 
       final brightness =
