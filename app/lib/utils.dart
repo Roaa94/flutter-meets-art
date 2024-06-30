@@ -496,29 +496,26 @@ Float32List calcWeightedCentroids(
   final weightedCentroids = Float32List(delaunay.coords.length);
   final weights = Float32List(delaunay.coords.length ~/ 2);
   int delaunayIndex = 0;
-  int pixelsCount = (size.width * size.height).toInt();
-  for (int p = 0; p < pixelsCount; p++) {
-    int i = p % size.width.toInt();
-    int j = p ~/ size.width;
+  for (int p = 0; p < bytes.lengthInBytes ~/ 4; p++) {
+    int x = p % size.width.toInt();
+    int y = p ~/ size.width;
 
-    final color = getPixelColorFromBytes(
-      bytes: bytes,
-      offset: Offset(i.toDouble(), j.toDouble()),
-      size: size,
-    );
+    final byteOffset = ((y * size.width.toInt()) + x) * 4;
+    final rgbaColor = bytes.getUint32(byteOffset);
+    final color = Color(rgbaToArgb(rgbaColor));
 
     final brightness =
         0.2126 * color.red + 0.7152 * color.green + 0.0722 * color.blue;
     final weight = 1 - brightness / 255;
 
     delaunayIndex = delaunay.find(
-      i.toDouble(),
-      j.toDouble(),
+      x.toDouble(),
+      y.toDouble(),
       delaunayIndex,
     );
 
-    weightedCentroids[2 * delaunayIndex] += (i * weight);
-    weightedCentroids[2 * delaunayIndex + 1] += (j * weight);
+    weightedCentroids[2 * delaunayIndex] += (x * weight);
+    weightedCentroids[2 * delaunayIndex + 1] += (y * weight);
     weights[delaunayIndex] += weight;
   }
 
