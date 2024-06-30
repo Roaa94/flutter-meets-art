@@ -1,123 +1,176 @@
 import 'package:app/app.dart';
-import 'package:flutter/material.dart';
+import 'package:app/enums.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/01-cc-as-as-learning-tool/code.dart';
 import 'package:slides/templates/code_slide.dart';
+import 'package:slides/templates/demo_slide.dart';
 import 'package:slides/templates/image_slide.dart';
-import 'package:slides/templates/placeholder_slide.dart';
 import 'package:slides/templates/section_title_slide.dart';
-import 'package:slides/widgets/window_frame.dart';
 
 final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
-  // 01
-  SectionTitleSlide('1. CREATIVE CODING AS A LEARNING TOOL'),
   // 02
-  SectionTitleSlide('Bubble Sort'),
+  SectionTitleSlide('1. CREATIVE CODING AS A LEARNING TOOL'),
   // 03
-  // ImageSlide(
-  //   title: 'Bubble Sort 1/n',
-  //   path: 'assets/images/',
-  //   subtitle: '(Explain the algorithm with image)',
-  // ),
+  SectionTitleSlide('Bubble Sort'),
   // 04
+  ImageSlide(
+    title: 'Bubble Sort',
+    route: 'bubble-sort-image',
+    path: 'assets/images/bubble-sort.png',
+    label: 'Bubble Sort illustration by Eliana Lopez',
+  ),
+  // 05
   CodeSlide(
     singleRunBubbleSortCode,
-    title: 'Bubble Sort - Single Run',
+    title: 'Bubble Sort - Code',
+    route: 'bubble-sort-single-run',
   ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 3/n',
-    subtitle: '(Code for generating random floats)',
+  // 06
+  CodeSlide(
+    randomValuesGenerationCode,
+    title: 'Bubble Sort - Generate Random Values',
   ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 4/n - 1',
-    subtitle:
-        '(Code for painting the bars with the CustomPainter using the random floats list)',
+  // 07
+  CodeSlide(
+    bubbleSortPainterCode1,
+    title: 'Bubble Sort - Paint Bars',
+    route: 'bubble-sort-paint-bars-1',
+    codeFontSize: 22,
   ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 4/n - 2',
-    subtitle: 'Show random height bars',
-    content: const WindowFrame(
-      margin: EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
-      child: BubbleSortBars(
-        autoRun: false,
-        count: 20,
-      ),
+  // 08
+  CodeSlide(
+    bubbleSortPainterCode2,
+    title: 'Bubble Sort - Paint Bars',
+    route: 'bubble-sort-paint-bars-2',
+    codeFontSize: 22,
+  ),
+  // 09
+  DemoSlide(
+    'Bubble Sort - Paint Bars',
+    route: 'bubble-sort-paint-bars-3',
+    label: 'Bubble Sort',
+    child: const BubbleSortBars(
+      autoRun: false,
+      count: 20,
     ),
   ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 5/n - 1',
-    subtitle:
-        '(Code for using one-time execution of bubble sort to sort the bars)',
+  // 10
+  CodeSlide(
+    bubbleSortedValuesCode,
+    title: 'Bubble Sort - Sort Bars',
+    route: 'bubble-sort-sort-bars-1',
+    codeFontSize: 22,
   ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 5/n - 2',
-    subtitle: 'Show sorted bars',
-    content: const WindowFrame(
-      margin: EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
-      child: BubbleSortBars(
-        autoRun: false,
-        initSorted: true,
-        count: 20,
-      ),
+  // 11
+  DemoSlide(
+    'Bubble Sort - Sort Bars',
+    route: 'bubble-sort-sort-bars-2',
+    label: 'Bubble Sort',
+    child: const BubbleSortBars(
+      autoRun: false,
+      initSorted: true,
+      count: 20,
     ),
   ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 6/n - 1',
-    subtitle:
-        '(Code to run by ticks step 1 - initialize a ticker with custom tick duration)',
+  // 12
+  CodeSlide(
+    tickerInitializationCode1,
+    route: 'init-ticker-1-mixin',
+    title: 'Ticker Set-up - Mixin',
   ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 6/n - 2',
-    subtitle:
-        '(Code to run by ticks step 2 - adjust sorting code to run by tick)',
+  // 13
+  CodeSlide(
+    tickerInitializationCode2,
+    route: 'init-ticker-2-create',
+    title: 'Ticker Set-up - Create & Start',
   ),
-  PlaceholderSlide(
-    '1.1 Bubble Sort 7/n',
-    subtitle: 'Run final bubble sort bars simulation',
-    content: const WindowFrame(
-      margin: EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
-      child: BubbleSortBars(
-        count: 20,
-        autoRun: true,
-        colorSortingBar: true,
-        tickDuration: 300,
-      ),
+  // 14
+  CodeSlide(
+    tickerInitializationCode3,
+    route: 'init-ticker-3-dispose',
+    title: 'Ticker Set-up - Dispose',
+    codeFontSize: 20,
+  ),
+  // 15
+  CodeSlide(
+    tickerInitializationCode4,
+    route: 'init-ticker-4-custom-interval',
+    title: 'Ticker Set-up - Custom Interval',
+  ),
+  // 16
+  CodeSlide(bubbleSortTickCode,
+      title: 'Bubble Sort by Tick',
+      route: 'bubble-sort-by-tick-1',
+      codeFontSize: 20),
+  // 17
+  CodeSlide(
+    createTickerWithBubbleSortCode,
+    title: 'Bubble Sort by Tick',
+    route: 'bubble-sort-by-tick-2',
+  ),
+  // 18
+  DemoSlide(
+    'Bubble Sort Simulation',
+    label: 'Bubble Sort',
+    child: const BubbleSortBars(
+      count: 20,
+      autoRun: true,
+      colorSortingBar: true,
+      tickDuration: 300,
     ),
   ),
-  PlaceholderSlide('1.2 Quick Sort'),
-  PlaceholderSlide(
-    '1.2 Quick Sort 1/n',
-    subtitle:
-        'Start complicated algorithm explanation - show highly complex image',
+  // 19
+  SectionTitleSlide('Quick Sort'),
+  // 20
+  ImageSlide(
+      title: 'Quick Sort Algorithm',
+      path: 'assets/images/quick-sort.png',
+      label: 'Quick sort algorithm illustration by IDEA'),
+  // 21
+  DemoSlide(
+    'Quick Sort Simulation',
+    label: 'Quick Sort',
+    child: const QuickSortBars(),
   ),
-  PlaceholderSlide(
-    '1.2 Quick Sort 2/n',
-    subtitle: 'Show slowed-down simulation and explain the algorithm',
-    content: const WindowFrame(
-      margin: EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
-      child: QuickSortBars(),
+  // 22
+  SectionTitleSlide('Sorting Colors'),
+  // 23
+  CodeSlide(
+    randomColorGenerationCode1,
+    route: 'random-color-generation-1',
+    title: 'Random HSL Color Generation',
+  ),
+  // 24
+  CodeSlide(
+    randomColorGenerationCode2,
+    route: 'random-color-generation-2',
+    title: 'Random HSL Color Generation',
+  ),
+  // 25
+  CodeSlide(
+    randomColorGenerationCode3,
+    route: 'random-color-generation-3',
+    title: 'Random HSL Color Generation',
+  ),
+  DemoSlide(
+    'Color Sorting Simulation - by Hue',
+    label: 'Color Sorting',
+    child: const QuickSortColors(tickDuration: 20),
+  ),
+  DemoSlide(
+    'Color Sorting Simulation - by Saturation',
+    label: 'Color Sorting',
+    child: const QuickSortColors(
+      tickDuration: 20,
+      colorSortProperty: ColorSortProperty.saturation,
     ),
   ),
-  PlaceholderSlide('1.3 Sorting Colors'),
-  PlaceholderSlide(
-    '1.3 Sorting Colors 1/n',
-    subtitle:
-        'Code for generating random HSL color (with option to randomize either hue/saturation/lightness)',
-  ),
-  PlaceholderSlide(
-    '1.3 Sorting Colors 2/n',
-    subtitle: 'Code for comparing hsl colors by hue/saturation/lightness',
-  ),
-  PlaceholderSlide(
-    '1.3 Sorting Colors 3/n',
-    subtitle:
-        'Show simulation, has controls to experiment with generating/sorting by hue/saturation/lightness',
-    content: const WindowFrame(
-      margin: EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
-      child: QuickSortColors(
-        tickDuration: 10,
-      ),
+  DemoSlide(
+    'Color Sorting Simulation - by Lightness',
+    label: 'Color Sorting',
+    child: const QuickSortColors(
+      tickDuration: 20,
+      colorSortProperty: ColorSortProperty.lightness,
     ),
   ),
-  PlaceholderSlide('1. Closing'),
 ];
