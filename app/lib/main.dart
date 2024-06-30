@@ -1,3 +1,4 @@
+import 'package:app/app.dart';
 import 'package:app/playgrounds/camera_image_stippling_playground.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,15 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: CameraImageStipplingPlayground(),
+      home: Scaffold(
+        body: WeightedVoronoiStippling(
+          showVoronoiPolygons: false,
+          showImage: false,
+          pointsCount: 2000,
+          animate: true,
+          weightedCentroids: true,
+        ),
+      ),
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:app/delaunay/delaunay.dart';
-import 'package:app/delaunay/voronoi.dart';
+import 'package:app/algorithms/delaunay.dart';
+import 'package:app/algorithms/voronoi.dart';
 import 'package:app/utils.dart';
 import 'package:flutter/material.dart';
 

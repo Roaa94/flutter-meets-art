@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:app/delaunay/delaunay.dart';
+import 'package:app/algorithms/delaunay.dart';
 import 'package:camera_macos/camera_macos.dart';
 import 'package:flutter/material.dart';
 

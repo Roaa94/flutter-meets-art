@@ -5,7 +5,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:app/delaunay/voronoi.dart';
+import 'package:app/algorithms/voronoi.dart';
 
 final double _epsilon = pow(2.0, -52) as double;
 final Uint32List _edgeStack = Uint32List(512);

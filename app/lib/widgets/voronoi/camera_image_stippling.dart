@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:ui';
 
-import 'package:app/delaunay/delaunay.dart';
-import 'package:app/delaunay/voronoi.dart';
+import 'package:app/algorithms/delaunay.dart';
+import 'package:app/algorithms/voronoi.dart';
 import 'package:app/utils.dart';
 import 'package:camera_macos/camera_macos.dart';
 import 'package:flutter/material.dart';
