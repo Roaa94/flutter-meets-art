@@ -16,7 +16,7 @@ class VoronoiRelaxation {
     this.weighted = false,
   })  : _coords = inputCoords,
         _centroids = Float32List(inputCoords.length),
-        _colors = List<Color>.filled(inputCoords.length ~/ 2, Colors.black) {
+        _colors = Uint32List(inputCoords.length ~/ 2) {
     _init();
   }
 
@@ -28,7 +28,7 @@ class VoronoiRelaxation {
 
   final Float32List _coords;
   final Float32List _centroids;
-  final List<Color> _colors;
+  final Uint32List _colors;
 
   late Delaunay _delaunay;
   late Voronoi _voronoi;
@@ -46,8 +46,7 @@ class VoronoiRelaxation {
 
   Float32List get centroids => _centroids;
 
-  // Todo: change to Uint32List
-  List<Color> get colors => _colors;
+  Uint32List get colors => _colors;
 
   void _init() {
     _delaunay = Delaunay(_coords);
@@ -169,9 +168,9 @@ class VoronoiRelaxation {
         final avgR = sqrt(weightsR[i] / weights[i]).round();
         final avgG = sqrt(weightsG[i] / weights[i]).round();
         final avgB = sqrt(weightsB[i] / weights[i]).round();
-        _colors[i] = Color.fromARGB(255, avgR, avgG, avgB);
+        _colors[i] = Color.fromARGB(255, avgR, avgG, avgB).value;
       } else {
-        _colors[i] = Colors.black;
+        _colors[i] = Colors.black.value;
       }
     }
   }

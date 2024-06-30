@@ -166,21 +166,6 @@ class StipplingCustomPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Todo: optimize by moving somewhere where the color is already calculated
-    final colors = relaxation.colors;
-    // final colors = List<Color>.filled(centroids.length ~/ 2, Colors.white);
-    // if (paintColors) {
-    //   final centroids = relaxation.centroids;
-    //   for (int i = 0; i < centroids.length; i += 2) {
-    //     final color = getPixelColorFromBytes(
-    //       bytes: bytes,
-    //       offset: Offset(centroids[i], centroids[i + 1]),
-    //       size: size,
-    //     );
-    //     colors[i ~/ 2] = color;
-    //   }
-    // }
-
     if (showVoronoiPolygons) {
       final cells = relaxation.voronoi.cells;
       for (int j = 0; j < cells.length; j++) {
@@ -193,7 +178,7 @@ class StipplingCustomPainter extends CustomPainter {
         if (paintColors) {
           canvas.drawPath(
             path,
-            Paint()..color = colors[j],
+            Paint()..color = Color(relaxation.colors[j]),
           );
         }
         canvas.drawPath(
@@ -211,7 +196,7 @@ class StipplingCustomPainter extends CustomPainter {
           canvas.drawCircle(
             Offset(relaxation.coords[i], relaxation.coords[i + 1]),
             pointStrokeWidth / 2,
-            Paint()..color = colors[i ~/ 2],
+            Paint()..color = Color(relaxation.colors[i ~/ 2]),
           );
         }
       } else {
