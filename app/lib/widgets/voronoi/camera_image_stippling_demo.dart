@@ -17,8 +17,8 @@ class CameraImageStipplingDemo extends StatefulWidget {
   const CameraImageStipplingDemo({
     super.key,
     this.weightedCentroids = true,
-    this.paintColors = false,
-    this.minStroke = 5,
+    this.paintColors = true,
+    this.minStroke = 8,
     this.maxStroke = 18,
     this.weightedStroke = true,
     this.showVoronoiPolygons = false,
@@ -70,7 +70,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   }
 
   void _update() {
-    _relaxation.update(0.5, _cameraImagePixels);
+    _relaxation.update(0.1, _cameraImagePixels);
     setState(() {});
   }
 
@@ -215,6 +215,8 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
                         paintColors: widget.paintColors,
                         pointStrokeWidth: 10,
                         weightedStrokes: widget.weightedStroke,
+                        minStroke: widget.minStroke,
+                        maxStroke: widget.maxStroke,
                       ),
                     ),
                   ),
@@ -235,6 +237,8 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
     this.showVoronoiPolygons = false,
     this.weightedStrokes = false,
     this.pointStrokeWidth = 5,
+    this.minStroke = 4,
+    this.maxStroke = 15,
   });
 
   final VoronoiRelaxation relaxation;
@@ -243,6 +247,8 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
   final bool weightedStrokes;
   final bool showVoronoiPolygons;
   final double pointStrokeWidth;
+  final double minStroke;
+  final double maxStroke;
 
   @override
   void paint(ui.Canvas canvas, ui.Size size) {
@@ -266,8 +272,11 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
 
     if (paintPoints && !showVoronoiPolygons) {
       for (int i = 0; i < relaxation.coords.length; i += 2) {
-        final stroke =
-            weightedStrokes ? relaxation.strokes[i ~/ 2] : pointStrokeWidth;
+        double stroke = pointStrokeWidth;
+        if (weightedStrokes) {
+          stroke =
+              map(relaxation.strokeWeights[i ~/ 2], 0, 1, minStroke, maxStroke);
+        }
         final color =
             paintColors ? Color(relaxation.colors[i ~/ 2]) : Colors.black;
         canvas.drawCircle(

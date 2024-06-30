@@ -20,7 +20,7 @@ class VoronoiRelaxation {
         _bytes = bytes,
         _centroids = Float32List(inputCoords.length),
         _colors = Uint32List(inputCoords.length ~/ 2),
-        _strokes = Float32List(inputCoords.length ~/ 2) {
+        _strokeWeights = Float32List(inputCoords.length ~/ 2) {
     _init();
   }
 
@@ -35,7 +35,7 @@ class VoronoiRelaxation {
   final Float32List _coords;
   final Float32List _centroids;
   final Uint32List _colors;
-  final Float32List _strokes;
+  final Float32List _strokeWeights;
 
   late Delaunay _delaunay;
   late Voronoi _voronoi;
@@ -53,7 +53,7 @@ class VoronoiRelaxation {
 
   Float32List get centroids => _centroids;
 
-  Float32List get strokes => _strokes;
+  Float32List get strokeWeights => _strokeWeights;
 
   Uint32List get colors => _colors;
 
@@ -69,7 +69,7 @@ class VoronoiRelaxation {
   }
 
   void update(double lerp, [ByteData? bytes]) {
-    _bytes = bytes;
+    if (bytes != null) _bytes = bytes;
     _lerpCoords(lerp);
     _init();
   }
@@ -189,7 +189,7 @@ class VoronoiRelaxation {
       } else {
         _colors[i] = Colors.black.value;
       }
-      _strokes[i] = map(avgWeights[i], 0, maxWeight, minStroke, maxStroke);
+      _strokeWeights[i] = avgWeights[i] / maxWeight;
     }
   }
 }
