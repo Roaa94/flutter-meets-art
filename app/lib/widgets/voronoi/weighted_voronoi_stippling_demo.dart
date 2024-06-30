@@ -195,7 +195,7 @@ class StipplingCustomPainter extends CustomPainter {
         for (int i = 0; i < relaxation.coords.length; i += 2) {
           canvas.drawCircle(
             Offset(relaxation.coords[i], relaxation.coords[i + 1]),
-            pointStrokeWidth / 2,
+            relaxation.strokes[i ~/ 2] / 2,
             Paint()..color = Color(relaxation.colors[i ~/ 2]),
           );
         }

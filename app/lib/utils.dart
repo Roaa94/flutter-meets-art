@@ -577,3 +577,15 @@ CameraImageData argb2bitmap(CameraImageData content) {
     bytesPerRow: content.bytesPerRow,
   );
 }
+
+double map(
+    double value, double start1, double stop1, double start2, double stop2) {
+  double newValue =
+      start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+  if (start2 < stop2) {
+    newValue = newValue.clamp(start2, stop2);
+  } else {
+    newValue = newValue.clamp(stop2, start2);
+  }
+  return newValue;
+}

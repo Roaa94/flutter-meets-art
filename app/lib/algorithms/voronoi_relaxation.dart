@@ -14,9 +14,12 @@ class VoronoiRelaxation {
     required this.max,
     this.bytes,
     this.weighted = false,
+    this.minStroke = 4.0,
+    this.maxStroke = 10.0,
   })  : _coords = inputCoords,
         _centroids = Float32List(inputCoords.length),
-        _colors = Uint32List(inputCoords.length ~/ 2) {
+        _colors = Uint32List(inputCoords.length ~/ 2),
+        _strokes = Float32List(inputCoords.length ~/ 2) {
     _init();
   }
 
@@ -25,10 +28,13 @@ class VoronoiRelaxation {
   final Point max;
   final ByteData? bytes;
   final bool weighted;
+  final double minStroke;
+  final double maxStroke;
 
   final Float32List _coords;
   final Float32List _centroids;
   final Uint32List _colors;
+  final Float32List _strokes;
 
   late Delaunay _delaunay;
   late Voronoi _voronoi;
@@ -45,6 +51,8 @@ class VoronoiRelaxation {
   Float32List get coords => _coords;
 
   Float32List get centroids => _centroids;
+
+  Float32List get strokes => _strokes;
 
   Uint32List get colors => _colors;
 
@@ -120,7 +128,9 @@ class VoronoiRelaxation {
     final weightsR = Float32List(_coords.length ~/ 2);
     final weightsG = Float32List(_coords.length ~/ 2);
     final weightsB = Float32List(_coords.length ~/ 2);
-    final counts = List<int>.filled(_coords.length ~/ 2, 0);
+    final counts = Int32List(_coords.length ~/ 2);
+    final avgWeights = Float32List(_coords.length ~/ 2);
+    double maxWeight = 0.0;
 
     int delaunayIndex = 0;
 
@@ -157,6 +167,11 @@ class VoronoiRelaxation {
         weightedCentroids[i + 1] /= weights[i ~/ 2];
         _centroids[i] = weightedCentroids[i];
         _centroids[i + 1] = weightedCentroids[i + 1];
+        avgWeights[i ~/ 2] =
+            weights[i ~/ 2] / (counts[i ~/ 2] > 0 ? counts[i ~/ 2] : 1);
+        if (avgWeights[i ~/ 2] > maxWeight) {
+          maxWeight = avgWeights[i ~/ 2];
+        }
       } else {
         _centroids[i] = _coords[i];
         _centroids[i + 1] = _coords[i + 1];
@@ -172,6 +187,7 @@ class VoronoiRelaxation {
       } else {
         _colors[i] = Colors.black.value;
       }
+      _strokes[i] = map(avgWeights[i], 0, maxWeight, minStroke, maxStroke);
     }
   }
 }
