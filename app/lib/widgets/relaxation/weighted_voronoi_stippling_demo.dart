@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
 import 'package:app/utils.dart';
+import 'package:app/widgets/relaxation/weighted_voronoi_stippling_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -10,12 +11,12 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
   const WeightedVoronoiStipplingDemo({
     super.key,
     this.pointsCount = 100,
-    this.showImage = true,
-    this.paintPoints = true,
+    this.showImage = false,
+    this.showPoints = true,
     this.paintColors = true,
     this.showVoronoiPolygons = true,
     this.animate = false,
-    this.weightedCentroids = false,
+    this.weightedCentroids = true,
     this.pointStrokeWidth = 5,
     this.imagePath = 'assets/images/dash.jpg',
     this.strokePaintingStyle = false,
@@ -27,7 +28,7 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
 
   final int pointsCount;
   final bool showImage;
-  final bool paintPoints;
+  final bool showPoints;
   final bool paintColors;
   final bool showVoronoiPolygons;
   final bool animate;
@@ -144,12 +145,12 @@ class _WeightedVoronoiStipplingDemoState
             if (_relaxation != null)
               Positioned.fill(
                 child: CustomPaint(
-                  painter: StipplingDemoCustomPainter(
+                  painter: WeightedVoronoiStipplingPainter(
                     relaxation: _relaxation!,
                     bytes: _imageBytes!,
                     paintColors: widget.paintColors,
                     showVoronoiPolygons: widget.showVoronoiPolygons,
-                    paintPoints: widget.paintPoints,
+                    showPoints: widget.showPoints,
                     pointStrokeWidth: widget.pointStrokeWidth,
                     strokePaintingStyle: widget.strokePaintingStyle,
                     weightedStrokes: widget.weightedStrokes,
@@ -162,88 +163,5 @@ class _WeightedVoronoiStipplingDemoState
         ),
       ),
     );
-  }
-}
-
-class StipplingDemoCustomPainter extends CustomPainter {
-  StipplingDemoCustomPainter({
-    required this.relaxation,
-    required this.bytes,
-    this.paintColors = true,
-    this.showVoronoiPolygons = true,
-    this.paintPoints = true,
-    this.pointStrokeWidth = 2,
-    this.strokePaintingStyle = false,
-    this.weightedStrokes = false,
-    this.minStroke = 4,
-    this.maxStroke = 8,
-  });
-
-  final VoronoiRelaxation relaxation;
-  final ByteData bytes;
-  final bool paintColors;
-  final bool paintPoints;
-  final bool showVoronoiPolygons;
-  final double pointStrokeWidth;
-  final bool strokePaintingStyle;
-  final bool weightedStrokes;
-  final double minStroke;
-  final double maxStroke;
-
-  final random = Random();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (showVoronoiPolygons) {
-      final cells = relaxation.voronoi.cells;
-      for (int j = 0; j < cells.length; j++) {
-        final path = Path()..moveTo(cells[j][0].dx, cells[j][0].dy);
-        for (int i = 1; i < cells[j].length; i++) {
-          path.lineTo(cells[j][i].dx, cells[j][i].dy);
-        }
-        path.close();
-
-        if (paintColors) {
-          canvas.drawPath(
-            path,
-            Paint()..color = Color(relaxation.colors[j]),
-          );
-        }
-        canvas.drawPath(
-          path,
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..color = Colors.black,
-        );
-      }
-    }
-
-    if (paintPoints && !showVoronoiPolygons) {
-      for (int i = 0; i < relaxation.coords.length; i += 2) {
-        double stroke = pointStrokeWidth;
-        if (weightedStrokes) {
-          stroke =
-              map(relaxation.strokeWeights[i ~/ 2], 0, 1, minStroke, maxStroke);
-        }
-        final color =
-            paintColors ? Color(relaxation.colors[i ~/ 2]) : Colors.black;
-        final paint = Paint()..color = color;
-        if (strokePaintingStyle) {
-          paint
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = stroke * 0.15;
-        }
-        canvas.drawCircle(
-          Offset(relaxation.coords[i], relaxation.coords[i + 1]),
-          stroke / 2,
-          paint,
-        );
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }

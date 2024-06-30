@@ -12,7 +12,7 @@ class WeightedVoronoiStipplingPlayground extends StatelessWidget {
         pointsCount: 2000,
         showImage: false,
         showVoronoiPolygons: false,
-        paintPoints: true,
+        showPoints: true,
         paintColors: true,
         animate: true,
         weightedCentroids: true,
