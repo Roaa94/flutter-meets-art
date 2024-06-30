@@ -1,3 +1,4 @@
+import 'package:app/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 
@@ -14,9 +15,22 @@ class SplashSlide extends FlutterDeckSlideWidget {
   FlutterDeckSlide build(BuildContext context) {
     return FlutterDeckSlide.custom(
       builder: (context) => SizedBox.expand(
-        child: Container(
-          color: Colors.grey,
-          child: const Center(child: Text('<splash artwork>')),
+        child: ColoredBox(
+          color: Colors.black,
+          child: Center(
+            child: Transform.scale(
+              scale: 1.7,
+              child: const CameraImageStipplingDemo(
+                weightedStrokes: true,
+                showDevicesDropdown: false,
+                minStroke: 8,
+                maxStroke: 20,
+                pointsCount: 2000,
+                wiggleFactor: 0.2,
+                strokePaintingStyle: true,
+              ),
+            ),
+          ),
         ),
       ),
     );

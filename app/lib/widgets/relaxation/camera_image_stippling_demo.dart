@@ -24,6 +24,8 @@ class CameraImageStipplingDemo extends StatefulWidget {
     this.showVoronoiPolygons = false,
     this.strokePaintingStyle = true,
     this.wiggleFactor = 0.2,
+    this.showDevicesDropdown = false,
+    this.pointsCount = 2000,
   });
 
   final bool weightedCentroids;
@@ -34,6 +36,8 @@ class CameraImageStipplingDemo extends StatefulWidget {
   final bool showVoronoiPolygons;
   final bool strokePaintingStyle;
   final double wiggleFactor;
+  final bool showDevicesDropdown;
+  final int pointsCount;
 
   @override
   CameraImageStipplingDemoState createState() =>
@@ -43,8 +47,8 @@ class CameraImageStipplingDemo extends StatefulWidget {
 class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   CameraMacOSController? macOSController;
   GlobalKey cameraKey = GlobalKey();
-  List<CameraMacOSDevice> videoDevices = [];
-  String? selectedVideoDevice;
+  List<CameraMacOSDevice> _videoDevices = [];
+  String? _selectedVideoDeviceId;
   final random = Random(1);
   ByteData? _cameraImagePixels;
   final _videoSize = Size(
@@ -56,10 +60,11 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   CameraImageData? _streamedImage;
 
   void _init() {
+    if (_cameraImagePixels == null) return;
     final points = generateRandomPointsFromPixels(
       _cameraImagePixels!,
       _videoSize,
-      2000,
+      widget.pointsCount,
       random,
     );
     _relaxation = VoronoiRelaxation(
@@ -79,11 +84,12 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
       bytes: _cameraImagePixels,
       wiggleFactor: widget.wiggleFactor,
     );
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Future<void> _loadPixelsFromStreamedImage(
-      CameraImageData? streamedImage) async {
+    CameraImageData? streamedImage,
+  ) async {
     if (streamedImage != null) {
       var decodedImage =
           await decodeImageFromList(argb2bitmap(streamedImage).bytes);
@@ -95,7 +101,6 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
       }
       _initialized = true;
       _update();
-      setState(() {});
     }
   }
 
@@ -105,11 +110,9 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
           await CameraMacOS.instance.listDevices(
         deviceType: CameraMacOSDeviceType.video,
       );
+      log('videoDevices: ${videoDevices.map((v) => v.localizedName).join(', ')}');
       setState(() {
-        this.videoDevices = videoDevices;
-        if (videoDevices.isNotEmpty) {
-          selectedVideoDevice = videoDevices.first.deviceId;
-        }
+        _videoDevices = videoDevices;
       });
     } catch (e) {
       log('Error listing videos!');
@@ -135,6 +138,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   void dispose() {
     super.dispose();
     if (macOSController != null && !macOSController!.isDestroyed) {
+      log('Disposing camera...');
       macOSController!.stopImageStream();
       macOSController!.destroy();
     }
@@ -142,104 +146,107 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: DropdownButton<String>(
-                    elevation: 3,
-                    isExpanded: true,
-                    value: selectedVideoDevice,
-                    underline: Container(color: Colors.transparent),
-                    items: videoDevices.map((CameraMacOSDevice device) {
-                      return DropdownMenuItem(
-                        value: device.deviceId,
-                        child: Text(device.localizedName ?? device.deviceId),
-                      );
-                    }).toList(),
-                    onChanged: (String? newDeviceID) {
-                      setState(() {
-                        selectedVideoDevice = newDeviceID;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              MaterialButton(
-                color: Colors.lightBlue,
-                textColor: Colors.white,
-                onPressed: _listVideoDevices,
-                child: const Text('List video devices'),
-              ),
-            ],
-          ),
-          SizedBox(
-            width: videoWidth.toDouble(),
-            height: videoHeight.toDouble(),
-            child: Stack(
-              children: [
-                Positioned(
-                  width: videoWidth.toDouble(),
-                  height: videoHeight.toDouble(),
-                  child: CameraMacOSView(
-                    key: cameraKey,
-                    deviceId: selectedVideoDevice,
-                    fit: BoxFit.cover,
-                    cameraMode: CameraMacOSMode.photo,
-                    resolution: PictureResolution.medium,
-                    pictureFormat: PictureFormat.tiff,
-                    videoFormat: VideoFormat.mp4,
-                    onCameraInizialized: (CameraMacOSController controller) {
-                      setState(() {
-                        macOSController = controller;
-                      });
-                      macOSController?.startImageStream((image) {
-                        _loadPixelsFromStreamedImage(image);
-                      });
-                    },
-                    onCameraDestroyed: () {
-                      log('Camera destroyed!');
-                      return const Text('Camera Destroyed!');
-                    },
-                    toggleTorch: Torch.on,
-                    enableAudio: false,
-                  ),
-                ),
-                if (_streamedImage != null)
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    width: videoWidth.toDouble(),
-                    height: videoHeight.toDouble(),
-                    child: Image.memory(
-                      argb2bitmap(_streamedImage!).bytes,
-                      width: videoWidth.toDouble(),
+    if (_selectedVideoDeviceId == null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: _videoDevices
+              .map(
+                (device) => GestureDetector(
+                  onTap: () => setState(() {
+                    _selectedVideoDeviceId = device.deviceId;
+                  }),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
                     ),
-                  ),
-                if (_cameraImagePixels != null && _relaxation != null)
-                  Positioned.fill(
-                    child: CustomPaint(
-                      painter: CameraImageStipplingDemoPainter(
-                        relaxation: _relaxation!,
-                        paintPoints: true,
-                        showVoronoiPolygons: widget.showVoronoiPolygons,
-                        paintColors: widget.paintColors,
-                        pointStrokeWidth: 10,
-                        weightedStrokes: widget.weightedStrokes,
-                        minStroke: widget.minStroke,
-                        maxStroke: widget.maxStroke,
-                        strokePaintingStyle: widget.strokePaintingStyle,
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      device.localizedName ?? device.deviceId,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Poppins',
+                        fontSize: 12,
                       ),
                     ),
                   ),
-              ],
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
+
+    return SizedBox(
+      width: videoWidth.toDouble(),
+      height: videoHeight.toDouble(),
+      child: Stack(
+        children: [
+          if (_selectedVideoDeviceId != null)
+            Positioned(
+              width: videoWidth.toDouble(),
+              height: videoHeight.toDouble(),
+              child: CameraMacOSView(
+                key: cameraKey,
+                deviceId: _selectedVideoDeviceId,
+                fit: BoxFit.cover,
+                cameraMode: CameraMacOSMode.photo,
+                resolution: PictureResolution.medium,
+                pictureFormat: PictureFormat.tiff,
+                videoFormat: VideoFormat.mp4,
+                // onCameraLoading: (_) => const SizedBox.expand(
+                //   child: ColoredBox(
+                //     color: Colors.black,
+                //   ),
+                // ),
+                onCameraInizialized: (CameraMacOSController controller) {
+                  setState(() {
+                    macOSController = controller;
+                  });
+                  macOSController?.startImageStream((image) {
+                    _loadPixelsFromStreamedImage(image);
+                  });
+                },
+                onCameraDestroyed: () {
+                  log('Camera destroyed!');
+                  return const Text('Camera Destroyed!');
+                },
+                toggleTorch: Torch.off,
+                enableAudio: false,
+              ),
             ),
-          ),
+          if (_streamedImage != null)
+            Positioned(
+              left: 0,
+              top: 0,
+              width: videoWidth.toDouble(),
+              height: videoHeight.toDouble(),
+              child: Image.memory(
+                argb2bitmap(_streamedImage!).bytes,
+                width: videoWidth.toDouble(),
+              ),
+            ),
+          if (_cameraImagePixels != null && _relaxation != null)
+            Positioned.fill(
+              child: CustomPaint(
+                painter: CameraImageStipplingDemoPainter(
+                  relaxation: _relaxation!,
+                  paintPoints: true,
+                  showVoronoiPolygons: widget.showVoronoiPolygons,
+                  paintColors: widget.paintColors,
+                  pointStrokeWidth: 10,
+                  weightedStrokes: widget.weightedStrokes,
+                  minStroke: widget.minStroke,
+                  maxStroke: widget.maxStroke,
+                  strokePaintingStyle: widget.strokePaintingStyle,
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -302,7 +309,7 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
         if (strokePaintingStyle) {
           paint
             ..style = PaintingStyle.stroke
-            ..strokeWidth = stroke * 0.15;
+            ..strokeWidth = stroke * 0.1;
         }
         canvas.drawCircle(
           Offset(relaxation.coords[i], relaxation.coords[i + 1]),

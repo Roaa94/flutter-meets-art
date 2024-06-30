@@ -27,7 +27,7 @@ class AnimatedVoronoiRelaxationSlide extends FlutterDeckSlideWidget {
             // Todo: add controls
             child: LayoutBuilder(
               builder: (context, constraints) {
-                return VoronoiRelaxation(
+                return VoronoiRelaxationDemo(
                   size: constraints.biggest,
                   pointsCount: 1000,
                   animate: true,
