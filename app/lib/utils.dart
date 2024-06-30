@@ -388,34 +388,25 @@ Float32List generateGridPoints({
   return Float32List.fromList(list);
 }
 
-Float32List calcCentroids(List<List<Offset>> cells, {bool precise = true}) {
+Float32List calcCentroids(List<List<Offset>> cells) {
   final centroids = Float32List(cells.length * 2);
-  for (int i = 0; i < cells.length * 2; i += 2) {
-    final centroid = calcCentroid(cells[i ~/ 2]);
-    centroids[i] = centroid.dx;
-    centroids[i + 1] = centroid.dy;
-  }
-  return centroids;
-}
 
-Offset calcCentroid(List<Offset> cell, {bool precise = true}) {
-  Offset centroid = Offset.zero;
-  double area = 0.0;
-  for (int i = 0; i < cell.length; i++) {
-    if (precise) {
-      final v0 = cell[i];
-      final v1 = cell[(i + 1) % cell.length];
+  for (int i = 0; i < cells.length; i++) {
+    final cell = cells[i];
+    Offset centroid = Offset.zero;
+    double area = 0.0;
+
+    for (int j = 0; j < cell.length; j++) {
+      final v0 = cell[j];
+      final v1 = cell[(j + 1) % cell.length];
       final crossValue = v0.dx * v1.dy - v1.dx * v0.dy;
       area += crossValue;
       centroid += Offset(
         (v0.dx + v1.dx) * crossValue,
         (v0.dy + v1.dy) * crossValue,
       );
-    } else {
-      centroid += Offset(cell[i].dx, cell[i].dy);
     }
-  }
-  if (precise) {
+
     area /= 2;
     centroid = Offset(
       centroid.dx / (6 * area),
@@ -428,13 +419,12 @@ Offset calcCentroid(List<Offset> cell, {bool precise = true}) {
         centroid.dy.isNaN) {
       centroid = Offset.zero;
     }
-  } else {
-    centroid = Offset(
-      centroid.dx / cell.length,
-      centroid.dy / cell.length,
-    );
+
+    centroids[i * 2] = centroid.dx;
+    centroids[i * 2 + 1] = centroid.dy;
   }
-  return centroid;
+
+  return centroids;
 }
 
 Float32List lerpPoints(Float32List a, Float32List b, double value) {

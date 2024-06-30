@@ -1,20 +1,18 @@
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:app/algorithms/delaunay.dart';
-import 'package:app/algorithms/voronoi.dart';
+import 'package:app/algorithms/voronoi_relaxation.dart';
 import 'package:app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-class VoronoiRelaxation extends StatefulWidget {
-  const VoronoiRelaxation({
+class VoronoiRelaxationDemo extends StatefulWidget {
+  const VoronoiRelaxationDemo({
     super.key,
     required this.size,
     this.pointsCount = 100,
     this.animate = false,
-    this.showCentroids = false,
+    this.showCentroids = true,
     this.showPolygons = true,
   });
 
@@ -25,44 +23,38 @@ class VoronoiRelaxation extends StatefulWidget {
   final bool showPolygons;
 
   @override
-  State<VoronoiRelaxation> createState() => _VoronoiRelaxationState();
+  State<VoronoiRelaxationDemo> createState() => _VoronoiRelaxationDemoState();
 }
 
-class _VoronoiRelaxationState extends State<VoronoiRelaxation>
+class _VoronoiRelaxationDemoState extends State<VoronoiRelaxationDemo>
     with SingleTickerProviderStateMixin {
   late final Ticker _ticker;
   final random = Random(3);
 
-  late Float32List points;
-  late Float32List centroids;
-  late Delaunay delaunay;
-  late Voronoi voronoi;
-
-  void _calculate() {
-    delaunay = Delaunay(points);
-    delaunay.update();
-    voronoi = delaunay.voronoi(
-      const Point(0, 0),
-      Point(widget.size.width, widget.size.height),
-    );
-    centroids = calcCentroids(voronoi.cells);
-  }
+  late VoronoiRelaxation _relaxation;
 
   void _update() {
-    points = lerpPoints(points, centroids, 0.1);
-    _calculate();
+    _relaxation.update(0.1);
     setState(() {});
+  }
+
+  void _init() {
+    final points = generateRandomPoints(
+      random: random,
+      canvasSize: widget.size,
+      count: widget.pointsCount,
+    );
+    _relaxation = VoronoiRelaxation(
+      points,
+      min: const Point(0, 0),
+      max: Point(widget.size.width, widget.size.height),
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    points = generateRandomPoints(
-      random: random,
-      canvasSize: widget.size,
-      count: widget.pointsCount,
-    );
-    _calculate();
+    _init();
     _ticker = createTicker((_) => _update());
     if (widget.animate) {
       _ticker.start();
@@ -79,10 +71,7 @@ class _VoronoiRelaxationState extends State<VoronoiRelaxation>
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: VoronoiCustomPainter(
-        delaunay: delaunay,
-        voronoi: voronoi,
-        centroids: centroids,
-        points: points,
+        relaxation: _relaxation,
         showCentroids: widget.showCentroids,
         showPolygons: widget.showPolygons,
       ),
@@ -92,18 +81,12 @@ class _VoronoiRelaxationState extends State<VoronoiRelaxation>
 
 class VoronoiCustomPainter extends CustomPainter {
   VoronoiCustomPainter({
-    required this.points,
-    required this.centroids,
-    required this.voronoi,
-    required this.delaunay,
+    required this.relaxation,
     this.showCentroids = false,
     this.showPolygons = false,
   });
 
-  final Float32List points;
-  final Float32List centroids;
-  final Delaunay delaunay;
-  final Voronoi voronoi;
+  final VoronoiRelaxation relaxation;
   final bool showCentroids;
   final bool showPolygons;
 
@@ -111,13 +94,10 @@ class VoronoiCustomPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final coords = delaunay.coords;
-    final cells = voronoi.cells;
-
     // Original points
     canvas.drawRawPoints(
       PointMode.points,
-      coords,
+      relaxation.coords,
       Paint()
         ..strokeWidth = 8
         ..strokeCap = StrokeCap.round
@@ -126,6 +106,7 @@ class VoronoiCustomPainter extends CustomPainter {
 
     // Voronoi cells
     if (showPolygons) {
+      final cells = relaxation.voronoi.cells;
       for (int j = 0; j < cells.length; j++) {
         final path = Path()..moveTo(cells[j][0].dx, cells[j][0].dy);
         for (int i = 1; i < cells[j].length; i++) {
@@ -143,6 +124,7 @@ class VoronoiCustomPainter extends CustomPainter {
     }
 
     if (showCentroids) {
+      final centroids = relaxation.centroids;
       for (int i = 0; i < centroids.length; i += 2) {
         final centroid = Offset(centroids[i], centroids[i + 1]);
         canvas.drawCircle(
