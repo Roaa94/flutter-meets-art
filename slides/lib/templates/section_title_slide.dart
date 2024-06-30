@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/styles/text_styles.dart';
 import 'package:slides/templates/build_template_slide.dart';
+import 'package:slides/widgets/stippled_flutter_logo.dart';
 
 class SectionTitleSlide extends FlutterDeckSlideWidget {
   SectionTitleSlide(
@@ -27,15 +28,22 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
       context,
       title: title,
       showHeader: false,
-      content: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 200.0),
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyles.title,
-            textAlign: TextAlign.center,
+      content: Stack(
+        children: [
+          const StippledFlutterLogo(scale: 1.2),
+          Positioned.fill(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 200.0),
+              child: Center(
+                child: Text(
+                  title,
+                  style: TextStyles.title,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

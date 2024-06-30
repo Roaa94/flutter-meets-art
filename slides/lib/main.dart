@@ -57,7 +57,7 @@ class SlidesApp extends StatelessWidget {
           // Todo: add bg image (stipple pattern?) & pick better color
           dark: FlutterDeckBackground.solid(Colors.black),
         ),
-        // transition: FlutterDeckTransition.fade(),
+        transition: FlutterDeckTransition.fade(),
       ),
       slides: [
         ...introductionSlides,

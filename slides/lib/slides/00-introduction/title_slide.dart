@@ -1,7 +1,7 @@
-import 'package:app/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/styles/text_styles.dart';
+import 'package:slides/widgets/stippled_flutter_logo.dart';
 
 class TitleSlide extends FlutterDeckSlideWidget {
   const TitleSlide()
@@ -20,8 +20,7 @@ class TitleSlide extends FlutterDeckSlideWidget {
           color: Colors.black,
           child: Stack(
             children: [
-              // _buildStippledDash(),
-              _buildStippledFlutterLogo(),
+              const StippledFlutterLogo(scale: 1.6),
               Positioned.fill(
                 child: Padding(
                   padding: const EdgeInsets.all(100),
@@ -59,60 +58,6 @@ class TitleSlide extends FlutterDeckSlideWidget {
                 ),
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStippledFlutterLogo() {
-    return Positioned(
-      bottom: 40,
-      right: 70,
-      child: Transform.scale(
-        scale: 1.6,
-        alignment: Alignment.bottomRight,
-        child: const Opacity(
-          opacity: 0.2,
-          child: WeightedVoronoiStipplingDemo(
-            showVoronoiPolygons: false,
-            paintColors: true,
-            showImage: false,
-            showPoints: true,
-            pointsCount: 2000,
-            weightedStrokes: true,
-            minStroke: 8,
-            wiggleFactor: 0.5,
-            imagePath: 'assets/images/flutter-logo.png',
-            maxStroke: 20,
-            // strokePaintingStyle: true,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStippledDash() {
-    return Positioned(
-      bottom: -100,
-      right: -330,
-      child: Opacity(
-        opacity: 0.2,
-        child: Transform.scale(
-          scale: 1.65,
-          alignment: Alignment.bottomRight,
-          child: const WeightedVoronoiStipplingDemo(
-            showVoronoiPolygons: false,
-            paintColors: true,
-            showImage: false,
-            showPoints: true,
-            pointsCount: 1000,
-            weightedStrokes: true,
-            minStroke: 8,
-            maxStroke: 23,
-            // strokePaintingStyle: true,
-            imagePath: 'assets/images/dash.jpg',
-            animate: true,
           ),
         ),
       ),

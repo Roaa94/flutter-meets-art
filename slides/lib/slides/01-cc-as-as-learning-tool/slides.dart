@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/01-cc-as-as-learning-tool/code.dart';
 import 'package:slides/templates/code_slide.dart';
+import 'package:slides/templates/image_slide.dart';
 import 'package:slides/templates/placeholder_slide.dart';
 import 'package:slides/templates/section_title_slide.dart';
 import 'package:slides/widgets/window_frame.dart';
@@ -11,12 +12,13 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
   // 01
   SectionTitleSlide('1. CREATIVE CODING AS A LEARNING TOOL'),
   // 02
-  PlaceholderSlide('1.1 Bubble Sort'),
+  SectionTitleSlide('Bubble Sort'),
   // 03
-  PlaceholderSlide(
-    '1.1 Bubble Sort 1/n',
-    subtitle: '(Explain the algorithm with image)',
-  ),
+  // ImageSlide(
+  //   title: 'Bubble Sort 1/n',
+  //   path: 'assets/images/',
+  //   subtitle: '(Explain the algorithm with image)',
+  // ),
   // 04
   CodeSlide(
     singleRunBubbleSortCode,
