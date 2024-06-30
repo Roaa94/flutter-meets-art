@@ -25,13 +25,15 @@ class WeightedVoronoiStipplingSlide extends FlutterDeckSlideWidget {
         child: ColoredBox(
           color: Colors.white,
           // Todo: add controls (dots/no dots, polygons/no polygons, dot width)
-          child: WeightedVoronoiStippling(
+          child: WeightedVoronoiStipplingDemo(
             showImage: false,
             showVoronoiPolygons: false,
             pointsCount: 2000,
             paintColors: true,
             animate: true,
             weightedCentroids: true,
+            weightedStrokes: true,
+            // wiggleFactor: 0.5,
           ),
         ),
       ),

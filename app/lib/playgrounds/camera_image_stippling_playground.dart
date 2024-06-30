@@ -1,5 +1,5 @@
-import 'package:app/widgets/voronoi/camera_image_stippling.dart';
-import 'package:app/widgets/voronoi/camera_image_stippling_demo.dart';
+import 'package:app/widgets/relaxation/camera_image_stippling.dart';
+import 'package:app/widgets/relaxation/camera_image_stippling_demo.dart';
 import 'package:flutter/material.dart';
 
 class CameraImageStipplingPlayground extends StatelessWidget {

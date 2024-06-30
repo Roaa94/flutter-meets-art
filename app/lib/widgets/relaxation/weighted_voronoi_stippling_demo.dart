@@ -144,7 +144,7 @@ class _WeightedVoronoiStipplingDemoState
             if (_relaxation != null)
               Positioned.fill(
                 child: CustomPaint(
-                  painter: StipplingCustomPainter(
+                  painter: StipplingDemoCustomPainter(
                     relaxation: _relaxation!,
                     bytes: _imageBytes!,
                     paintColors: widget.paintColors,
@@ -165,8 +165,8 @@ class _WeightedVoronoiStipplingDemoState
   }
 }
 
-class StipplingCustomPainter extends CustomPainter {
-  StipplingCustomPainter({
+class StipplingDemoCustomPainter extends CustomPainter {
+  StipplingDemoCustomPainter({
     required this.relaxation,
     required this.bytes,
     this.paintColors = true,

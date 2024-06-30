@@ -1,4 +1,6 @@
 PODS:
+  - camera_macos (0.0.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - path_provider_foundation (0.0.1):
     - Flutter
@@ -7,11 +9,14 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - camera_macos (from `Flutter/ephemeral/.symlinks/plugins/camera_macos/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
 
 EXTERNAL SOURCES:
+  camera_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/camera_macos/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   path_provider_foundation:
@@ -20,6 +25,7 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
+  camera_macos: c2603f5eed16f05076cf17e12030d2ce55a77839
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   url_launcher_macos: 5f437abeda8c85500ceb03f5c1938a8c5a705399

@@ -1,4 +1,4 @@
-import 'package:app/widgets/voronoi/weighted_voronoi_stippling_demo.dart';
+import 'package:app/widgets/relaxation/weighted_voronoi_stippling_demo.dart';
 import 'package:flutter/material.dart';
 
 class WeightedVoronoiStipplingPlayground extends StatelessWidget {

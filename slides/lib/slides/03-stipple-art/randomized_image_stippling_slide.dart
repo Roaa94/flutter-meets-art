@@ -24,7 +24,7 @@ class RandomizedImageStipplingSlide extends FlutterDeckSlideWidget {
         margin: EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
         child: ColoredBox(
           color: Colors.white,
-          child: WeightedVoronoiStippling(
+          child: WeightedVoronoiStipplingDemo(
             // Todo: add controls
             showImage: true,
             showVoronoiPolygons: false,
