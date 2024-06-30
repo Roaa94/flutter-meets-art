@@ -20,16 +20,20 @@ class CameraImageStipplingDemo extends StatefulWidget {
     this.paintColors = true,
     this.minStroke = 8,
     this.maxStroke = 18,
-    this.weightedStroke = true,
+    this.weightedStrokes = true,
     this.showVoronoiPolygons = false,
+    this.strokePaintingStyle = true,
+    this.wiggleFactor = 0.2,
   });
 
   final bool weightedCentroids;
   final bool paintColors;
   final double minStroke;
   final double maxStroke;
-  final bool weightedStroke;
+  final bool weightedStrokes;
   final bool showVoronoiPolygons;
+  final bool strokePaintingStyle;
+  final double wiggleFactor;
 
   @override
   CameraImageStipplingDemoState createState() =>
@@ -48,7 +52,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
     videoHeight.toDouble(),
   );
 
-  late VoronoiRelaxation _relaxation;
+  VoronoiRelaxation? _relaxation;
   CameraImageData? _streamedImage;
 
   void _init() {
@@ -70,7 +74,11 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   }
 
   void _update() {
-    _relaxation.update(0.1, _cameraImagePixels);
+    _relaxation?.update(
+      0.1,
+      bytes: _cameraImagePixels,
+      wiggleFactor: widget.wiggleFactor,
+    );
     setState(() {});
   }
 
@@ -118,9 +126,16 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   }
 
   @override
+  void didUpdateWidget(covariant CameraImageStipplingDemo oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _init();
+  }
+
+  @override
   void dispose() {
     super.dispose();
     if (macOSController != null && !macOSController!.isDestroyed) {
+      macOSController!.stopImageStream();
       macOSController!.destroy();
     }
   }
@@ -188,6 +203,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
                       });
                     },
                     onCameraDestroyed: () {
+                      log('Camera destroyed!');
                       return const Text('Camera Destroyed!');
                     },
                     toggleTorch: Torch.on,
@@ -205,18 +221,19 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
                       width: videoWidth.toDouble(),
                     ),
                   ),
-                if (_cameraImagePixels != null)
+                if (_cameraImagePixels != null && _relaxation != null)
                   Positioned.fill(
                     child: CustomPaint(
                       painter: CameraImageStipplingDemoPainter(
-                        relaxation: _relaxation,
+                        relaxation: _relaxation!,
                         paintPoints: true,
                         showVoronoiPolygons: widget.showVoronoiPolygons,
                         paintColors: widget.paintColors,
                         pointStrokeWidth: 10,
-                        weightedStrokes: widget.weightedStroke,
+                        weightedStrokes: widget.weightedStrokes,
                         minStroke: widget.minStroke,
                         maxStroke: widget.maxStroke,
+                        strokePaintingStyle: widget.strokePaintingStyle,
                       ),
                     ),
                   ),
@@ -236,6 +253,7 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
     this.paintPoints = false,
     this.showVoronoiPolygons = false,
     this.weightedStrokes = false,
+    this.strokePaintingStyle = false,
     this.pointStrokeWidth = 5,
     this.minStroke = 4,
     this.maxStroke = 15,
@@ -246,13 +264,14 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
   final bool paintPoints;
   final bool weightedStrokes;
   final bool showVoronoiPolygons;
+  final bool strokePaintingStyle;
   final double pointStrokeWidth;
   final double minStroke;
   final double maxStroke;
 
   @override
   void paint(ui.Canvas canvas, ui.Size size) {
-    canvas.drawPaint(Paint()..color = Colors.white);
+    canvas.drawPaint(Paint()..color = Colors.black);
 
     if (showVoronoiPolygons && paintColors) {
       final cells = relaxation.voronoi.cells;
@@ -279,10 +298,16 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
         }
         final color =
             paintColors ? Color(relaxation.colors[i ~/ 2]) : Colors.black;
+        final paint = Paint()..color = color;
+        if (strokePaintingStyle) {
+          paint
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = stroke * 0.15;
+        }
         canvas.drawCircle(
           Offset(relaxation.coords[i], relaxation.coords[i + 1]),
           stroke / 2,
-          Paint()..color = color,
+          paint,
         );
       }
     }

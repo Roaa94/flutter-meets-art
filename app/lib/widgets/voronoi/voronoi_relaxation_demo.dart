@@ -31,10 +31,10 @@ class _VoronoiRelaxationDemoState extends State<VoronoiRelaxationDemo>
   late final Ticker _ticker;
   final random = Random(3);
 
-  late VoronoiRelaxation _relaxation;
+  VoronoiRelaxation? _relaxation;
 
   void _update() {
-    _relaxation.update(0.1);
+    _relaxation?.update(0.1);
     setState(() {});
   }
 
@@ -69,9 +69,12 @@ class _VoronoiRelaxationDemoState extends State<VoronoiRelaxationDemo>
 
   @override
   Widget build(BuildContext context) {
+    if (_relaxation == null) {
+      return Container();
+    }
     return CustomPaint(
       painter: VoronoiCustomPainter(
-        relaxation: _relaxation,
+        relaxation: _relaxation!,
         showCentroids: widget.showCentroids,
         showPolygons: widget.showPolygons,
       ),

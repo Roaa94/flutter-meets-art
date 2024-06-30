@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
 import 'package:app/utils.dart';
@@ -19,6 +18,11 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
     this.weightedCentroids = false,
     this.pointStrokeWidth = 5,
     this.imagePath = 'assets/images/dash.jpg',
+    this.strokePaintingStyle = false,
+    this.weightedStrokes = false,
+    this.minStroke = 6,
+    this.maxStroke = 15,
+    this.wiggleFactor,
   });
 
   final int pointsCount;
@@ -30,6 +34,11 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
   final bool weightedCentroids;
   final double pointStrokeWidth;
   final String imagePath;
+  final bool strokePaintingStyle;
+  final bool weightedStrokes;
+  final double minStroke;
+  final double maxStroke;
+  final double? wiggleFactor;
 
   @override
   State<WeightedVoronoiStipplingDemo> createState() =>
@@ -45,7 +54,7 @@ class _WeightedVoronoiStipplingDemoState
   final random = Random(1);
   late final Ticker _ticker;
 
-  late VoronoiRelaxation _relaxation;
+  VoronoiRelaxation? _relaxation;
 
   void _init() {
     final points = generateRandomPointsFromPixels(
@@ -64,7 +73,7 @@ class _WeightedVoronoiStipplingDemoState
   }
 
   void _update() {
-    _relaxation.update(0.1);
+    _relaxation?.update(0.1, wiggleFactor: widget.wiggleFactor);
     setState(() {});
   }
 
@@ -105,6 +114,12 @@ class _WeightedVoronoiStipplingDemoState
   }
 
   @override
+  void didUpdateWidget(covariant WeightedVoronoiStipplingDemo oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _init();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (_isLoadingImage) {
       return const Center(
@@ -126,18 +141,23 @@ class _WeightedVoronoiStipplingDemoState
               Positioned.fill(
                 child: Image.asset(widget.imagePath),
               ),
-            Positioned.fill(
-              child: CustomPaint(
-                painter: StipplingCustomPainter(
-                  relaxation: _relaxation,
-                  bytes: _imageBytes!,
-                  paintColors: widget.paintColors,
-                  showVoronoiPolygons: widget.showVoronoiPolygons,
-                  paintPoints: widget.paintPoints,
-                  pointStrokeWidth: widget.pointStrokeWidth,
+            if (_relaxation != null)
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: StipplingCustomPainter(
+                    relaxation: _relaxation!,
+                    bytes: _imageBytes!,
+                    paintColors: widget.paintColors,
+                    showVoronoiPolygons: widget.showVoronoiPolygons,
+                    paintPoints: widget.paintPoints,
+                    pointStrokeWidth: widget.pointStrokeWidth,
+                    strokePaintingStyle: widget.strokePaintingStyle,
+                    weightedStrokes: widget.weightedStrokes,
+                    minStroke: widget.minStroke,
+                    maxStroke: widget.maxStroke,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
@@ -153,6 +173,10 @@ class StipplingCustomPainter extends CustomPainter {
     this.showVoronoiPolygons = true,
     this.paintPoints = true,
     this.pointStrokeWidth = 2,
+    this.strokePaintingStyle = false,
+    this.weightedStrokes = false,
+    this.minStroke = 4,
+    this.maxStroke = 8,
   });
 
   final VoronoiRelaxation relaxation;
@@ -161,6 +185,10 @@ class StipplingCustomPainter extends CustomPainter {
   final bool paintPoints;
   final bool showVoronoiPolygons;
   final double pointStrokeWidth;
+  final bool strokePaintingStyle;
+  final bool weightedStrokes;
+  final double minStroke;
+  final double maxStroke;
 
   final random = Random();
 
@@ -190,23 +218,25 @@ class StipplingCustomPainter extends CustomPainter {
       }
     }
 
-    if (paintPoints) {
-      if (paintColors) {
-        for (int i = 0; i < relaxation.coords.length; i += 2) {
-          canvas.drawCircle(
-            Offset(relaxation.coords[i], relaxation.coords[i + 1]),
-            relaxation.strokeWeights[i ~/ 2] / 2,
-            Paint()..color = Color(relaxation.colors[i ~/ 2]),
-          );
+    if (paintPoints && !showVoronoiPolygons) {
+      for (int i = 0; i < relaxation.coords.length; i += 2) {
+        double stroke = pointStrokeWidth;
+        if (weightedStrokes) {
+          stroke =
+              map(relaxation.strokeWeights[i ~/ 2], 0, 1, minStroke, maxStroke);
         }
-      } else {
-        canvas.drawRawPoints(
-          PointMode.points,
-          relaxation.coords,
-          Paint()
-            ..strokeWidth = pointStrokeWidth
-            ..strokeCap = StrokeCap.round
-            ..color = Colors.black,
+        final color =
+            paintColors ? Color(relaxation.colors[i ~/ 2]) : Colors.black;
+        final paint = Paint()..color = color;
+        if (strokePaintingStyle) {
+          paint
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = stroke * 0.15;
+        }
+        canvas.drawCircle(
+          Offset(relaxation.coords[i], relaxation.coords[i + 1]),
+          stroke / 2,
+          paint,
         );
       }
     }

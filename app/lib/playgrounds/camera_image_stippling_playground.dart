@@ -8,7 +8,9 @@ class CameraImageStipplingPlayground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: CameraImageStipplingDemo(),
+      body: CameraImageStipplingDemo(
+        wiggleFactor: 0.5,
+      ),
       // body: CameraImageStippling(),
     );
   }

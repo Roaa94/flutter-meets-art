@@ -68,8 +68,19 @@ class VoronoiRelaxation {
     }
   }
 
-  void update(double lerp, [ByteData? bytes]) {
+  void _wiggleCoords(double wiggleFactor) {
+    final random = Random();
+    for (int i = 0; i < _coords.length; i += 2) {
+      final dx = (random.nextDouble() - 0.5) * wiggleFactor;
+      final dy = (random.nextDouble() - 0.5) * wiggleFactor;
+      _coords[i] += dx;
+      _coords[i + 1] += dy;
+    }
+  }
+
+  void update(double lerp, {ByteData? bytes, double? wiggleFactor}) {
     if (bytes != null) _bytes = bytes;
+    if (wiggleFactor != null) _wiggleCoords(wiggleFactor);
     _lerpCoords(lerp);
     _init();
   }
