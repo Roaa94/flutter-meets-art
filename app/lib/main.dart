@@ -1,5 +1,4 @@
-import 'package:app/app.dart';
-import 'package:app/playgrounds/camera_image_stippling_playground.dart';
+import 'package:app/widgets/voronoi/weighted_voronoi_stippling_demo.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,12 +12,13 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: Scaffold(
-        body: WeightedVoronoiStippling(
+        body: WeightedVoronoiStipplingDemo(
           showVoronoiPolygons: false,
           showImage: false,
           pointsCount: 2000,
           animate: true,
           weightedCentroids: true,
+          paintColors: true,
         ),
       ),
     );
