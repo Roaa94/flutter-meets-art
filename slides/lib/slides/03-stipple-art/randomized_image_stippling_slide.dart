@@ -30,7 +30,7 @@ class RandomizedImageStipplingSlide extends FlutterDeckSlideWidget {
             showVoronoiPolygons: false,
             pointsCount: 2000,
             // Todo: add controls
-            paintPoints: false,
+            showPoints: false,
             paintColors: false,
             animate: false,
             weightedCentroids: false,
