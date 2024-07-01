@@ -9,6 +9,7 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
     this.title, {
     this.subtitle,
     this.route,
+    this.isSubtitle = false,
   }) : super(
           configuration: FlutterDeckSlideConfiguration(
             route: route != null
@@ -21,6 +22,7 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
   final String title;
   final String? subtitle;
   final String? route;
+  final bool isSubtitle;
 
   @override
   FlutterDeckSlide build(BuildContext context) {
@@ -37,7 +39,7 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
               child: Center(
                 child: Text(
                   title,
-                  style: TextStyles.title,
+                  style: isSubtitle ? TextStyles.subtitle : TextStyles.title,
                   textAlign: TextAlign.center,
                 ),
               ),

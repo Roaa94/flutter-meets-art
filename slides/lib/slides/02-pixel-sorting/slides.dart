@@ -1,36 +1,30 @@
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/02-pixel-sorting/code.dart';
-import 'package:slides/widgets/code_highlight.dart';
+import 'package:slides/templates/code_slide.dart';
 import 'package:slides/templates/placeholder_slide.dart';
 import 'package:slides/templates/section_title_slide.dart';
 
 final pixelSortingSlides = <FlutterDeckSlideWidget>[
   SectionTitleSlide('2. GLITCH ART WITH PIXEL SORTING'),
-  PlaceholderSlide('2.1 Reading Image Pixels'),
-  PlaceholderSlide(
-    '2.1 Reading Image Pixels 1/n',
-    subtitle: 'Decoding an image from an asset file',
-    content: const CodeHighlight(
-      loadImageAssetCode,
-    ),
+  SectionTitleSlide(
+    'Understanding Image Pixels',
+    isSubtitle: true,
+  ),
+  CodeSlide(
+    loadImageAssetCode,
+    title: 'Reading Image Pixels',
   ),
   PlaceholderSlide(
     '2.1 Reading Image Pixels 2/n',
     subtitle: 'Explain image byte data (with illustration)',
   ),
-  PlaceholderSlide(
-    '2.1 Reading Image Pixels 3/n',
-    subtitle: 'Reading pixel colors list from image bytes',
-    content: const CodeHighlight(
-      loadImagePixelColorsCode,
-    ),
+  CodeSlide(
+    loadImagePixelColorsCode,
+    title: 'Reading Image Pixel Colors',
   ),
-  PlaceholderSlide(
-    '2.1 Reading Image Pixels 4/n',
-    subtitle: 'Painting image pixel with canvas.drawRect',
-    content: const CodeHighlight(
-      paintImagePixelsCode,
-    ),
+  CodeSlide(
+    paintImagePixelsCode,
+    title: 'Painting Image Pixel',
   ),
   PlaceholderSlide(
     '2.1 Reading Image Pixels 5/n',

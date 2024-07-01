@@ -11,7 +11,10 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
   // 02
   SectionTitleSlide('1. CREATIVE CODING AS A LEARNING TOOL'),
   // 03
-  SectionTitleSlide('Bubble Sort'),
+  SectionTitleSlide(
+    'Bubble Sort',
+    isSubtitle: true,
+  ),
   // 04
   ImageSlide(
     title: 'Bubble Sort',
@@ -120,7 +123,10 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
     ),
   ),
   // 19
-  SectionTitleSlide('Quick Sort'),
+  SectionTitleSlide(
+    'Quick Sort',
+    isSubtitle: true,
+  ),
   // 20
   ImageSlide(
       title: 'Quick Sort Algorithm',
@@ -133,7 +139,10 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
     child: const QuickSortBars(),
   ),
   // 22
-  SectionTitleSlide('Sorting Colors'),
+  SectionTitleSlide(
+    'Sorting Colors',
+    isSubtitle: true,
+  ),
   // 23
   CodeSlide(
     randomColorGenerationCode1,
@@ -152,11 +161,13 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
     route: 'random-color-generation-3',
     title: 'Random HSL Color Generation',
   ),
+  // 26
   DemoSlide(
     'Color Sorting Simulation - by Hue',
     label: 'Color Sorting',
     child: const QuickSortColors(tickDuration: 20),
   ),
+  // 27
   DemoSlide(
     'Color Sorting Simulation - by Saturation',
     label: 'Color Sorting',
@@ -165,6 +176,7 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
       colorSortProperty: ColorSortProperty.saturation,
     ),
   ),
+  // 28
   DemoSlide(
     'Color Sorting Simulation - by Lightness',
     label: 'Color Sorting',
