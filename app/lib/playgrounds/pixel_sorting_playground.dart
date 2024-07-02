@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:math' hide log;
 import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:app/enums.dart';
 import 'package:app/utils.dart';
@@ -56,8 +56,9 @@ class _PixelSortingPlaygroundState extends State<PixelSortingPlayground> {
     setState(() {
       _isLoadingImage = true;
     });
-    final img = await rootBundle.load(widget.imagePath);
-    var decodedImage = await decodeImageFromList(img.buffer.asUint8List());
+    final ByteData img = await rootBundle.load(widget.imagePath);
+    final ui.Image decodedImage =
+        await decodeImageFromList(img.buffer.asUint8List());
     final imageBytes = await decodedImage.toByteData();
     int imgWidth = decodedImage.width;
     int imgHeight = decodedImage.height;
@@ -67,6 +68,8 @@ class _PixelSortingPlaygroundState extends State<PixelSortingPlayground> {
       _imageSize = Size(imgWidth.toDouble(), imgHeight.toDouble());
       _isLoadingImage = false;
     });
+    print('_imageSize');
+    print(_imageSize);
   }
 
   void _initPixels() {
@@ -84,15 +87,13 @@ class _PixelSortingPlaygroundState extends State<PixelSortingPlayground> {
         List<HSLColor>.filled(pixelCount, HSLColor.fromColor(Colors.black));
 
     for (int i = 0; i < _imageBytes!.lengthInBytes; i += 4) {
-      int pixelIndex = i ~/ 4;
-      int col = pixelIndex % width;
-      int row = pixelIndex ~/ width;
-      int index = (row * width + col) * 4;
+      int col = (i ~/ 4) % width;
+      int row = (i ~/ 4) ~/ width;
 
-      if (index >= 0 && index + 4 <= _imageBytes!.lengthInBytes) {
-        final rgbaColor = _imageBytes!.getUint32(index);
+      if (i >= 0 && i + 4 <= _imageBytes!.lengthInBytes) {
+        final rgbaColor = _imageBytes!.getUint32(i);
         HSLColor pixelColor = HSLColor.fromColor(Color(rgbaToArgb(rgbaColor)));
-        _pixels[pixelIndex] = pixelColor;
+        _pixels[i ~/ 4] = pixelColor;
         _transposedPixels[col * height + row] = pixelColor;
       }
     }
@@ -298,7 +299,7 @@ class ImagePixelsFullSortPainter extends CustomPainter {
         );
         final colors = List<Color>.generate(
             offsets.length, (i) => pixels[i ~/ 6].toColor());
-        final vertices = Vertices(
+        final vertices = ui.Vertices(
           VertexMode.triangles,
           offsets,
           colors: colors,
@@ -320,7 +321,7 @@ class ImagePixelsFullSortPainter extends CustomPainter {
           colorsRaw[i + 4] = pixels[i ~/ 6].toColor().value;
           colorsRaw[i + 5] = pixels[i ~/ 6].toColor().value;
         }
-        final verticesRaw = Vertices.raw(
+        final verticesRaw = ui.Vertices.raw(
           VertexMode.triangles,
           vertices,
           colors: colorsRaw,
@@ -342,7 +343,7 @@ class ImagePixelsFullSortPainter extends CustomPainter {
         final offsets = generateVertexOffsets(pixels.length, imageSize.width);
         final colors = List<Color>.generate(
             offsets.length, (i) => pixels[i ~/ 6].toColor());
-        final vertices = Vertices(
+        final vertices = ui.Vertices(
           VertexMode.triangles,
           offsets,
           colors: colors,
@@ -361,7 +362,7 @@ class ImagePixelsFullSortPainter extends CustomPainter {
           colorsRaw[i + 4] = pixels[i ~/ 6].toColor().value;
           colorsRaw[i + 5] = pixels[i ~/ 6].toColor().value;
         }
-        final verticesRaw = Vertices.raw(
+        final verticesRaw = ui.Vertices.raw(
           VertexMode.triangles,
           vertices,
           colors: colorsRaw,

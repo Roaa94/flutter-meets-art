@@ -32,6 +32,7 @@ class AnimatedVoronoiRelaxationSlide extends FlutterDeckSlideWidget {
                   pointsCount: 1000,
                   animate: true,
                   showPolygons: false,
+                  showCentroids: false,
                 );
               },
             ),

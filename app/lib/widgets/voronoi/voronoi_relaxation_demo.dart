@@ -62,6 +62,12 @@ class _VoronoiRelaxationDemoState extends State<VoronoiRelaxationDemo>
   }
 
   @override
+  void didUpdateWidget(covariant VoronoiRelaxationDemo oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _init();
+  }
+
+  @override
   void dispose() {
     _ticker.dispose();
     super.dispose();

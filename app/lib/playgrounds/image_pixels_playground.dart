@@ -59,15 +59,20 @@ class _ImagePixelsPlaygroundState extends State<ImagePixelsPlayground> {
     setState(() {});
   }
 
-  List<Color> _getPixelColorsFromByteData(ByteData bytes, int imageWidth) {
-    final pixelColors = List.filled(bytes.lengthInBytes ~/ 4, Colors.white);
-    for (int i = 0; i < bytes.lengthInBytes; i++) {
-      int x = (i ~/ 4) % imageWidth;
-      int y = (i ~/ 4) ~/ imageWidth;
-      int index = ((y * imageWidth) + x) * 4;
-
-      final rgbaColor = bytes.getUint32(index);
+  List<Color> _getPixelColorsFromByteData2(ByteData bytes, int imageWidth) {
+    final pixelColors = List<Color>.filled(bytes.lengthInBytes ~/ 4, Colors.white);
+    for (int i = 0; i < bytes.lengthInBytes; i += 4) { // ⬅️ Increment by 4
+      final rgbaColor = bytes.getUint32(i);
       pixelColors[i ~/ 4] = Color(rgbaToArgb(rgbaColor));
+    }
+    return pixelColors;
+  }
+
+  List<Color> _getPixelColorsFromByteData(ByteData bytes, int imageWidth) {
+    final pixelColors = <Color>[];
+    for (int i = 0; i < bytes.lengthInBytes; i += 4) { // ⬅️ Increment by 4
+      final rgbaColor = bytes.getUint32(i);
+      pixelColors.add(Color(rgbaToArgb(rgbaColor)));
     }
     return pixelColors;
   }
@@ -222,8 +227,7 @@ class ImagePixelsPlaygroundPainter extends CustomPainter {
     //   );
     // }
 
-    final offsets =
-        generateVertexOffsets(pixels.length, imageSize.width);
+    final offsets = generateVertexOffsets(pixels.length, imageSize.width);
     final colors = List<Color>.generate(offsets.length, (i) {
       final color = pixels[i ~/ 6];
       final HSLColor hslColor = HSLColor.fromColor(color);

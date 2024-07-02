@@ -13,6 +13,7 @@ class ImageSlide extends FlutterDeckSlideWidget {
     this.label,
     this.padding = const EdgeInsets.symmetric(horizontal: 120),
     this.route,
+    this.width,
   }) : super(
           configuration: FlutterDeckSlideConfiguration(
             route: route != null
@@ -29,6 +30,7 @@ class ImageSlide extends FlutterDeckSlideWidget {
   final bool showHeader;
   final String? label;
   final EdgeInsetsGeometry padding;
+  final double? width;
 
   @override
   FlutterDeckSlide build(BuildContext context) {
@@ -42,7 +44,13 @@ class ImageSlide extends FlutterDeckSlideWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: Image.asset(path)),
+            Center(
+              child: Image.asset(
+                path,
+                width: width,
+                fit: BoxFit.contain,
+              ),
+            ),
             if (label != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),

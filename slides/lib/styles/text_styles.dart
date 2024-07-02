@@ -24,7 +24,7 @@ class TextStyles {
   static const title = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 75,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
   );
 
   static const subtitle = TextStyle(
