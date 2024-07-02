@@ -1,5 +1,6 @@
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/02-pixel-sorting/code.dart';
+import 'package:slides/slides/02-pixel-sorting/image_pixels_painter_slide.dart';
 import 'package:slides/templates/code_slide.dart';
 import 'package:slides/templates/image_slide.dart';
 import 'package:slides/templates/placeholder_slide.dart';
@@ -65,10 +66,7 @@ final pixelSortingSlides = <FlutterDeckSlideWidget>[
     paintImagePixelsCode,
     title: 'Painting Image Pixel',
   ),
-  PlaceholderSlide(
-    '2.1 Reading Image Pixels 5/n',
-    subtitle: 'Show a small painted image with zoom in/out for illustration',
-  ),
+  const ImagePixelsPainterSlide(),
   PlaceholderSlide('2.2 Sorting the Pixels'),
   PlaceholderSlide(
     '2.2 Sorting the Pixels 1/n',
