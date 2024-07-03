@@ -25,6 +25,7 @@ class CameraImageStipplingDemo extends StatefulWidget {
     this.strokePaintingStyle = true,
     this.wiggleFactor = 0.2,
     this.showDevicesDropdown = false,
+    this.showPoints = false,
     this.pointsCount = 2000,
   });
 
@@ -37,6 +38,7 @@ class CameraImageStipplingDemo extends StatefulWidget {
   final bool strokePaintingStyle;
   final double wiggleFactor;
   final bool showDevicesDropdown;
+  final bool showPoints;
   final int pointsCount;
 
   @override
@@ -236,7 +238,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
               child: CustomPaint(
                 painter: CameraImageStipplingDemoPainter(
                   relaxation: _relaxation!,
-                  paintPoints: true,
+                  paintPoints: widget.showPoints,
                   showVoronoiPolygons: widget.showVoronoiPolygons,
                   paintColors: widget.paintColors,
                   pointStrokeWidth: 10,
@@ -293,6 +295,13 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
           path,
           Paint()..color = Color(relaxation.colors[j]),
         );
+
+        canvas.drawPath(
+          path,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..color = Color(relaxation.colors[j]),
+        );
       }
     }
 
@@ -309,7 +318,7 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
         if (strokePaintingStyle) {
           paint
             ..style = PaintingStyle.stroke
-            ..strokeWidth = stroke * 0.1;
+            ..strokeWidth = stroke * 0.15;
         }
         canvas.drawCircle(
           Offset(relaxation.coords[i], relaxation.coords[i + 1]),

@@ -12,7 +12,7 @@ class ImagePixelsDemo extends StatefulWidget {
   const ImagePixelsDemo({
     super.key,
     required this.imagePath,
-    this.zoom = 1,
+    this.zoom = 3,
   });
 
   final String imagePath;
@@ -116,39 +116,39 @@ class ImagePixelsDemoPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // for (int i = 0; i < pixels.length; i++) {
-    //   double x = i % imageSize.width;
-    //   double y = i / imageSize.width;
-    //   canvas.drawRect(
-    //     Rect.fromLTWH(x, y, 1.1, 1.1),
-    //     Paint()..color = pixels[i],
-    //   );
-    // }
+    for (int i = 0; i < pixels.length; i++) {
+      double x = i % imageSize.width;
+      double y = i / imageSize.width;
+      canvas.drawRect(
+        Rect.fromLTWH(x, y, 1.1, 1.1),
+        Paint()..color = pixels[i],
+      );
+    }
 
-    final offsets = generateVertexOffsets(pixels.length, imageSize.width);
-    final colors = List<Color>.generate(offsets.length, (i) {
-      final color = pixels[i ~/ 6];
-      final HSLColor hslColor = HSLColor.fromColor(color);
-      if (greyScale) {
-        return Colors.black.withOpacity(1.0 - hslColor.lightness);
-      } else if (threshold) {
-        if (hslColor.lightness > _kThresholdMin &&
-            hslColor.lightness < _kThresholdMax) {
-          return Colors.white;
-        } else {
-          return Colors.black;
-        }
-      } else {
-        return color;
-      }
-    });
-    final vertices = Vertices(
-      VertexMode.triangles,
-      offsets,
-      colors: colors,
-    );
-
-    canvas.drawVertices(vertices, BlendMode.src, Paint());
+    // final offsets = generateVertexOffsets(pixels.length, imageSize.width);
+    // final colors = List<Color>.generate(offsets.length, (i) {
+    //   final color = pixels[i ~/ 6];
+    //   final HSLColor hslColor = HSLColor.fromColor(color);
+    //   if (greyScale) {
+    //     return Colors.black.withOpacity(1.0 - hslColor.lightness);
+    //   } else if (threshold) {
+    //     if (hslColor.lightness > _kThresholdMin &&
+    //         hslColor.lightness < _kThresholdMax) {
+    //       return Colors.white;
+    //     } else {
+    //       return Colors.black;
+    //     }
+    //   } else {
+    //     return color;
+    //   }
+    // });
+    // final vertices = Vertices(
+    //   VertexMode.triangles,
+    //   offsets,
+    //   colors: colors,
+    // );
+    //
+    // canvas.drawVertices(vertices, BlendMode.src, Paint());
   }
 
   @override
