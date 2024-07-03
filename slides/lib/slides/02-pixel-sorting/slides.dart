@@ -1,5 +1,9 @@
 import 'package:flutter_deck/flutter_deck.dart';
+import 'package:slides/slides/01-cc-as-as-learning-tool/code.dart';
 import 'package:slides/slides/02-pixel-sorting/code.dart';
+import 'package:slides/slides/02-pixel-sorting/image_pixel_sorting_by_column_slide.dart';
+import 'package:slides/slides/02-pixel-sorting/image_pixel_sorting_by_interval_slide.dart';
+import 'package:slides/slides/02-pixel-sorting/image_pixel_sorting_by_row_slide.dart';
 import 'package:slides/slides/02-pixel-sorting/image_pixels_painter_slide.dart';
 import 'package:slides/templates/code_slide.dart';
 import 'package:slides/templates/image_slide.dart';
@@ -7,79 +11,91 @@ import 'package:slides/templates/placeholder_slide.dart';
 import 'package:slides/templates/section_title_slide.dart';
 
 final pixelSortingSlides = <FlutterDeckSlideWidget>[
-  // 29
+  // 32
   SectionTitleSlide('2. GLITCH ART WITH PIXEL SORTING'),
-  // 30
+  // 33
   SectionTitleSlide(
     'Reading Pixel Colors from Image Bitmaps',
     isSubtitle: true,
   ),
-  // 31
-  // ImageSlide(
-  //   title: 'Reading Pixel Colors from Image Bitmaps',
-  //   path: 'assets/images/pixel-to-color.png',
-  //   route: 'reading-image-pixels-illustration-1',
-  //   label: 'Goal: get Color type from pixel coordinates',
-  //   width: 800,
-  // ),
-  // 31
+  // 34
   ImageSlide(
     title: 'Reading Pixel Colors from Image Bitmaps',
     path: 'assets/images/image-3x3.png',
     route: 'reading-image-pixels-illustration-2',
     width: 400,
   ),
-  // 32
+  // 35
   ImageSlide(
     title: 'Reading Pixel Colors from Image Bitmaps',
     path: 'assets/images/image-3x3-rgba.png',
     route: 'reading-image-pixels-illustration-3',
     width: 900,
   ),
-  // 33
+  // 36
   ImageSlide(
     title: 'Reading Pixel Colors from Image Bitmaps',
     path: 'assets/images/image-lists.png',
     route: 'reading-image-pixels-illustration-4',
     width: 1000,
   ),
-  // 34
+  // 37
   CodeSlide(
     loadImageBytesCode,
     title: 'Reading Pixel Colors from Image Bitmaps',
     route: 'reading-image-pixel-colors-code-1',
   ),
-  // 35
+  // 38
   CodeSlide(
     getColorsListFromImageCode1,
     title: 'Reading Pixel Colors from Image Bitmaps',
     route: 'reading-image-pixel-colors-code-2',
   ),
-  // 36
+  // 39
   CodeSlide(
     getColorsListFromImageCode2,
     title: 'Reading Pixel Colors from Image Bitmaps',
     route: 'reading-image-pixel-colors-code-3',
   ),
-  // 37
+  // 40
   CodeSlide(
     paintImagePixelsCode,
     title: 'Painting Image Pixel',
   ),
+  // 41
   const ImagePixelsPainterSlide(),
-  PlaceholderSlide('2.2 Sorting the Pixels'),
-  PlaceholderSlide(
-    '2.2 Sorting the Pixels 1/n',
-    subtitle: 'Use HSLColor',
+  // 42
+  SectionTitleSlide(
+    'Pixel Sorting',
+    isSubtitle: true,
   ),
-  PlaceholderSlide(
-    '2.2 Sorting the Pixels 2/n',
-    subtitle: 'Quick sort swap snippet, swapping based on color.lightness',
+  // 43
+  CodeSlide(
+    getHSLColorsListFromImageCode,
+    title: 'Bitmap HSL Colors',
   ),
-  PlaceholderSlide(
-    '2.2 Sorting the Pixels 3/n',
-    subtitle: 'Code to sort by row',
+  // 44
+  CodeSlide(
+    sortPixelsByRowCode1,
+    title: 'Image Pixel Sorting',
+    route: 'image-pixel-sorting-code-1',
   ),
+  // 45
+  CodeSlide(
+    sortPixelsByRowCode2,
+    title: 'Image Pixel Sorting',
+    route: 'image-pixel-sorting-code-2',
+  ),
+  // 46
+  CodeSlide(
+    sortPixelsByRowCode3,
+    title: 'Image Pixel Sorting',
+    route: 'image-pixel-sorting-code-3',
+  ),
+  // 47
+  const ImagePixelSortingByRowSlide(),
+  const ImagePixelSortingByColumnSlide(),
+  const ImagePixelSortingByIntervalSlide(),
   PlaceholderSlide(
     '2.2 Sorting the Pixels 4/n',
     subtitle: 'Show simulation of image sorted by row',

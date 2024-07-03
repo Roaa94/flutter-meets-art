@@ -9,19 +9,26 @@ class WindowFrame extends StatelessWidget {
     this.child,
     this.margin,
     this.label,
+    this.size,
   });
 
   final Widget? child;
   final EdgeInsetsGeometry? margin;
   final String? label;
+  final Size? size;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: margin,
+      width: size?.width,
+      height: size != null ? (size!.height + barHeight + 3) : null,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(9),
-        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        border: Border.all(
+          color: Colors.grey.withOpacity(0.2),
+          width: 1,
+        ),
         color: Colors.black,
         boxShadow: [
           BoxShadow(
@@ -73,22 +80,35 @@ class WindowFrame extends StatelessWidget {
               ],
             ),
           ),
-          if (child != null)
-            Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                child: ColoredBox(
-                  color: Colors.black,
-                  child: child!,
-                ),
-              ),
-            ),
+          if (child != null) _buildContent(),
         ],
       ),
     );
+  }
+
+  Widget _buildContent() {
+    Widget content = ClipRRect(
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(8),
+        bottomRight: Radius.circular(8),
+      ),
+      child: ColoredBox(
+        color: Colors.black,
+        child: child!,
+      ),
+    );
+    if (size != null) {
+      content = SizedBox(
+        width: size?.width,
+        height: size?.height,
+        child: content,
+      );
+    } else {
+      content = Expanded(
+        child: content,
+      );
+    }
+    return content;
   }
 }
 

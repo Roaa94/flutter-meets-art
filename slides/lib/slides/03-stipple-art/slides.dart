@@ -163,4 +163,11 @@ final stippleArtSlides = <FlutterDeckSlideWidget>[
     'What if you are the Art?',
     route: 'audience-is-art',
   ),
+  // ImageSlide(
+  //   title: 'Reading Pixel Colors from Image Bitmaps',
+  //   path: 'assets/images/pixel-to-color.png',
+  //   route: 'reading-image-pixels-illustration-1',
+  //   label: 'Goal: get Color type from pixel coordinates',
+  //   width: 800,
+  // ),
 ];

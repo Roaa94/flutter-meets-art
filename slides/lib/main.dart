@@ -60,8 +60,8 @@ class SlidesApp extends StatelessWidget {
         transition: FlutterDeckTransition.fade(),
       ),
       slides: [
-        // ...introductionSlides,
-        // ...creativeCodingAsALearningToolSlides,
+        ...introductionSlides,
+        ...creativeCodingAsALearningToolSlides,
         ...pixelSortingSlides,
         ...stippleArtSlides,
         ...gpuArtSlides,

@@ -33,7 +33,7 @@ void paint(Canvas canvas, Size size) {
   }
 }''';
 
-const getHSLColorsListFromImageCode2 = '''
+const getHSLColorsListFromImageCode = '''
 final pixelColors = <HSLColor>[];
 for (int i = 0; i < imageBytes.lengthInBytes; i += 4) { // ⬅️ Increment by 4
   final rgbaColor = imageBytes.getUint32(i);
