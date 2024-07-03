@@ -1,4 +1,4 @@
-import 'package:app/playgrounds/image_pixels_playground.dart';
+import 'package:app/widgets/sorting/pixel_sorting_demo.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +11,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: ImagePixelsPlaygroundPage(),
+      home: PixelSortingDemoPage(),
     );
   }
 }

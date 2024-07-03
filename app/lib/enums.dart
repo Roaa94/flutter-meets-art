@@ -30,5 +30,10 @@ enum PixelSortStyle {
   full,
   byRow,
   byColumn,
-  byInterval;
+  byIntervalRow,
+  byIntervalColumn;
+
+  bool get transposed {
+    return this == byColumn || this == byIntervalColumn;
+  }
 }

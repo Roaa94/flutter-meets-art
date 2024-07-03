@@ -40,9 +40,7 @@ class _QuickSortBarsState extends State<QuickSortBars>
   late List<double> values;
   late List<SortingState> states;
   late Duration _tickDuration;
-  final _completer = CancelableCompleter(
-    onCancel: () => log('Canceled!'),
-  );
+  final _completer = CancelableCompleter(onCancel: () => log('Canceled!'));
 
   _initValues() {
     values = List.generate(
@@ -69,9 +67,7 @@ class _QuickSortBarsState extends State<QuickSortBars>
   }
 
   Future<void> _quickSort(List<double> arr, int start, int end) async {
-    if (start >= end) {
-      return;
-    }
+    if (start >= end) return;
     final index = await _partition(arr, start, end);
     states[index] = SortingState.idle;
     await Future.wait([
