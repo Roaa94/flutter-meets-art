@@ -10,6 +10,13 @@ const singleRunBubbleSortCode = '''_bubbleSort() {
   }
 }''';
 
+const bubbleSortSwapCode = '''
+_swap(List<double> arr, int i, int j) {
+  final double tmp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = tmp;
+}''';
+
 const randomValuesGenerationCode = '''
 final values = List.generate(n, (i) => random.nextDouble());''';
 
@@ -181,3 +188,52 @@ List<Color> generateRandomColors(Random random, int n) {
     ).toColor();
   });
 }''';
+
+const quickSortSwapCode = '''
+_swap(List<double> arr, int i, int j) async {
+  final double tmp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = tmp;
+  setState(() {});
+  await Future.delayed(_tickDuration); // ⬅️ ticker alternative
+}''';
+
+const quickSortRecursionCode = '''
+Future<void> _quickSort(List<double> arr, int start, int end) async {
+  if (start >= end) return;
+  final index = await _partition(arr, start, end);
+  await Future.wait([
+    _quickSort(arr, start, index - 1), // ⬅️ left side
+    _quickSort(arr, index + 1, end), // ⬅️ right side
+  ]);
+}''';
+
+const sortPixelsByRowCode1 = '''
+List<Future<void>> futures = [];
+for (int i = 0; i < _imageSize.height.toInt(); i++) { // ⬅️ Loop over rows  
+  final start = i * _imageSize.width.toInt();
+  final end = start + _imageSize.width.toInt() - 1;
+  
+  
+}
+''';
+
+const sortPixelsByRowCode2 = '''
+List<Future<void>> futures = [];
+for (int i = 0; i < _imageSize.height.toInt(); i++) {                     
+  final start = i * _imageSize.width.toInt();
+  final end = start + _imageSize.width.toInt() - 1;
+  
+  futures.add(_quickSortColors(_pixels, start, end)); // ⬅️ Add future calls
+}
+''';
+
+const sortPixelsByRowCode3 = '''
+List<Future<void>> futures = [];
+for (int i = 0; i < _imageSize.height.toInt(); i++) {                       
+  final start = i * _imageSize.width.toInt();
+  final end = start + _imageSize.width.toInt() - 1;
+  
+  futures.add(_quickSortColors(_pixels, start, end));
+}
+await Future.wait(futures); // ⬅️ Call futures in parallel''';

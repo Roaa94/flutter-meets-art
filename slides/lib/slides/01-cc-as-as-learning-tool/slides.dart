@@ -26,28 +26,34 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
   CodeSlide(
     singleRunBubbleSortCode,
     title: 'Bubble Sort - Code',
-    route: 'bubble-sort-single-run',
+    route: 'bubble-sort-single-run-1',
   ),
   // 06
+  CodeSlide(
+    bubbleSortSwapCode,
+    title: 'Bubble Sort - Code',
+    route: 'bubble-sort-single-run-2',
+  ),
+  // 07
   CodeSlide(
     randomValuesGenerationCode,
     title: 'Bubble Sort - Generate Random Values',
   ),
-  // 07
+  // 08
   CodeSlide(
     bubbleSortPainterCode1,
     title: 'Bubble Sort - Paint Bars',
     route: 'bubble-sort-paint-bars-1',
     codeFontSize: 22,
   ),
-  // 08
+  // 09
   CodeSlide(
     bubbleSortPainterCode2,
     title: 'Bubble Sort - Paint Bars',
     route: 'bubble-sort-paint-bars-2',
     codeFontSize: 22,
   ),
-  // 09
+  // 10
   DemoSlide(
     'Bubble Sort - Paint Bars',
     route: 'bubble-sort-paint-bars-3',
@@ -57,14 +63,14 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
       count: 20,
     ),
   ),
-  // 10
+  // 11
   CodeSlide(
     bubbleSortedValuesCode,
     title: 'Bubble Sort - Sort Bars',
     route: 'bubble-sort-sort-bars-1',
     codeFontSize: 22,
   ),
-  // 11
+  // 12
   DemoSlide(
     'Bubble Sort - Sort Bars',
     route: 'bubble-sort-sort-bars-2',
@@ -75,43 +81,45 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
       count: 20,
     ),
   ),
-  // 12
+  // 13
   CodeSlide(
     tickerInitializationCode1,
     route: 'init-ticker-1-mixin',
     title: 'Ticker Set-up - Mixin',
   ),
-  // 13
+  // 14
   CodeSlide(
     tickerInitializationCode2,
     route: 'init-ticker-2-create',
     title: 'Ticker Set-up - Create & Start',
   ),
-  // 14
+  // 15
   CodeSlide(
     tickerInitializationCode3,
     route: 'init-ticker-3-dispose',
     title: 'Ticker Set-up - Dispose',
     codeFontSize: 20,
   ),
-  // 15
+  // 16
   CodeSlide(
     tickerInitializationCode4,
     route: 'init-ticker-4-custom-interval',
     title: 'Ticker Set-up - Custom Interval',
   ),
-  // 16
-  CodeSlide(bubbleSortTickCode,
-      title: 'Bubble Sort by Tick',
-      route: 'bubble-sort-by-tick-1',
-      codeFontSize: 20),
   // 17
+  CodeSlide(
+    bubbleSortTickCode,
+    title: 'Bubble Sort by Tick',
+    route: 'bubble-sort-by-tick-1',
+    codeFontSize: 20,
+  ),
+  // 18
   CodeSlide(
     createTickerWithBubbleSortCode,
     title: 'Bubble Sort by Tick',
     route: 'bubble-sort-by-tick-2',
   ),
-  // 18
+  // 19
   DemoSlide(
     'Bubble Sort Simulation',
     label: 'Bubble Sort',
@@ -122,52 +130,65 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
       tickDuration: 300,
     ),
   ),
-  // 19
+  // 20
   SectionTitleSlide(
     'Quick Sort',
     isSubtitle: true,
   ),
-  // 20
-  ImageSlide(
-      title: 'Quick Sort Algorithm',
-      path: 'assets/images/quick-sort.png',
-      label: 'Quick sort algorithm illustration by IDEA'),
   // 21
+  ImageSlide(
+    title: 'Quick Sort Algorithm',
+    path: 'assets/images/quick-sort.png',
+    label: 'Quick sort algorithm illustration by IDEA',
+  ),
+  // 22
   DemoSlide(
     'Quick Sort Simulation',
     label: 'Quick Sort',
     child: const QuickSortBars(),
   ),
-  // 22
+  // 23
+  CodeSlide(
+    quickSortRecursionCode,
+    title: 'Quick Sort Code',
+    route: 'quick-sort-code-1',
+  ),
+  // 24
+  CodeSlide(
+    quickSortSwapCode,
+    title: 'Quick Sort Code',
+    route: 'quick-sort-code-2',
+  ),
+  // 25
   SectionTitleSlide(
     'Sorting Colors',
     isSubtitle: true,
   ),
-  // 23
+  // 26
   CodeSlide(
     randomColorGenerationCode1,
     route: 'random-color-generation-1',
     title: 'Random HSL Color Generation',
   ),
-  // 24
+  // 27
   CodeSlide(
     randomColorGenerationCode2,
     route: 'random-color-generation-2',
     title: 'Random HSL Color Generation',
   ),
-  // 25
+  // 28
   CodeSlide(
     randomColorGenerationCode3,
     route: 'random-color-generation-3',
     title: 'Random HSL Color Generation',
   ),
-  // 26
+  // 29
   DemoSlide(
     'Color Sorting Simulation - by Hue',
     label: 'Color Sorting',
     child: const QuickSortColors(tickDuration: 20),
   ),
-  // 27
+  // 30
   DemoSlide(
     'Color Sorting Simulation - by Saturation',
     label: 'Color Sorting',
@@ -176,7 +197,7 @@ final creativeCodingAsALearningToolSlides = <FlutterDeckSlideWidget>[
       colorSortProperty: ColorSortProperty.saturation,
     ),
   ),
-  // 28
+  // 31
   DemoSlide(
     'Color Sorting Simulation - by Lightness',
     label: 'Color Sorting',
