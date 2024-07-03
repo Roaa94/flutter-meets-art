@@ -20,7 +20,7 @@ class PixelSortingPlaygroundPage extends StatelessWidget {
       body: PixelSortingPlayground(
         imagePath: 'assets/images/dash-bg-400p.png',
         tickDuration: 5,
-        pixelSortStyle: PixelSortStyle.byColumn,
+        pixelSortStyle: PixelSortStyle.byRow,
       ),
     );
   }
@@ -90,12 +90,10 @@ class _PixelSortingPlaygroundState extends State<PixelSortingPlayground> {
       int col = (i ~/ 4) % width;
       int row = (i ~/ 4) ~/ width;
 
-      if (i >= 0 && i + 4 <= _imageBytes!.lengthInBytes) {
-        final rgbaColor = _imageBytes!.getUint32(i);
-        HSLColor pixelColor = HSLColor.fromColor(Color(rgbaToArgb(rgbaColor)));
-        _pixels[i ~/ 4] = pixelColor;
-        _transposedPixels[col * height + row] = pixelColor;
-      }
+      final rgbaColor = _imageBytes!.getUint32(i);
+      HSLColor pixelColor = HSLColor.fromColor(Color(rgbaToArgb(rgbaColor)));
+      _pixels[i ~/ 4] = pixelColor;
+      _transposedPixels[col * height + row] = pixelColor;
     }
   }
 
