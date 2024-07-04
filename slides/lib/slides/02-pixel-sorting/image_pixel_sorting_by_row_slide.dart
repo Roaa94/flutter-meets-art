@@ -8,8 +8,8 @@ class ImagePixelSortingByRowSlide extends FlutterDeckSlideWidget {
   const ImagePixelSortingByRowSlide()
       : super(
           configuration: const FlutterDeckSlideConfiguration(
-            route: '/image-pixel-sorting-by-row',
-            title: 'Image Pixel Sorting - By Row',
+            route: '/pixel-sorting-by-row',
+            title: 'Pixel Sorting - By Row',
           ),
         );
 
@@ -17,7 +17,7 @@ class ImagePixelSortingByRowSlide extends FlutterDeckSlideWidget {
   FlutterDeckSlide build(BuildContext context) {
     return buildTemplateSlide(
       context,
-      title: 'Image Pixel Sorting - By Row',
+      title: 'Pixel Sorting - By Row',
       showHeader: true,
       content: const Center(
         child: WindowFrame(

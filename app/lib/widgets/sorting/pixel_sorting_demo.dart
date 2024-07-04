@@ -38,6 +38,8 @@ class PixelSortingDemo extends StatefulWidget {
     this.showThreshold = false,
     this.thresholdMax = 0.8,
     this.thresholdMin = 0.2,
+    this.autoStart = true,
+    this.trigger = true,
   });
 
   final String imagePath;
@@ -47,6 +49,8 @@ class PixelSortingDemo extends StatefulWidget {
   final bool showThreshold;
   final double thresholdMax;
   final double thresholdMin;
+  final bool autoStart;
+  final bool trigger;
 
   @override
   State<PixelSortingDemo> createState() => _PixelSortingDemoState();
@@ -57,7 +61,7 @@ class _PixelSortingDemoState extends State<PixelSortingDemo> {
   ByteData? _imageBytes;
   Size _imageSize = Size.zero;
   List<HSLColor> _pixels = [];
-  final List<int> _intervals = [];
+  List<int> _intervals = [];
   List<HSLColor> _transposedPixels = [];
   late Duration _tickDuration;
   CancelableCompleter? _completer;
@@ -106,6 +110,7 @@ class _PixelSortingDemoState extends State<PixelSortingDemo> {
   }
 
   void _initIntervals({transposed = false}) {
+    _intervals = [];
     int? start;
     int? end;
     List<HSLColor> pixels = transposed ? _transposedPixels : _pixels;
@@ -195,10 +200,13 @@ class _PixelSortingDemoState extends State<PixelSortingDemo> {
     await Future.wait(futures);
   }
 
-  Future<void> _loadImageAndSort() async {
+  Future<void> _loadImageAndPixels() async {
     await _loadImage();
     _initPixels();
     _initIntervals(transposed: widget.pixelSortStyle.transposed);
+  }
+
+  Future<void> _sort() async {
     _completer?.complete(_sortPixels());
     await _completer?.operation.value;
     log('Finished!');
@@ -226,7 +234,9 @@ class _PixelSortingDemoState extends State<PixelSortingDemo> {
     super.initState();
     _completer = CancelableCompleter(onCancel: () => log('Canceled!'));
     _tickDuration = Duration(milliseconds: widget.tickDuration);
-    _loadImageAndSort();
+    _loadImageAndPixels().then((_) {
+      if (widget.autoStart) _sort();
+    });
   }
 
   @override
@@ -239,7 +249,18 @@ class _PixelSortingDemoState extends State<PixelSortingDemo> {
         oldWidget.pixelSortStyle != widget.pixelSortStyle) {
       _completer?.operation.cancel().then((_) {
         _completer = CancelableCompleter(onCancel: () => log('Canceled!'));
-        _loadImageAndSort();
+        _loadImageAndPixels().then((_) {
+          if (widget.autoStart) _sort();
+        });
+      });
+    }
+
+    if (oldWidget.trigger != widget.trigger && _imageBytes != null) {
+      _completer?.operation.cancel().then((_) {
+        _completer = CancelableCompleter(onCancel: () => log('Canceled!'));
+        _initPixels();
+        _initIntervals(transposed: widget.pixelSortStyle.transposed);
+        _sort();
       });
     }
   }
@@ -361,7 +382,7 @@ class PixelSortingDemoPainter extends CustomPainter {
         colors: colorsRaw,
       );
 
-      canvas.drawVertices(verticesRaw, BlendMode.src, Paint());
+      canvas.drawVertices(verticesRaw, BlendMode.dst, Paint());
     }
   }
 

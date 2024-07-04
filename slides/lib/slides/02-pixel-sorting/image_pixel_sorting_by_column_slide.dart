@@ -8,8 +8,8 @@ class ImagePixelSortingByColumnSlide extends FlutterDeckSlideWidget {
   const ImagePixelSortingByColumnSlide()
       : super(
           configuration: const FlutterDeckSlideConfiguration(
-            route: '/image-pixel-sorting-by-column',
-            title: 'Image Pixel Sorting - By Column',
+            route: '/pixel-sorting-by-column',
+            title: 'Pixel Sorting - By Column',
           ),
         );
 

@@ -77,40 +77,25 @@ final pixelSortingSlides = <FlutterDeckSlideWidget>[
   // 44
   CodeSlide(
     sortPixelsByRowCode1,
-    title: 'Image Pixel Sorting',
-    route: 'image-pixel-sorting-code-1',
+    title: 'Pixel Sorting',
+    route: 'pixel-sorting-code-1',
   ),
   // 45
   CodeSlide(
     sortPixelsByRowCode2,
-    title: 'Image Pixel Sorting',
-    route: 'image-pixel-sorting-code-2',
+    title: 'Pixel Sorting',
+    route: 'pixel-sorting-code-2',
   ),
   // 46
   CodeSlide(
     sortPixelsByRowCode3,
-    title: 'Image Pixel Sorting',
-    route: 'image-pixel-sorting-code-3',
+    title: 'Pixel Sorting',
+    route: 'pixel-sorting-code-3',
   ),
   // 47
   const ImagePixelSortingByRowSlide(),
+  // 48
   const ImagePixelSortingByColumnSlide(),
+  // 49
   const ImagePixelSortingByIntervalSlide(),
-  PlaceholderSlide(
-    '2.2 Sorting the Pixels 4/n',
-    subtitle: 'Show simulation of image sorted by row',
-  ),
-  PlaceholderSlide(
-    '2.2 Sorting the Pixels 5/n - (possibilities - 1)',
-    subtitle: 'Show simulation of image sorted by column',
-  ),
-  PlaceholderSlide(
-    '2.2 Sorting the Pixels 5/n - (possibilities - 2)',
-    subtitle: 'Show simulation of image sorted by interval',
-  ),
-  PlaceholderSlide(
-    '2.2 Sorting the Pixels 5/n - (possibilities - 3)',
-    subtitle: 'Show simulation of image sorted by interval',
-  ),
-  PlaceholderSlide('2. Closing'),
 ];

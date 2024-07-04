@@ -210,7 +210,7 @@ Future<void> _quickSort(List<double> arr, int start, int end) async {
 
 const sortPixelsByRowCode1 = '''
 List<Future<void>> futures = [];
-for (int i = 0; i < _imageSize.height.toInt(); i++) { // ⬅️ Loop over rows  
+for (int i = 0; i < _imageSize.height.toInt(); i++) { // ⬅️ Loop over rows    
   final start = i * _imageSize.width.toInt();
   final end = start + _imageSize.width.toInt() - 1;
   
@@ -224,13 +224,13 @@ for (int i = 0; i < _imageSize.height.toInt(); i++) {
   final start = i * _imageSize.width.toInt();
   final end = start + _imageSize.width.toInt() - 1;
   
-  futures.add(_quickSortColors(_pixels, start, end)); // ⬅️ Add future calls
+  futures.add(_quickSortColors(_pixels, start, end)); // ⬅️ Store future calls
 }
 ''';
 
 const sortPixelsByRowCode3 = '''
 List<Future<void>> futures = [];
-for (int i = 0; i < _imageSize.height.toInt(); i++) {                       
+for (int i = 0; i < _imageSize.height.toInt(); i++) {                         
   final start = i * _imageSize.width.toInt();
   final end = start + _imageSize.width.toInt() - 1;
   
