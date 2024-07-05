@@ -5,8 +5,6 @@ import 'package:slides/slides/00-introduction/slides.dart';
 import 'package:slides/slides/01-cc-as-as-learning-tool/slides.dart';
 import 'package:slides/slides/02-pixel-sorting/slides.dart';
 import 'package:slides/slides/03-stipple-art/slides.dart';
-import 'package:slides/slides/04-gpu-art/slides.dart';
-import 'package:slides/slides/05-ui-art/slides.dart';
 import 'package:slides/slides/06-conclusion/slides.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
@@ -64,8 +62,6 @@ class SlidesApp extends StatelessWidget {
         ...creativeCodingAsALearningToolSlides,
         ...pixelSortingSlides,
         ...stippleArtSlides,
-        ...gpuArtSlides,
-        ...uiArtSlides,
         ...conclusionSlides,
       ],
     );
