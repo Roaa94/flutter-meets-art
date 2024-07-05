@@ -58,7 +58,7 @@ class VoronoiPainter extends CustomPainter {
           Paint()
             ..style = PaintingStyle.stroke
             ..strokeWidth = 2
-            ..color = paintVoronoiPolygonEdges ? Colors.pink : Colors.black,
+            ..color = Colors.black,
         );
       }
 
@@ -98,7 +98,7 @@ class VoronoiPainter extends CustomPainter {
             Paint()
               ..style = PaintingStyle.stroke
               ..strokeWidth = 3
-              ..color = Colors.black,
+              ..color = paintDelaunayTriangles ? const Color(0xff35aee7) : Colors.black,
           );
         }
       }

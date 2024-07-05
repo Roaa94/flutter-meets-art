@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_relaxation_slide.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_slide.dart';
+import 'package:slides/slides/03-stipple-art/approach_slide.dart';
 import 'package:slides/slides/03-stipple-art/code.dart';
 import 'package:slides/slides/03-stipple-art/delaunay_triangulation_slide.dart';
 import 'package:slides/slides/03-stipple-art/interactive_voronoi_slide.dart';
@@ -20,56 +21,104 @@ import 'package:slides/templates/placeholder_slide.dart';
 import 'package:slides/templates/section_title_slide.dart';
 
 final stippleArtSlides = <FlutterDeckSlideWidget>[
+  // 50
   SectionTitleSlide('3. STIPPLE ART'),
-  PlaceholderSlide(
-    '3.1. Introduction 1/n',
-    subtitle:
-        'What is stipple engraving/image stippling? (show images from history)',
-  ),
-  PlaceholderSlide(
-    '3.1. Introduction 2/n',
-    subtitle: 'How do we approach this? (problem breakdown and initial goal)',
-  ),
-  SectionTitleSlide('The Voronoi Diagram'),
-  const VoronoiDiagramSlide(),
+  // 51
   ImageSlide(
-      title: 'Voronoi FFI Computation',
-      path: 'assets/images/voronoi-pub-dev.png',
-      label: 'pub.dev package to calculate voronoi diagram using Rust'),
-  SectionTitleSlide('The Delaunay Triangulation'),
+    title: 'Stipple Engraving',
+    path: 'assets/images/stippling-greyscale.png',
+    width: 800,
+    label: 'Giulio Campagnola, around 1510 - "The Young Shepherd"',
+  ),
+  // 52
+  ImageSlide(
+    title: 'Colored Stipple Engraving',
+    path: 'assets/images/stippling-cupid-and-aglaia.png',
+    width: 800,
+    label:
+        'Francesco Bartolozzi (1727-1815) "Cupid Binding Aglaia to a Laurel"',
+  ),
+  // 53
+  ImageSlide(
+    title: 'Pointillism in Neo-Impressionism',
+    route: 'pointillism-1',
+    path:
+        'assets/images/pointillism-paul-signac-l\'hirondelle-steamer-on-the-seine.jpeg',
+    width: 800,
+    label: 'Paul Signac (1863–1935) - "L\'Hirondelle Steamer on the Seine"',
+  ),
+  // 54
+  ImageSlide(
+    title: 'Pointillism in Neo-Impressionism',
+    route: 'pointillism-2',
+    path: 'assets/images/pointillism-georges-lemmen-the-beach-at-heist.jpg',
+    width: 800,
+    label:
+        'Georges Lemmen, c.1891-92, "The Beach at Heist", Musée d\'Orsay Paris',
+  ),
+  // 55
+  SectionTitleSlide(
+    'How do we approach this?',
+    isSubtitle: true,
+    route: 'approach-to-stippling',
+  ),
+  // 56
+  const ApproachSlide(),
+  // 57
+  SectionTitleSlide('The Voronoi Diagram', isSubtitle: true),
+  // 58
+  const VoronoiDiagramSlide(),
+  // 59
+  ImageSlide(
+    title: 'Voronoi FFI Computation',
+    path: 'assets/images/voronoi-pub-dev.png',
+    label: 'pub.dev package to calculate voronoi diagram using Rust',
+  ),
+  // 60
+  SectionTitleSlide('The Delaunay Triangulation', isSubtitle: true),
+  // 61
   const DelaunayTriangulationSlide(),
+  // 62
   ImageSlide(
     title: 'Delaunay Dart Package',
     path: 'assets/images/delaunay-pub-dev.png',
     label: 'pub.dev package to calculate delaunay triangulation',
   ),
+  // 63
   CodeSlide(
     delaunayClassInputCode,
     title: 'Delaunay Class',
   ),
+  // 64
   CodeSlide(
     randomRawPointsGenerationCode,
     title: 'Delaunay Coordinates Generation',
   ),
+  // 65
   CodeSlide(
     initDelaunayCode,
     title: 'Delaunay Initialization',
   ),
+  // 66
   const VoronoiOnDelaunaySlide(),
+  // 67
   CodeSlide(
     delaunayVoronoiExtensionCode,
     title: 'Extending Delaunay Class with Voronoi',
   ),
+  // 67
   CodeSlide(
     initializeVoronoiCode,
     title: 'Voronoi Initialization',
   ),
+  // 68
   CodeSlide(
     paintVoronoiEdgesCode1,
     title: 'Painting Voronoi Polygons',
     route: 'painting-voronoi-polygons-1',
     codeFontSize: 24,
   ),
+  // 69
   CodeSlide(
     paintVoronoiEdgesCode2,
     title: 'Painting Voronoi Polygons',

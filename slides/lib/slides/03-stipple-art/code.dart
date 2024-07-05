@@ -76,6 +76,14 @@ for (int j = 0; j < voronoi.cells.length; j++) {
   for (int i = 1; i < voronoi.cells[j].length; i++) {
     path.lineTo(voronoi.cells[j][i].dx, voronoi.cells[j][i].dy);
   }
+  path.close();
+  
+  
+  
+  
+  
+  
+  
   
 }''';
 

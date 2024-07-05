@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:app/algorithms/delaunay.dart';
 import 'package:app/algorithms/voronoi.dart';
@@ -12,11 +13,17 @@ class GridVoronoi extends StatelessWidget {
     required this.size,
     this.cellIncrementFactor = 0.1,
     this.cellSize = 50,
+    this.colored = false,
+    this.paintSeedPoints = true,
+    this.paintVoronoiEdges = true,
   }) : assert(cellIncrementFactor <= 1.0 && cellIncrementFactor > 0);
 
   final Size size;
   final double cellIncrementFactor;
   final double cellSize;
+  final bool colored;
+  final bool paintSeedPoints;
+  final bool paintVoronoiEdges;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +35,9 @@ class GridVoronoi extends StatelessWidget {
             cellSize: cellSize,
             cellIncrementFactor: cellIncrementFactor,
           ),
+          colored: colored,
+          paintSeedPoints: paintSeedPoints,
+          paintVoronoiEdges: paintVoronoiEdges,
         ),
       ),
     );
@@ -37,9 +47,15 @@ class GridVoronoi extends StatelessWidget {
 class GridVoronoiPainter extends CustomPainter {
   GridVoronoiPainter({
     required this.seedPoints,
+    this.colored = false,
+    this.paintSeedPoints = true,
+    this.paintVoronoiEdges = true,
   });
 
   final Float32List seedPoints;
+  final bool colored;
+  final bool paintSeedPoints;
+  final bool paintVoronoiEdges;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -57,36 +73,42 @@ class GridVoronoiPainter extends CustomPainter {
       Point(size.width, size.height),
     );
 
-    final cells = voronoi.cells;
-    for (int j = 0; j < cells.length; j++) {
-      final path = Path()..moveTo(cells[j][0].dx, cells[j][0].dy);
-      for (int i = 1; i < cells[j].length; i++) {
-        path.lineTo(cells[j][i].dx, cells[j][i].dy);
+    if (paintVoronoiEdges) {
+      final cells = voronoi.cells;
+      for (int j = 0; j < cells.length; j++) {
+        final path = Path()..moveTo(cells[j][0].dx, cells[j][0].dy);
+        for (int i = 1; i < cells[j].length; i++) {
+          path.lineTo(cells[j][i].dx, cells[j][i].dy);
+        }
+        path.close();
+
+        if (colored) {
+          canvas.drawPath(
+            path,
+            Paint()..color = colors[j],
+          );
+        }
+
+        canvas.drawPath(
+          path,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 3
+            ..color = Colors.black,
+        );
       }
-      path.close();
+    }
 
-      canvas.drawPath(
-        path,
-        Paint()..color = colors[j],
-      );
-
-      canvas.drawPath(
-        path,
+    if (paintSeedPoints) {
+      canvas.drawRawPoints(
+        PointMode.points,
+        delaunay.coords,
         Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3
+          ..strokeWidth = 10
+          ..strokeCap = StrokeCap.round
           ..color = Colors.black,
       );
     }
-
-    // canvas.drawRawPoints(
-    //   PointMode.points,
-    //   delaunay.coords,
-    //   Paint()
-    //     ..strokeWidth = 12
-    //     ..strokeCap = StrokeCap.round
-    //     ..color = Colors.black,
-    // );
   }
 
   @override
