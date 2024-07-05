@@ -25,7 +25,7 @@ class StippledDash extends StatelessWidget {
             maxStroke: 23,
             // strokePaintingStyle: true,
             imagePath: 'assets/images/dash.jpg',
-            animate: true,
+            trigger: true,
           ),
         ),
       ),

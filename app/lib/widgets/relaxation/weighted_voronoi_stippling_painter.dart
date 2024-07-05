@@ -57,7 +57,7 @@ class WeightedVoronoiStipplingPainter extends CustomPainter {
       }
     }
 
-    if (showPoints && !showVoronoiPolygons) {
+    if (showPoints) {
       for (int i = 0; i < relaxation.coords.length; i += 2) {
         double stroke = pointStrokeWidth;
         if (weightedStrokes) {

@@ -1,3 +1,5 @@
+import 'package:app/widgets/relaxation/weighted_voronoi_stippling_demo.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/demos/randomized_image_stippling_demo.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_relaxation_slide.dart';
@@ -176,7 +178,17 @@ final stippleArtSlides = <FlutterDeckSlideWidget>[
   DemoSlide(
     'Weighted Image Stippling',
     route: 'weighted-image-stippling-1',
-    child: const RandomizedImageStipplingDemo(),
+    child: const ColoredBox(
+      color: Colors.white,
+      child: WeightedVoronoiStipplingDemo(
+        showImage: false,
+        showVoronoiPolygons: false,
+        pointsCount: 2000,
+        paintColors: false,
+        trigger: true,
+        weightedCentroids: true,
+      ),
+    ),
   ),
   const WeightedVoronoiStipplingSlide(),
   SectionTitleSlide(

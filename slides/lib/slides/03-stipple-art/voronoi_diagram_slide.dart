@@ -21,6 +21,7 @@ class VoronoiDiagramSlide extends FlutterDeckSlideWidget {
       showHeader: true,
       content: WindowFrame(
         margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
+        label: 'Voronoi',
         child: Container(
           padding: const EdgeInsets.all(8.0),
           color: Colors.white,
