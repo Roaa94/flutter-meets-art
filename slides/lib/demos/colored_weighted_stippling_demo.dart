@@ -4,23 +4,24 @@ import 'package:slides/styles/app_colors.dart';
 import 'package:slides/widgets/controls.dart';
 import 'package:slides/widgets/window_frame.dart';
 
-class WeightedStipplingDemo extends StatefulWidget {
-  const WeightedStipplingDemo({super.key});
+class ColoredWeightedStipplingDemo extends StatefulWidget {
+  const ColoredWeightedStipplingDemo({super.key});
 
   @override
-  State<WeightedStipplingDemo> createState() =>
-      _WeightedStipplingDemoState();
+  State<ColoredWeightedStipplingDemo> createState() =>
+      _ColoredWeightedStipplingDemoState();
 }
 
-class _WeightedStipplingDemoState
-    extends State<WeightedStipplingDemo> {
+class _ColoredWeightedStipplingDemoState
+    extends State<ColoredWeightedStipplingDemo> {
   static const double iconSize = 30;
   static const double controlsSize = 52;
   static const double borderRadius = 15;
   static const Color activeColor = AppColors.primary;
 
-  bool showVoronoi = false;
-  bool showPoints = true;
+  bool weightedStrokes = false;
+  bool showColors = false;
+  bool strokePaintingStyle = false;
   bool trigger = false;
   int pointsCount = 1400;
   double angleIncrement = 17;
@@ -39,12 +40,14 @@ class _WeightedStipplingDemoState
                 color: Colors.white,
                 child: WeightedVoronoiStipplingDemo(
                   showImage: false,
-                  showVoronoiPolygons: showVoronoi,
+                  showVoronoiPolygons: false,
                   pointsCount: 2000,
-                  paintColors: false,
-                  showPoints: showPoints,
+                  paintColors: true,
                   trigger: trigger,
                   weightedCentroids: true,
+                  weightedStrokes: weightedStrokes,
+                  strokePaintingStyle: strokePaintingStyle,
+                  // wiggleFactor: 0.5,
                 ),
               ),
             ),
@@ -70,27 +73,27 @@ class _WeightedStipplingDemoState
                   ),
                   const SizedBox(width: 10),
                   ControlsButton(
-                    onTap: () => setState(() => showVoronoi = !showVoronoi),
+                    onTap: () => setState(() => weightedStrokes = !weightedStrokes),
                     size: controlsSize,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(borderRadius),
                       topRight: Radius.circular(borderRadius),
                     ),
                     iconSize: iconSize,
-                    icon: Icons.square_outlined,
-                    color: showVoronoi ? activeColor : Colors.black,
+                    icon: Icons.line_weight,
+                    color: weightedStrokes ? activeColor : Colors.black,
                   ),
                   const SizedBox(width: 10),
                   ControlsButton(
-                    onTap: () => setState(() => showPoints = !showPoints),
+                    onTap: () => setState(() => strokePaintingStyle = !strokePaintingStyle),
                     size: controlsSize,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(borderRadius),
                       topRight: Radius.circular(borderRadius),
                     ),
                     iconSize: iconSize,
-                    icon: Icons.circle,
-                    color: showPoints ? activeColor : Colors.black,
+                    icon: Icons.circle_outlined,
+                    color: strokePaintingStyle ? activeColor : Colors.black,
                   ),
                 ],
               ),

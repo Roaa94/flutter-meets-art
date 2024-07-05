@@ -124,6 +124,20 @@ void _update() {
   setState(() {});
 }''';
 
+const lerpPointsCode = '''
+Float32List lerpPoints(Float32List a, Float32List b, double value) {
+  final newPoints = Float32List(a.length);
+  for (int i = 0; i < a.length; i++) {
+    final lerp = lerpDouble(
+      a[i],
+      b[i],
+      value,
+    );
+    newPoints[i] = lerp ?? a[i];
+  }
+  return newPoints;
+}''';
+
 const voronoiRelaxationTickerCode = '''
 _ticker = createTicker((_) => _update());''';
 
@@ -139,3 +153,33 @@ for (int i = 0; i < pointsCount; i++) {
   coords[i] = offset.dx;
   coords[i + 1] = offset.dy;
 }''';
+
+const cameraImageStreamCode1 = '''
+CameraMacOSView(
+    //...
+    onCameraInizialized: (CameraMacOSController controller) {
+      setState(() {
+        macOSController = controller;
+      });
+      macOSController?.startImageStream((image) {
+        _loadPixelsFromStreamedImage(image);
+      });
+    },
+    //...
+)
+''';
+
+const cameraImageStreamCode2 = '''
+Future<void> _loadPixelsFromStreamedImage(
+  CameraImageData? streamedImage,
+) async {
+  if (streamedImage != null) {
+    var decodedImage =
+        await decodeImageFromList(argb2bitmap(streamedImage).bytes);
+    final imageBytes = await decodedImage.toByteData();
+    _streamedImage = streamedImage;
+    _cameraImagePixels = imageBytes;
+    // relaxation algorithm
+  }
+}
+''';

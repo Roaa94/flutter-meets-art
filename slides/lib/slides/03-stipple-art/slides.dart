@@ -1,11 +1,11 @@
-import 'package:app/widgets/relaxation/weighted_voronoi_stippling_demo.dart';
+import 'package:app/widgets/voronoi/voronoi_painter_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
-import 'package:slides/demos/randomized_image_stippling_demo.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_relaxation_slide.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_slide.dart';
 import 'package:slides/slides/03-stipple-art/approach_slide.dart';
 import 'package:slides/slides/03-stipple-art/code.dart';
+import 'package:slides/slides/03-stipple-art/colored_weighted_stippling_slide.dart';
 import 'package:slides/slides/03-stipple-art/delaunay_triangulation_slide.dart';
 import 'package:slides/slides/03-stipple-art/interactive_voronoi_slide.dart';
 import 'package:slides/slides/03-stipple-art/randomized_image_stippling_relaxation_slide.dart';
@@ -15,11 +15,10 @@ import 'package:slides/slides/03-stipple-art/voronoi_grid_pattern_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_on_delaunay_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_relaxation_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_spiral_pattern_slide.dart';
-import 'package:slides/slides/03-stipple-art/weighted_voronoi_stippling_slide.dart';
+import 'package:slides/slides/03-stipple-art/weighted_stippling_slide.dart';
 import 'package:slides/templates/code_slide.dart';
 import 'package:slides/templates/demo_slide.dart';
 import 'package:slides/templates/image_slide.dart';
-import 'package:slides/templates/placeholder_slide.dart';
 import 'package:slides/templates/section_title_slide.dart';
 
 final stippleArtSlides = <FlutterDeckSlideWidget>[
@@ -150,49 +149,70 @@ final stippleArtSlides = <FlutterDeckSlideWidget>[
   CodeSlide(
     voronoiRelaxationUpdateCode,
     title: 'Lerp Seed Points to Voronoi Centroids',
+    route: 'lerp-1',
   ),
   // 79
+  CodeSlide(
+    lerpPointsCode,
+    title: 'Lerp Seed Points to Voronoi Centroids',
+    route: 'lerp-2',
+  ),
+  // 80
   CodeSlide(
     voronoiRelaxationTickerCode,
     title: 'Use Ticker to Update',
   ),
-  // 80
-  const AnimatedVoronoiRelaxationSlide(),
   // 81
-  SectionTitleSlide('Weighted Voronoi Stippling'),
+  const AnimatedVoronoiRelaxationSlide(),
   // 82
+  SectionTitleSlide('Weighted Voronoi Stippling'),
+  // 83
   CodeSlide(
     generateRandomPointsFromPixelsCode,
     title: 'Image Pixels Random Point Generation',
     codeFontSize: 20,
   ),
-  // 83
-  const RandomizedImageStipplingSlide(),
   // 84
+  const RandomizedImageStipplingSlide(),
+  // 85
   const RandomizedImageStipplingRelaxationSlide(),
-  PlaceholderSlide('Weights Calculation (with voronoi demo explanation)'),
-  CodeSlide(
-    '',
-    title: 'Weighted Centroids Calculation',
-  ),
+  // 86
   DemoSlide(
-    'Weighted Image Stippling',
-    route: 'weighted-image-stippling-1',
-    child: const ColoredBox(
+    'Weighted Centroids Calculation',
+    route: 'weighted-image-calculation',
+    child: ColoredBox(
       color: Colors.white,
-      child: WeightedVoronoiStipplingDemo(
-        showImage: false,
-        showVoronoiPolygons: false,
-        pointsCount: 2000,
-        paintColors: false,
-        trigger: true,
-        weightedCentroids: true,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return VoronoiPainterWrapper(
+            size: constraints.biggest,
+            showSeedPoints: true,
+            pointsCount: 40,
+            paintVoronoiPolygonEdges: true,
+          );
+        },
       ),
     ),
   ),
-  const WeightedVoronoiStipplingSlide(),
+  // 87
+  const WeightedStipplingSlide(),
+  // 88
+  const ColoredWeightedStipplingSlide(),
+  // 89
   SectionTitleSlide(
     'What if you are the Art?',
     route: 'audience-is-art',
+  ),
+  // 90
+  CodeSlide(
+    cameraImageStreamCode1,
+    title: 'Camera Image Stream',
+    route: 'camera-code-1',
+  ),
+  // 91
+  CodeSlide(
+    cameraImageStreamCode2,
+    title: 'Camera Image Stream',
+    route: 'camera-code-2',
   ),
 ];
