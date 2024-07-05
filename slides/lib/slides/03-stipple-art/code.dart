@@ -105,13 +105,7 @@ for (int j = 0; j < voronoi.cells.length; j++) {
   );
 }''';
 
-const voronoiStateInitializationCode1 = '''
-// Widget state
-late Float32List points;
-late Float32List centroids;
-late Delaunay delaunay;
-late Voronoi voronoi;
-
+const voronoiRelaxationInitializationCode = '''
 void _calculate() {
   delaunay = Delaunay(points);
   delaunay.update();
@@ -119,91 +113,29 @@ void _calculate() {
     const Point(0, 0),
     Point(widget.size.width, widget.size.height),
   );
+  // Some boring math 👇🏻
   centroids = calcCentroids(voronoi.cells);
 }''';
 
-const voronoiStateInitializationCode2 = '''
-void _calculate() {
-  delaunay = Delaunay(points);
-  delaunay.update();
-  voronoi = delaunay.voronoi(
-    const Point(0, 0),
-    Point(widget.size.width, widget.size.height),
-  );
-  centroids = calcCentroids(voronoi.cells);
-}
-
-@override
-void initState() {
-  super.initState();
-  points = generateRandomPoints(
-    random: random,
-    canvasSize: widget.size,
-    count: widget.pointsCount,
-  );
-  _calculate();
-}''';
-
-const updateVoronoiRelaxationCode = '''
+const voronoiRelaxationUpdateCode = '''
 void _update() {
   points = lerpPoints(points, centroids, 0.01);
   _calculate();
   setState(() {});
 }''';
 
-const voronoiRelaxationTickerCode1 = '''
-class _VoronoiRelaxationState extends State<VoronoiRelaxation>
-    with SingleTickerProviderStateMixin { // ⬅️ Add mixin
-    //...
-}''';
-
-const voronoiRelaxationTickerCode2 = '''
-class _VoronoiRelaxationState extends State<VoronoiRelaxation>
-    with SingleTickerProviderStateMixin {
-    late final Ticker _ticker;
-    //...
-    
-    @override
-    void initState() {
-      super.initState();
-      //...
-      _ticker = createTicker((_) => _update()); // ⬅️ Update on tick
-      _ticker.start();
-    }
-
-    //...
-}''';
-
-const voronoiRelaxationTickerCode3 = '''
-class _VoronoiRelaxationState extends State<VoronoiRelaxation>
-    with SingleTickerProviderStateMixin {
-    late final Ticker _ticker;
-    //...
-    
-    @override
-    void dispose() {
-      _ticker.dispose();
-      super.dispose();
-    }
-    
-    //...
-}''';
+const voronoiRelaxationTickerCode = '''
+_ticker = createTicker((_) => _update());''';
 
 const generateRandomPointsFromPixelsCode = '''
-Float32List generateRandomPointsFromPixels(
-    ByteData bytes, Size size, int pointsCount, Random random) {
-  final list = <double>[];
-  for (int i = 0; i < pointsCount; i++) {
-    final x = size.width * random.nextDouble();
-    final y = size.height * random.nextDouble();
-    final offset = Offset(x, y);
-    final color = 
-       getPixelColorFromBytes(bytes: bytes, offset: offset, size: size);
-
-    final brightness = color.computeLuminance();
-    if (random.nextDouble() > brightness) {
-      list.addAll([offset.dx, offset.dy]);
-    }
-  }
-  return Float32List.fromList(list);
+final coords = Float32List(pointsCount * 2);
+for (int i = 0; i < pointsCount; i++) {
+  final x = size.width * random.nextDouble();
+  final y = size.height * random.nextDouble();
+  final offset = Offset(x, y);
+  final color =
+      getPixelColorFromBytes(bytes: bytes, offset: offset, size: size);
+  final brightness = color.computeLuminance();
+  coords[i] = offset.dx;
+  coords[i + 1] = offset.dy;
 }''';

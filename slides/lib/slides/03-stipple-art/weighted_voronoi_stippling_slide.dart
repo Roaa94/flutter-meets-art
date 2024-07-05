@@ -30,7 +30,7 @@ class WeightedVoronoiStipplingSlide extends FlutterDeckSlideWidget {
             showVoronoiPolygons: false,
             pointsCount: 2000,
             paintColors: true,
-            animate: true,
+            trigger: true,
             weightedCentroids: true,
             weightedStrokes: true,
             // wiggleFactor: 0.5,

@@ -1,12 +1,12 @@
-import 'package:app/app.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
+import 'package:slides/demos/randomized_image_stippling_demo.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_relaxation_slide.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_slide.dart';
 import 'package:slides/slides/03-stipple-art/approach_slide.dart';
 import 'package:slides/slides/03-stipple-art/code.dart';
 import 'package:slides/slides/03-stipple-art/delaunay_triangulation_slide.dart';
 import 'package:slides/slides/03-stipple-art/interactive_voronoi_slide.dart';
+import 'package:slides/slides/03-stipple-art/randomized_image_stippling_relaxation_slide.dart';
 import 'package:slides/slides/03-stipple-art/randomized_image_stippling_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_diagram_slide.dart';
 import 'package:slides/slides/03-stipple-art/voronoi_grid_pattern_slide.dart';
@@ -106,87 +106,68 @@ final stippleArtSlides = <FlutterDeckSlideWidget>[
     delaunayVoronoiExtensionCode,
     title: 'Extending Delaunay Class with Voronoi',
   ),
-  // 67
+  // 68
   CodeSlide(
     initializeVoronoiCode,
     title: 'Voronoi Initialization',
   ),
-  // 68
+  // 69
   CodeSlide(
     paintVoronoiEdgesCode1,
     title: 'Painting Voronoi Polygons',
     route: 'painting-voronoi-polygons-1',
     codeFontSize: 24,
   ),
-  // 69
+  // 70
   CodeSlide(
     paintVoronoiEdgesCode2,
     title: 'Painting Voronoi Polygons',
     route: 'painting-voronoi-polygons-2',
     codeFontSize: 24,
   ),
+  // 71
   const VoronoiGridPatternSlide(),
+  // 72
   const VoronoiSpiralPatternSlide(),
+  // 73
   const InteractiveVoronoiSlide(),
+  // 74
   const AnimatedVoronoiSlide(),
+  // 75
   SectionTitleSlide('LLoyd\'s Algorithm'),
+  // 76
   const VoronoiRelaxationSlide(),
+  // 77
   CodeSlide(
-    voronoiStateInitializationCode1,
-    title: 'Voronoi Data Initialization',
+    voronoiRelaxationInitializationCode,
+    title: 'Voronoi Relaxation Data Initialization',
     route: 'voronoi-data-initialization-1',
     codeFontSize: 20,
   ),
+  // 78
   CodeSlide(
-    voronoiStateInitializationCode2,
-    title: 'Voronoi Data Initialization',
-    route: 'voronoi-data-initialization-2',
-    codeFontSize: 20,
-  ),
-  CodeSlide(
-    updateVoronoiRelaxationCode,
+    voronoiRelaxationUpdateCode,
     title: 'Lerp Seed Points to Voronoi Centroids',
   ),
+  // 79
   CodeSlide(
-    voronoiRelaxationTickerCode1,
-    title: 'Animate Relaxation Using Ticker',
-    route: 'voronoi-relaxation-animation-1',
-    codeFontSize: 20,
+    voronoiRelaxationTickerCode,
+    title: 'Use Ticker to Update',
   ),
-  CodeSlide(
-    voronoiRelaxationTickerCode2,
-    title: 'Animate Relaxation Using Ticker',
-    route: 'voronoi-relaxation-animation-2',
-    codeFontSize: 20,
-  ),
-  CodeSlide(
-    voronoiRelaxationTickerCode3,
-    title: 'Animate Relaxation Using Ticker',
-    route: 'voronoi-relaxation-animation-3',
-    codeFontSize: 20,
-  ),
+  // 80
   const AnimatedVoronoiRelaxationSlide(),
+  // 81
   SectionTitleSlide('Weighted Voronoi Stippling'),
+  // 82
   CodeSlide(
     generateRandomPointsFromPixelsCode,
     title: 'Image Pixels Random Point Generation',
     codeFontSize: 20,
   ),
+  // 83
   const RandomizedImageStipplingSlide(),
-  DemoSlide(
-    'Randomized Image Stippling Relaxation',
-    child: const ColoredBox(
-      color: Colors.white,
-      child: WeightedVoronoiStipplingDemo(
-        showImage: false,
-        showVoronoiPolygons: false,
-        pointsCount: 2000,
-        paintColors: false,
-        animate: true,
-        weightedCentroids: false,
-      ),
-    ),
-  ),
+  // 84
+  const RandomizedImageStipplingRelaxationSlide(),
   PlaceholderSlide('Weights Calculation (with voronoi demo explanation)'),
   CodeSlide(
     '',
@@ -195,28 +176,11 @@ final stippleArtSlides = <FlutterDeckSlideWidget>[
   DemoSlide(
     'Weighted Image Stippling',
     route: 'weighted-image-stippling-1',
-    child: const ColoredBox(
-      color: Colors.white,
-      child: WeightedVoronoiStipplingDemo(
-        showImage: false,
-        showVoronoiPolygons: false,
-        pointsCount: 2000,
-        paintColors: false,
-        animate: true,
-        weightedCentroids: true,
-      ),
-    ),
+    child: const RandomizedImageStipplingDemo(),
   ),
   const WeightedVoronoiStipplingSlide(),
   SectionTitleSlide(
     'What if you are the Art?',
     route: 'audience-is-art',
   ),
-  // ImageSlide(
-  //   title: 'Reading Pixel Colors from Image Bitmaps',
-  //   path: 'assets/images/pixel-to-color.png',
-  //   route: 'reading-image-pixels-illustration-1',
-  //   label: 'Goal: get Color type from pixel coordinates',
-  //   width: 800,
-  // ),
 ];

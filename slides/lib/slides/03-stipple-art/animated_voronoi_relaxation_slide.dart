@@ -30,7 +30,7 @@ class AnimatedVoronoiRelaxationSlide extends FlutterDeckSlideWidget {
                 return VoronoiRelaxationDemo(
                   size: constraints.biggest,
                   pointsCount: 1000,
-                  animate: true,
+                  trigger: true,
                   showPolygons: false,
                   showCentroids: false,
                 );

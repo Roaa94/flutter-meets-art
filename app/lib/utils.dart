@@ -55,11 +55,11 @@ List<Color> generateAlternatingColors(
   Color color1,
   Color color2,
 ) {
-  final list = <Color>[];
+  final coords = <Color>[];
   for (int i = 0; i < n; i += 2) {
-    list.addAll([color1, color2]);
+    coords.addAll([color1, color2]);
   }
-  return list;
+  return coords;
 }
 
 List<Color> generateIncrementalColors(int n, {double initialHue = 360.0}) {
@@ -369,7 +369,7 @@ Float32List generateGridPoints({
   double cellSize = 50,
   double cellIncrementFactor = 0.1,
 }) {
-  final list = <double>[];
+  final coords = <double>[];
   final cols = (canvasSize.width / cellSize).floor();
   final rows = (canvasSize.height / cellSize).floor();
 
@@ -381,11 +381,11 @@ Float32List generateGridPoints({
       final centerY = row * cellSize +
           cellSize / 2 +
           (col.isOdd ? cellSize * cellIncrementFactor : 0);
-      list.addAll([centerX, centerY]);
+      coords.addAll([centerX, centerY]);
     }
   }
 
-  return Float32List.fromList(list);
+  return Float32List.fromList(coords);
 }
 
 Float32List calcCentroids(List<List<Offset>> cells) {

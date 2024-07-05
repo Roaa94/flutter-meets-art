@@ -15,7 +15,7 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
     this.showPoints = true,
     this.paintColors = true,
     this.showVoronoiPolygons = true,
-    this.animate = false,
+    this.trigger = false,
     this.weightedCentroids = true,
     this.pointStrokeWidth = 5,
     this.imagePath = 'assets/images/dash.jpg',
@@ -24,6 +24,7 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
     this.minStroke = 6,
     this.maxStroke = 15,
     this.wiggleFactor,
+    this.pointsColor = Colors.black,
   });
 
   final int pointsCount;
@@ -31,7 +32,7 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
   final bool showPoints;
   final bool paintColors;
   final bool showVoronoiPolygons;
-  final bool animate;
+  final bool trigger;
   final bool weightedCentroids;
   final double pointStrokeWidth;
   final String imagePath;
@@ -40,6 +41,7 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
   final double minStroke;
   final double maxStroke;
   final double? wiggleFactor;
+  final Color pointsColor;
 
   @override
   State<WeightedVoronoiStipplingDemo> createState() =>
@@ -104,7 +106,6 @@ class _WeightedVoronoiStipplingDemoState
         return;
       }
       _init();
-      if (widget.animate) _ticker.start();
     });
   }
 
@@ -117,7 +118,10 @@ class _WeightedVoronoiStipplingDemoState
   @override
   void didUpdateWidget(covariant WeightedVoronoiStipplingDemo oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _init();
+    if(widget.trigger != oldWidget.trigger) {
+      if(_ticker.isActive) _ticker.stop();
+      _ticker.start();
+    }
   }
 
   @override
@@ -156,6 +160,7 @@ class _WeightedVoronoiStipplingDemoState
                     weightedStrokes: widget.weightedStrokes,
                     minStroke: widget.minStroke,
                     maxStroke: widget.maxStroke,
+                    pointsColor: widget.pointsColor,
                   ),
                 ),
               ),

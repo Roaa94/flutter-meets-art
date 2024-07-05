@@ -19,7 +19,7 @@ class AnimatedVoronoiSlide extends FlutterDeckSlideWidget {
       context,
       showHeader: true,
       content: WindowFrame(
-        label: 'Voronoi',
+        label: 'Animated',
         margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
         child: SizedBox.expand(
           child: LayoutBuilder(

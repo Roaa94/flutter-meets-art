@@ -19,7 +19,7 @@ class InteractiveVoronoiSlide extends FlutterDeckSlideWidget {
       context,
       showHeader: true,
       content: WindowFrame(
-        label: 'Voronoi',
+        label: 'Interactive',
         margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
         child: SizedBox.expand(
           child: LayoutBuilder(

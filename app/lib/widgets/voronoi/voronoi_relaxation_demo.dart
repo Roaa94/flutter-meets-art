@@ -11,14 +11,14 @@ class VoronoiRelaxationDemo extends StatefulWidget {
     super.key,
     required this.size,
     this.pointsCount = 100,
-    this.animate = false,
+    this.trigger = false,
     this.showCentroids = true,
     this.showPolygons = true,
   });
 
   final Size size;
   final int pointsCount;
-  final bool animate;
+  final bool trigger;
   final bool showCentroids;
   final bool showPolygons;
 
@@ -34,7 +34,7 @@ class _VoronoiRelaxationDemoState extends State<VoronoiRelaxationDemo>
   VoronoiRelaxation? _relaxation;
 
   void _update() {
-    _relaxation?.update(0.1);
+    _relaxation?.update(0.01);
     setState(() {});
   }
 
@@ -56,7 +56,7 @@ class _VoronoiRelaxationDemoState extends State<VoronoiRelaxationDemo>
     super.initState();
     _init();
     _ticker = createTicker((_) => _update());
-    if (widget.animate) {
+    if (widget.trigger) {
       _ticker.start();
     }
   }
@@ -64,7 +64,12 @@ class _VoronoiRelaxationDemoState extends State<VoronoiRelaxationDemo>
   @override
   void didUpdateWidget(covariant VoronoiRelaxationDemo oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _init();
+    if (oldWidget.trigger != widget.trigger) {
+      if (_ticker.isActive) {
+        _ticker.stop();
+      }
+      _ticker.start();
+    }
   }
 
   @override

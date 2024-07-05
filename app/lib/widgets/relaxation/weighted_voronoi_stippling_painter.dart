@@ -16,6 +16,7 @@ class WeightedVoronoiStipplingPainter extends CustomPainter {
     this.weightedStrokes = false,
     this.minStroke = 4,
     this.maxStroke = 8,
+    this.pointsColor = Colors.black,
   });
 
   final VoronoiRelaxation relaxation;
@@ -28,6 +29,7 @@ class WeightedVoronoiStipplingPainter extends CustomPainter {
   final bool weightedStrokes;
   final double minStroke;
   final double maxStroke;
+  final Color pointsColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -63,7 +65,7 @@ class WeightedVoronoiStipplingPainter extends CustomPainter {
               map(relaxation.strokeWeights[i ~/ 2], 0, 1, minStroke, maxStroke);
         }
         final color =
-            paintColors ? Color(relaxation.colors[i ~/ 2]) : Colors.white;
+            paintColors ? Color(relaxation.colors[i ~/ 2]) : pointsColor;
         final paint = Paint()..color = color;
         if (strokePaintingStyle) {
           paint

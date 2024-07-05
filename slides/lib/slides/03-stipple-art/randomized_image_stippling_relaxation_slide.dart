@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
-import 'package:slides/demos/randomized_image_stippling_demo.dart';
+import 'package:slides/demos/randomized_image_stippling_relaxation_demo.dart';
 import 'package:slides/templates/build_template_slide.dart';
 
-class RandomizedImageStipplingSlide extends FlutterDeckSlideWidget {
-  const RandomizedImageStipplingSlide()
+class RandomizedImageStipplingRelaxationSlide extends FlutterDeckSlideWidget {
+  const RandomizedImageStipplingRelaxationSlide()
       : super(
           configuration: const FlutterDeckSlideConfiguration(
-            route: '/randomized-image-stippling',
-            title: 'Randomized Image Stippling',
+            route: '/randomized-image-relaxation',
+            title: 'Randomized Image Relaxation',
           ),
         );
 
@@ -18,7 +18,7 @@ class RandomizedImageStipplingSlide extends FlutterDeckSlideWidget {
       context,
       showHeader: true,
       title: 'Randomized Image Stippling',
-      content: const RandomizedImageStipplingDemo(),
+      content: const RandomizedImageStipplingRelaxationDemo(),
     );
   }
 }
