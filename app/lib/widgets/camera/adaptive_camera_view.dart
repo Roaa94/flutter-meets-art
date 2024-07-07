@@ -77,6 +77,7 @@ class _AdaptiveCameraViewState extends State<AdaptiveCameraView>
   @override
   void dispose() {
     super.dispose();
+    _ticker.dispose();
     if (macOSController != null && !macOSController!.isDestroyed) {
       log('Disposing camera...');
       macOSController!.destroy();
@@ -120,28 +121,32 @@ class _AdaptiveCameraViewState extends State<AdaptiveCameraView>
       );
     }
 
-    return RepaintBoundary(
-      key: cameraRenderBoxKey,
-      child: CameraMacOSView(
-        key: cameraKey,
-        deviceId: _selectedVideoDeviceId,
-        fit: BoxFit.cover,
-        cameraMode: CameraMacOSMode.photo,
-        resolution: PictureResolution.medium,
-        pictureFormat: PictureFormat.tiff,
-        videoFormat: VideoFormat.mp4,
-        onCameraInizialized: (CameraMacOSController controller) {
-          setState(() {
-            macOSController = controller;
-          });
-        },
-        onCameraDestroyed: () {
-          log('Camera destroyed!');
-          return const Text('Camera Destroyed!');
-        },
-        toggleTorch: Torch.off,
-        enableAudio: false,
-      ),
+    return Stack(
+      children: [
+        RepaintBoundary(
+          key: cameraRenderBoxKey,
+          child: CameraMacOSView(
+            key: cameraKey,
+            deviceId: _selectedVideoDeviceId,
+            fit: BoxFit.cover,
+            cameraMode: CameraMacOSMode.photo,
+            resolution: PictureResolution.medium,
+            pictureFormat: PictureFormat.tiff,
+            videoFormat: VideoFormat.mp4,
+            onCameraInizialized: (CameraMacOSController controller) {
+              setState(() {
+                macOSController = controller;
+              });
+            },
+            onCameraDestroyed: () {
+              log('Camera destroyed!');
+              return const Text('Camera Destroyed!');
+            },
+            toggleTorch: Torch.off,
+            enableAudio: false,
+          ),
+        ),
+      ],
     );
   }
 }

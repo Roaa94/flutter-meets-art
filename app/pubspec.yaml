@@ -8,9 +8,12 @@ environment:
 
 dependencies:
   async: ^2.11.0
+  camera: ^0.11.0+1
   camera_macos: ^0.0.8
   flutter:
     sdk: flutter
+  flutter_riverpod: ^2.5.1
+  image: ^4.2.0
 
 dev_dependencies:
   flutter_test:
