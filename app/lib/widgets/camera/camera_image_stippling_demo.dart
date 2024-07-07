@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math' hide log;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -6,13 +5,13 @@ import 'dart:ui' as ui;
 import 'package:app/algorithms/voronoi_relaxation.dart';
 import 'package:app/enums.dart';
 import 'package:app/utils.dart';
-import 'package:camera_macos/camera_macos.dart';
+import 'package:app/widgets/camera/adaptive_camera_view.dart';
 import 'package:flutter/material.dart';
 
 /// Low resolution - 480p (640x480)
 /// Medium resolution - 540p (960x540)
-const videoWidth = 960;
-const videoHeight = 540;
+const videoWidth = 960.0;
+const videoHeight = 540.0;
 
 class CameraImageStipplingDemo extends StatefulWidget {
   const CameraImageStipplingDemo({
@@ -48,24 +47,20 @@ class CameraImageStipplingDemo extends StatefulWidget {
 }
 
 class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
-  CameraMacOSController? macOSController;
-  GlobalKey cameraKey = GlobalKey();
-  List<CameraMacOSDevice> _videoDevices = [];
-  String? _selectedVideoDeviceId;
   final random = Random(1);
-  ByteData? _cameraImagePixels;
+  ByteData? _cameraImage;
   final _videoSize = Size(
     videoWidth.toDouble(),
     videoHeight.toDouble(),
   );
 
   VoronoiRelaxation? _relaxation;
-  CameraImageData? _streamedImage;
+  bool _initialized = false;
 
   void _init() {
-    if (_cameraImagePixels == null) return;
+    if(_cameraImage == null) return;
     final points = generateRandomPointsFromPixels(
-      _cameraImagePixels!,
+      _cameraImage!,
       _videoSize,
       widget.pointsCount,
       random,
@@ -75,7 +70,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
       min: const Point(0, 0),
       max: Point(_videoSize.width, _videoSize.height),
       weighted: widget.weightedCentroids,
-      bytes: _cameraImagePixels,
+      bytes: _cameraImage,
       minStroke: widget.minStroke,
       maxStroke: widget.maxStroke,
     );
@@ -84,51 +79,17 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   void _update() {
     _relaxation?.update(
       0.1,
-      bytes: _cameraImagePixels,
+      bytes: _cameraImage,
       wiggleFactor: widget.wiggleFactor,
     );
     if (mounted) setState(() {});
   }
 
-  Future<void> _loadPixelsFromStreamedImage(
-    CameraImageData? streamedImage,
-  ) async {
-    if (streamedImage != null) {
-      var decodedImage =
-          await decodeImageFromList(argb2bitmap(streamedImage).bytes);
-      final imageBytes = await decodedImage.toByteData();
-      _streamedImage = streamedImage;
-      _cameraImagePixels = imageBytes;
-      if (!_initialized) {
-        _init();
-      }
-      _initialized = true;
-      _update();
-    }
-  }
-
-  Future<void> _listVideoDevices() async {
-    try {
-      List<CameraMacOSDevice> videoDevices =
-          await CameraMacOS.instance.listDevices(
-        deviceType: CameraMacOSDeviceType.video,
-      );
-      log('videoDevices: ${videoDevices.map((v) => v.localizedName).join(', ')}');
-      setState(() {
-        _videoDevices = videoDevices;
-      });
-    } catch (e) {
-      log('Error listing videos!');
-      log(e.toString());
-    }
-  }
-
-  bool _initialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _listVideoDevices();
+  void _handleImageStream(ByteData image) {
+    _cameraImage = image;
+    if (!_initialized) _init();
+    _initialized = true;
+    _update();
   }
 
   @override
@@ -138,96 +99,16 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    if (macOSController != null && !macOSController!.isDestroyed) {
-      log('Disposing camera...');
-      macOSController!.stopImageStream();
-      macOSController!.destroy();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (_selectedVideoDeviceId == null) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: _videoDevices
-              .map(
-                (device) => GestureDetector(
-                  onTap: () => setState(() {
-                    _selectedVideoDeviceId = device.deviceId;
-                  }),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      device.localizedName ?? device.deviceId,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      );
-    }
-
     return SizedBox.expand(
       child: Stack(
         children: [
-          if (_selectedVideoDeviceId != null)
-            Positioned(
-              width: videoWidth.toDouble(),
-              height: videoHeight.toDouble(),
-              child: CameraMacOSView(
-                key: cameraKey,
-                deviceId: _selectedVideoDeviceId,
-                fit: BoxFit.cover,
-                cameraMode: CameraMacOSMode.photo,
-                resolution: PictureResolution.medium,
-                pictureFormat: PictureFormat.tiff,
-                videoFormat: VideoFormat.mp4,
-                onCameraInizialized: (CameraMacOSController controller) {
-                  setState(() {
-                    macOSController = controller;
-                  });
-                  macOSController?.startImageStream((image) {
-                    _loadPixelsFromStreamedImage(image);
-                  });
-                },
-                onCameraDestroyed: () {
-                  log('Camera destroyed!');
-                  return const Text('Camera Destroyed!');
-                },
-                toggleTorch: Torch.off,
-                enableAudio: false,
-              ),
-            ),
-          if (_streamedImage != null)
-            Positioned(
-              left: 0,
-              top: 0,
-              width: videoWidth.toDouble(),
-              height: videoHeight.toDouble(),
-              child: Image.memory(
-                argb2bitmap(_streamedImage!).bytes,
-                width: videoWidth.toDouble(),
-              ),
-            ),
-          if (_cameraImagePixels != null && _relaxation != null)
+          Positioned(
+            width: videoWidth,
+            height: videoHeight,
+            child: AdaptiveCameraView(imageStream: _handleImageStream),
+          ),
+          if (_relaxation != null)
             Positioned.fill(
               child: CustomPaint(
                 painter: CameraImageStipplingDemoPainter(

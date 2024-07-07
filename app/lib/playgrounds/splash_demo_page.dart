@@ -1,4 +1,5 @@
-import 'package:app/app.dart';
+import 'package:app/enums.dart';
+import 'package:app/widgets/camera/camera_image_stippling_demo.dart';
 import 'package:flutter/material.dart';
 
 class SplashDemoPage extends StatelessWidget {
@@ -16,7 +17,6 @@ class SplashDemoPage extends StatelessWidget {
         minStroke: 5,
         maxStroke: 15,
         pointsCount: 2000,
-        strokePaintingStyle: true,
       ),
     );
   }

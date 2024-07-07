@@ -1,5 +1,4 @@
-import 'package:app/widgets/relaxation/camera_image_stippling.dart';
-import 'package:app/widgets/relaxation/camera_image_stippling_demo.dart';
+import 'package:app/widgets/camera/camera_image_stippling_demo.dart';
 import 'package:flutter/material.dart';
 
 class CameraImageStipplingPlayground extends StatelessWidget {
@@ -11,7 +10,6 @@ class CameraImageStipplingPlayground extends StatelessWidget {
       body: CameraImageStipplingDemo(
         wiggleFactor: 0.5,
       ),
-      // body: CameraImageStippling(),
     );
   }
 }
