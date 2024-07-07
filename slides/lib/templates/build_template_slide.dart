@@ -41,7 +41,7 @@ FlutterDeckSlide buildTemplateSlide(
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  '${slideNumber - 1} | ${speakerInfo!.socialHandle}',
+                  '$slideNumber | ${speakerInfo!.socialHandle}',
                   style: TextStyles.footer,
                 ),
               ),

@@ -1,5 +1,4 @@
 import 'package:app/app.dart';
-import 'package:app/enums.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/01-cc-as-as-learning-tool/code.dart';
 import 'package:slides/templates/code_slide.dart';

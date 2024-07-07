@@ -43,7 +43,7 @@ void paint(Canvas canvas, Size size) {
   final barWidth = size.width / values.length;
   for (int i = 0; i < values.length; i++) {
     final barHeight = values[i] * size.height;
-    canvas.drawRect(
+    canvas.drawRect( // ⬅️
       Rect.fromLTWH(
         i * barWidth,
         size.height - barHeight,
@@ -97,7 +97,7 @@ class _BubbleSortBarsState extends State<BubbleSortBars>
   
   @override
   void dispose() {
-    _ticker.dispose();
+    _ticker.dispose(); // ⬅️
     super.dispose();
   }
   //...
