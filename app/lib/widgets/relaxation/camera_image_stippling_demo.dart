@@ -185,9 +185,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
       );
     }
 
-    return SizedBox(
-      width: videoWidth.toDouble(),
-      height: videoHeight.toDouble(),
+    return SizedBox.expand(
       child: Stack(
         children: [
           if (_selectedVideoDeviceId != null)
@@ -303,6 +301,15 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
   @override
   void paint(ui.Canvas canvas, ui.Size size) {
     canvas.drawPaint(bgPaint);
+    canvas.save();
+    double scaleX = size.width / relaxation.size.width;
+    double scaleY = size.height / relaxation.size.height;
+    double scale = max(scaleX, scaleY);
+    double dx = (size.width - relaxation.size.width * scale) / 2;
+    double dy = (size.height - relaxation.size.height * scale) / 2;
+
+    canvas.translate(dx, dy);
+    canvas.scale(scale, scale);
 
     if (mode == StippleMode.polygons || mode == StippleMode.polygonsOutlined) {
       final cells = relaxation.voronoi.cells;
@@ -333,6 +340,7 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
         );
       }
     }
+    canvas.restore();
   }
 
   @override
