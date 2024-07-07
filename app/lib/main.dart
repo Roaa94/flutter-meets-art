@@ -1,4 +1,3 @@
-import 'package:app/app.dart';
 import 'package:app/playgrounds/splash_demo_page.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +10,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: SplashDemoPage(),
     );
   }

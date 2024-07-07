@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
+import 'package:app/enums.dart';
 import 'package:app/utils.dart';
 import 'package:camera_macos/camera_macos.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class CameraImageStipplingDemo extends StatefulWidget {
     this.minStroke = 8,
     this.maxStroke = 18,
     this.weightedStrokes = true,
-    this.showVoronoiPolygons = false,
+    this.mode = StippleMode.dots,
     this.strokePaintingStyle = true,
     this.wiggleFactor = 0.2,
     this.showDevicesDropdown = false,
@@ -34,7 +35,7 @@ class CameraImageStipplingDemo extends StatefulWidget {
   final double minStroke;
   final double maxStroke;
   final bool weightedStrokes;
-  final bool showVoronoiPolygons;
+  final StippleMode mode;
   final bool strokePaintingStyle;
   final double wiggleFactor;
   final bool showDevicesDropdown;
@@ -201,11 +202,6 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
                 resolution: PictureResolution.medium,
                 pictureFormat: PictureFormat.tiff,
                 videoFormat: VideoFormat.mp4,
-                // onCameraLoading: (_) => const SizedBox.expand(
-                //   child: ColoredBox(
-                //     color: Colors.black,
-                //   ),
-                // ),
                 onCameraInizialized: (CameraMacOSController controller) {
                   setState(() {
                     macOSController = controller;
@@ -238,14 +234,12 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
               child: CustomPaint(
                 painter: CameraImageStipplingDemoPainter(
                   relaxation: _relaxation!,
-                  paintPoints: widget.showPoints,
-                  showVoronoiPolygons: widget.showVoronoiPolygons,
+                  mode: widget.mode,
                   paintColors: widget.paintColors,
                   pointStrokeWidth: 10,
-                  weightedStrokes: widget.weightedStrokes,
+                  weightedStrokesMode: widget.weightedStrokes,
                   minStroke: widget.minStroke,
                   maxStroke: widget.maxStroke,
-                  strokePaintingStyle: widget.strokePaintingStyle,
                 ),
               ),
             ),
@@ -259,30 +253,58 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
   CameraImageStipplingDemoPainter({
     required this.relaxation,
     this.paintColors = false,
-    this.paintPoints = false,
-    this.showVoronoiPolygons = false,
-    this.weightedStrokes = false,
-    this.strokePaintingStyle = false,
+    this.mode = StippleMode.dots,
+    this.weightedStrokesMode = false,
     this.pointStrokeWidth = 5,
     this.minStroke = 4,
     this.maxStroke = 15,
-  });
+  }) {
+    bgPaint.color = Colors.black;
+    stipplePaints = <Paint>[];
+    secondaryStipplePaints = <Paint>[];
+    weightedStrokes = Float32List(relaxation.coords.length ~/ 2);
+    for (int i = 0; i < relaxation.colors.length; i++) {
+      final color = Color(relaxation.colors[i]);
+      final paint = Paint()..color = color;
+      double stroke = pointStrokeWidth;
+      if (weightedStrokesMode) {
+        stroke = map(relaxation.strokeWeights[i], 0, 1, minStroke, maxStroke);
+        weightedStrokes[i] = stroke;
+      }
+      if (mode == StippleMode.circles) {
+        paint
+          ..strokeWidth = stroke * 0.15
+          ..style = PaintingStyle.stroke;
+      }
+
+      stipplePaints.add(paint);
+
+      final secondaryPaint = Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke;
+      secondaryStipplePaints.add(secondaryPaint);
+    }
+  }
 
   final VoronoiRelaxation relaxation;
   final bool paintColors;
-  final bool paintPoints;
-  final bool weightedStrokes;
-  final bool showVoronoiPolygons;
-  final bool strokePaintingStyle;
+  final StippleMode mode;
+  final bool weightedStrokesMode;
   final double pointStrokeWidth;
   final double minStroke;
   final double maxStroke;
 
+  final circlesPaint = Paint();
+  late final List<Paint> stipplePaints;
+  late final List<Paint> secondaryStipplePaints;
+  late final Float32List weightedStrokes;
+  final bgPaint = Paint();
+
   @override
   void paint(ui.Canvas canvas, ui.Size size) {
-    canvas.drawPaint(Paint()..color = Colors.black);
+    canvas.drawPaint(bgPaint);
 
-    if (showVoronoiPolygons && paintColors) {
+    if (mode == StippleMode.polygons || mode == StippleMode.polygonsOutlined) {
       final cells = relaxation.voronoi.cells;
       for (int j = 0; j < cells.length; j++) {
         final path = Path()..moveTo(cells[j][0].dx, cells[j][0].dy);
@@ -291,39 +313,23 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
         }
         path.close();
 
-        canvas.drawPath(
-          path,
-          Paint()..color = Color(relaxation.colors[j]),
-        );
+        if (mode != StippleMode.polygonsOutlined) {
+          canvas.drawPath(path, stipplePaints[j]);
+        }
 
         canvas.drawPath(
           path,
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..color = Color(relaxation.colors[j]),
+          secondaryStipplePaints[j],
         );
       }
     }
 
-    if (paintPoints && !showVoronoiPolygons) {
+    if (mode == StippleMode.dots || mode == StippleMode.circles) {
       for (int i = 0; i < relaxation.coords.length; i += 2) {
-        double stroke = pointStrokeWidth;
-        if (weightedStrokes) {
-          stroke =
-              map(relaxation.strokeWeights[i ~/ 2], 0, 1, minStroke, maxStroke);
-        }
-        final color =
-            paintColors ? Color(relaxation.colors[i ~/ 2]) : Colors.black;
-        final paint = Paint()..color = color;
-        if (strokePaintingStyle) {
-          paint
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = stroke * 0.15;
-        }
         canvas.drawCircle(
           Offset(relaxation.coords[i], relaxation.coords[i + 1]),
-          stroke / 2,
-          paint,
+          weightedStrokes[i ~/ 2] / 2,
+          stipplePaints[i ~/ 2],
         );
       }
     }

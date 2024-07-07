@@ -37,3 +37,17 @@ enum PixelSortStyle {
     return this == byColumn || this == byIntervalColumn;
   }
 }
+
+enum StippleMode {
+  dots,
+  circles,
+  polygons,
+  polygonsOutlined,
+}
+
+enum StippleColorMode {
+  colored,
+  grayscale,
+  black,
+  white,
+}
