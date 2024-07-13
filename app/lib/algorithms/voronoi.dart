@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:app/algorithms/delaunay.dart';
-import 'package:app/utils.dart';
 import 'package:flutter/material.dart';
 
 class Voronoi {
@@ -185,4 +184,39 @@ nextHalfEdge(e) {
 
 prevHalfEdge(e) {
   return (e % 3 == 0) ? e + 2 : e - 1;
+}
+
+Float32List reflectRawPoints({
+  required Float32List originalPoints,
+  required Size bounds,
+}) {
+  final int length = originalPoints.length;
+  final Float32List reflectedPoints = Float32List(length * 5);
+
+  for (int i = 0; i < length; i += 2) {
+    final double x = originalPoints[i];
+    final double y = originalPoints[i + 1];
+
+    // Original point
+    reflectedPoints[i] = x;
+    reflectedPoints[i + 1] = y;
+
+    // Top reflection
+    reflectedPoints[length + i] = x;
+    reflectedPoints[length + i + 1] = -y;
+
+    // Bottom reflection
+    reflectedPoints[2 * length + i] = x;
+    reflectedPoints[2 * length + i + 1] = 2 * bounds.height - y;
+
+    // Left reflection
+    reflectedPoints[3 * length + i] = -x;
+    reflectedPoints[3 * length + i + 1] = y;
+
+    // Right reflection
+    reflectedPoints[4 * length + i] = 2 * bounds.width - x;
+    reflectedPoints[4 * length + i + 1] = y;
+  }
+
+  return reflectedPoints;
 }

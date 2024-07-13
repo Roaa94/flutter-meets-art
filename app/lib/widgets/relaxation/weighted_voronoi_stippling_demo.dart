@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
-import 'package:app/utils.dart';
+import 'package:app/utils/image_utils.dart';
 import 'package:app/widgets/relaxation/weighted_voronoi_stippling_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -118,8 +118,8 @@ class _WeightedVoronoiStipplingDemoState
   @override
   void didUpdateWidget(covariant WeightedVoronoiStipplingDemo oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if(widget.trigger != oldWidget.trigger) {
-      if(_ticker.isActive) _ticker.stop();
+    if (widget.trigger != oldWidget.trigger) {
+      if (_ticker.isActive) _ticker.stop();
       _ticker.start();
     }
   }

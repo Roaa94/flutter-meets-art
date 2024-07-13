@@ -1,7 +1,8 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:app/utils.dart';
+import 'package:app/utils/color_utils.dart';
+import 'package:app/utils/painting_utils.dart';
 import 'package:app/widgets/voronoi/voronoi_painter.dart';
 import 'package:flutter/material.dart';
 

@@ -4,7 +4,8 @@ import 'dart:ui';
 
 import 'package:app/algorithms/delaunay.dart';
 import 'package:app/algorithms/voronoi.dart';
-import 'package:app/utils.dart';
+import 'package:app/utils/color_utils.dart';
+import 'package:app/utils/painting_utils.dart';
 import 'package:flutter/material.dart';
 
 class SpiralVoronoi extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'package:app/algorithms/delaunay.dart';
 import 'package:app/algorithms/voronoi.dart';
-import 'package:app/utils.dart';
+import 'package:app/utils/math_utils.dart';
 import 'package:flutter/material.dart';
 
 class VoronoiPainter extends CustomPainter {
@@ -98,7 +98,9 @@ class VoronoiPainter extends CustomPainter {
             Paint()
               ..style = PaintingStyle.stroke
               ..strokeWidth = 3
-              ..color = paintDelaunayTriangles ? const Color(0xff35aee7) : Colors.black,
+              ..color = paintDelaunayTriangles
+                  ? const Color(0xff35aee7)
+                  : Colors.black,
           );
         }
       }

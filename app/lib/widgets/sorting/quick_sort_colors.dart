@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:math' hide log;
 
 import 'package:app/enums.dart';
-import 'package:app/utils.dart';
+import 'package:app/utils/color_utils.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 

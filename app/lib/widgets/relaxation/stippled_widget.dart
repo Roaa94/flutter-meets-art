@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
-import 'package:app/utils.dart';
+import 'package:app/utils/image_utils.dart';
 import 'package:app/widgets/relaxation/weighted_voronoi_stippling_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
-import 'package:app/utils.dart';
+import 'package:app/utils/painting_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 

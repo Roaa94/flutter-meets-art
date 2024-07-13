@@ -180,7 +180,8 @@ class BubbleSortCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     const padding = 4;
-    final barWidth = (size.width - (padding * (values.length - 1))) / values.length;
+    final barWidth =
+        (size.width - (padding * (values.length - 1))) / values.length;
     for (int i = 0; i < values.length; i++) {
       final barHeight = values[i] * size.height;
       canvas.drawRect(

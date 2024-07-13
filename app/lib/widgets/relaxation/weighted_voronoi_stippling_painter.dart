@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
-import 'package:app/utils.dart';
+import 'package:app/utils/math_utils.dart';
 import 'package:flutter/material.dart';
 
 class WeightedVoronoiStipplingPainter extends CustomPainter {

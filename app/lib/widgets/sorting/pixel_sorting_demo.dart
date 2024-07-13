@@ -3,7 +3,8 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:app/enums.dart';
-import 'package:app/utils.dart';
+import 'package:app/utils/color_utils.dart';
+import 'package:app/utils/painting_utils.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
