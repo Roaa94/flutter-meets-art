@@ -4,6 +4,14 @@ import 'package:camera_macos/camera_macos.dart';
 
 /// Utility method from the example app in the camera_macos package
 /// Source: https://github.com/riccardo-lomazzi/camera_macos/blob/main/example/lib/input_image.dart
+///
+/// Can be used with the image stream to read image byte data as follows:
+/// ```dart
+///  final decodedImage =
+///      await decodeImageFromList(argb2bitmap(streamedImage).bytes);
+///  final imageBytes = await decodedImage.toByteData();
+/// ```
+/// Consecutively, `imageBytes` can be used to read color data
 CameraImageData argb2bitmap(CameraImageData content) {
   final Uint8List updated = Uint8List(content.bytes.length);
   for (int i = 0; i < updated.length; i += 4) {

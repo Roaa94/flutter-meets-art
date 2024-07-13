@@ -4,6 +4,16 @@ import 'dart:typed_data';
 import 'package:app/algorithms/delaunay.dart';
 import 'package:flutter/material.dart';
 
+/// An implementation of the Voronoi diagram that works by extending the
+/// Delaunay class
+/// The algorithm is very buggy and can be optimized in many ways
+/// Resources:
+/// - Original JavaScript Delaunter library:
+///   https://github.com/mapbox/delaunator?tab=readme-ov-file
+/// - D3's Voronoi implementation:
+///   https://github.com/d3/d3-delaunay/blob/main/src/voronoi.js
+/// - The Guide this implementation is based on:
+///   https://mapbox.github.io/delaunator/
 class Voronoi {
   Voronoi({
     required this.delaunay,

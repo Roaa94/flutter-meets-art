@@ -7,16 +7,29 @@ class SplashDemoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black,
-      body: CameraImageStipplingDemo(
-        weightedStrokes: true,
-        mode: StippleMode.circles,
-        showPoints: true,
-        showDevicesDropdown: false,
-        minStroke: 5,
-        maxStroke: 15,
-        pointsCount: 2000,
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final size = constraints.biggest;
+          final pointsCount = size.width < 500
+              ? 700
+              : size.width < 1000
+                  ? 1000
+                  : 3000;
+
+          return CameraImageStipplingDemo(
+            size: constraints.biggest,
+            weightedStrokes: true,
+            mode: StippleMode.circles,
+            showPoints: true,
+            showDevicesDropdown: false,
+            minStroke: 7,
+            maxStroke: 25,
+            wiggleFactor: 1,
+            pointsCount: pointsCount,
+          );
+        },
       ),
     );
   }

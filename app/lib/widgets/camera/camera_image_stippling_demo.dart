@@ -3,15 +3,10 @@ import 'dart:typed_data';
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
 import 'package:app/enums.dart';
-import 'package:app/utils/image_utils.dart';
+import 'package:app/utils/painting_utils.dart';
 import 'package:app/widgets/camera/adaptive_camera_view.dart';
 import 'package:app/widgets/camera/camera_image_stippling_painter.dart';
 import 'package:flutter/material.dart';
-
-/// Low resolution - 480p (640x480)
-/// Medium resolution - 540p (960x540)
-const videoWidth = 960.0;
-const videoHeight = 540.0;
 
 class CameraImageStipplingDemo extends StatefulWidget {
   const CameraImageStipplingDemo({
@@ -27,6 +22,7 @@ class CameraImageStipplingDemo extends StatefulWidget {
     this.showDevicesDropdown = false,
     this.showPoints = false,
     this.pointsCount = 2000,
+    required this.size,
   });
 
   final bool weightedCentroids;
@@ -40,6 +36,7 @@ class CameraImageStipplingDemo extends StatefulWidget {
   final bool showDevicesDropdown;
   final bool showPoints;
   final int pointsCount;
+  final Size size;
 
   @override
   CameraImageStipplingDemoState createState() =>
@@ -49,23 +46,27 @@ class CameraImageStipplingDemo extends StatefulWidget {
 class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   final random = Random(1);
   ByteData? _cameraImage;
-  final _videoSize = const Size(videoWidth, videoHeight);
 
   VoronoiRelaxation? _relaxation;
+  Float32List? _points;
   bool _initialized = false;
 
-  void _init() {
-    if (_cameraImage == null) return;
-    final points = generateRandomPointsFromPixels(
-      _cameraImage!,
-      _videoSize,
-      widget.pointsCount,
-      random,
+  void _initPoints() {
+    _points = generateRandomPoints(
+      random: random,
+      count: widget.pointsCount,
+      canvasSize: widget.size,
+      padding: 0,
     );
+  }
+
+  void _initRelaxation() {
+    if (_cameraImage == null || _points == null) return;
+
     _relaxation = VoronoiRelaxation(
-      points,
+      _points!,
       min: const Point(0, 0),
-      max: Point(_videoSize.width, _videoSize.height),
+      max: Point(widget.size.width, widget.size.height),
       weighted: widget.weightedCentroids,
       bytes: _cameraImage,
       minStroke: widget.minStroke,
@@ -75,7 +76,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
 
   void _update() {
     _relaxation?.update(
-      0.1,
+      0.5,
       bytes: _cameraImage,
       wiggleFactor: widget.wiggleFactor,
     );
@@ -84,7 +85,10 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
 
   void _handleImageStream(ByteData image) {
     _cameraImage = image;
-    if (!_initialized) _init();
+    if (!_initialized) {
+      _initPoints();
+      _initRelaxation();
+    }
     _initialized = true;
     _update();
   }
@@ -92,35 +96,34 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
   @override
   void didUpdateWidget(covariant CameraImageStipplingDemo oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _init();
+    if (oldWidget.size != widget.size ||
+        oldWidget.pointsCount != widget.pointsCount) {
+      _initPoints();
+    }
+    _initRelaxation();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.expand(
-      child: Stack(
-        children: [
-          Positioned(
-            width: videoWidth,
-            height: videoHeight,
-            child: AdaptiveCameraView(imageStream: _handleImageStream),
-          ),
-          if (_relaxation != null)
-            Positioned.fill(
-              child: CustomPaint(
-                painter: CameraImageStipplingDemoPainter(
-                  relaxation: _relaxation!,
-                  mode: widget.mode,
-                  paintColors: widget.paintColors,
-                  pointStrokeWidth: 10,
-                  weightedStrokesMode: widget.weightedStrokes,
-                  minStroke: widget.minStroke,
-                  maxStroke: widget.maxStroke,
-                ),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        AdaptiveCameraView(imageStream: _handleImageStream),
+        if (_relaxation != null)
+          Positioned.fill(
+            child: CustomPaint(
+              painter: CameraImageStipplingDemoPainter(
+                relaxation: _relaxation!,
+                mode: widget.mode,
+                paintColors: widget.paintColors,
+                pointStrokeWidth: 10,
+                weightedStrokesMode: widget.weightedStrokes,
+                minStroke: widget.minStroke,
+                maxStroke: widget.maxStroke,
               ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
@@ -60,16 +59,6 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawPaint(bgPaint);
-    canvas.save();
-    double scaleX = size.width / relaxation.size.width;
-    double scaleY = size.height / relaxation.size.height;
-    double scale = max(scaleX, scaleY);
-    double dx = (size.width - relaxation.size.width * scale) / 2;
-    double dy = (size.height - relaxation.size.height * scale) / 2;
-
-    canvas.translate(dx, dy);
-    canvas.scale(scale, scale);
-
     if (mode == StippleMode.polygons || mode == StippleMode.polygonsOutlined) {
       final cells = relaxation.voronoi.cells;
       for (int j = 0; j < cells.length; j++) {
@@ -99,7 +88,6 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
         );
       }
     }
-    canvas.restore();
   }
 
   @override
