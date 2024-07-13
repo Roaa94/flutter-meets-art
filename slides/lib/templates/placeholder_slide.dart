@@ -7,7 +7,7 @@ class PlaceholderSlide extends FlutterDeckSlideWidget {
   PlaceholderSlide(this.title, {this.subtitle, this.content})
       : super(
           configuration: FlutterDeckSlideConfiguration(
-            route: '/${title.toLowerCase().replaceAll(' ', '')}',
+            route: '/${title.toLowerCase().replaceAll(' ', '-')}',
             title: '$title${subtitle == null ? '' : ' - $subtitle'}',
           ),
         );

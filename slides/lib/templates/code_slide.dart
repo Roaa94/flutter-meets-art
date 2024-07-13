@@ -15,7 +15,7 @@ class CodeSlide extends FlutterDeckSlideWidget {
           configuration: FlutterDeckSlideConfiguration(
             route: route != null
                 ? '/$route'
-                : '/${title.toLowerCase().replaceAll(' ', '')}',
+                : '/${title.toLowerCase().replaceAll(' ', '-')}',
             title: '$title${subtitle == null ? '' : ' - $subtitle'}',
           ),
         );
