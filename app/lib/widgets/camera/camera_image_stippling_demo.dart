@@ -11,30 +11,20 @@ import 'package:flutter/material.dart';
 class CameraImageStipplingDemo extends StatefulWidget {
   const CameraImageStipplingDemo({
     super.key,
-    this.weightedCentroids = true,
     this.paintColors = true,
     this.minStroke = 8,
     this.maxStroke = 18,
-    this.weightedStrokes = true,
     this.mode = StippleMode.dots,
-    this.strokePaintingStyle = true,
     this.wiggleFactor = 0.2,
-    this.showDevicesDropdown = false,
-    this.showPoints = false,
     this.pointsCount = 2000,
     required this.size,
   });
 
-  final bool weightedCentroids;
   final bool paintColors;
   final double minStroke;
   final double maxStroke;
-  final bool weightedStrokes;
   final StippleMode mode;
-  final bool strokePaintingStyle;
   final double wiggleFactor;
-  final bool showDevicesDropdown;
-  final bool showPoints;
   final int pointsCount;
   final Size size;
 
@@ -67,7 +57,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
       _points!,
       min: const Point(0, 0),
       max: Point(widget.size.width, widget.size.height),
-      weighted: widget.weightedCentroids,
+      weighted: true,
       bytes: _cameraImage,
       minStroke: widget.minStroke,
       maxStroke: widget.maxStroke,
@@ -117,7 +107,6 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
                 mode: widget.mode,
                 paintColors: widget.paintColors,
                 pointStrokeWidth: 10,
-                weightedStrokesMode: widget.weightedStrokes,
                 minStroke: widget.minStroke,
                 maxStroke: widget.maxStroke,
               ),

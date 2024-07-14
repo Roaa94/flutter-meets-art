@@ -42,7 +42,20 @@ enum StippleMode {
   dots,
   circles,
   polygons,
-  polygonsOutlined,
+  polygonsOutlined;
+
+  IconData get icon {
+    switch(this) {
+      case dots:
+        return Icons.circle;
+      case circles:
+        return Icons.circle_outlined;
+      case polygons:
+        return Icons.pentagon;
+      case polygonsOutlined:
+        return Icons.pentagon_outlined;
+    }
+  }
 }
 
 enum StippleColorMode {

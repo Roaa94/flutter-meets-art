@@ -10,7 +10,6 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
     required this.relaxation,
     this.paintColors = false,
     this.mode = StippleMode.dots,
-    this.weightedStrokesMode = false,
     this.pointStrokeWidth = 5,
     this.minStroke = 4,
     this.maxStroke = 15,
@@ -21,22 +20,27 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
     weightedStrokes = Float32List(relaxation.coords.length ~/ 2);
     for (int i = 0; i < relaxation.colors.length; i++) {
       final color = Color(relaxation.colors[i]);
-      final paint = Paint()..color = color;
+      final paint = Paint()..color = paintColors ? color : Colors.white;
       double stroke = pointStrokeWidth;
-      if (weightedStrokesMode) {
+      if (relaxation.weighted) {
         stroke = map(relaxation.strokeWeights[i], 0, 1, minStroke, maxStroke);
         weightedStrokes[i] = stroke;
       }
       if (mode == StippleMode.circles) {
         paint
-          ..strokeWidth = stroke * 0.15
+          ..strokeWidth = stroke * 0.1
           ..style = PaintingStyle.stroke;
       }
 
       stipplePaints.add(paint);
 
       final secondaryPaint = Paint()
-        ..color = color
+        ..color = paintColors
+            ? color
+            : mode == StippleMode.polygons
+                ? Colors.black
+                : Colors.white
+        ..strokeWidth = 2
         ..style = PaintingStyle.stroke;
       secondaryStipplePaints.add(secondaryPaint);
     }
@@ -45,7 +49,6 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
   final VoronoiRelaxation relaxation;
   final bool paintColors;
   final StippleMode mode;
-  final bool weightedStrokesMode;
   final double pointStrokeWidth;
   final double minStroke;
   final double maxStroke;

@@ -1,4 +1,4 @@
-import 'package:app/widgets/camera/splash_demo_page.dart';
+import 'package:app/widgets/camera/camera_image_stippling_demo_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +13,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashDemoPage(),
+      themeMode: ThemeMode.dark,
+      home: CameraImageStipplingDemoPage(),
     );
   }
 }

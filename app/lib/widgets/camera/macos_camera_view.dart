@@ -87,31 +87,32 @@ class _MacOSCameraViewState extends State<MacOSCameraView>
   @override
   Widget build(BuildContext context) {
     if (_selectedVideoDeviceId == null) {
-      return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(
-            _videoDevices.length,
-            (i) => GestureDetector(
-              onTap: () => _handleSelectVideoDevice(_videoDevices[i]),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  _videoDevices[i].localizedName ?? _videoDevices[i].deviceId,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins',
-                    fontSize: 20,
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              _videoDevices.length,
+              (i) => GestureDetector(
+                onTap: () => _handleSelectVideoDevice(_videoDevices[i]),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    _videoDevices[i].localizedName ?? _videoDevices[i].deviceId,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Poppins',
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),

@@ -105,12 +105,11 @@ class _MobileCameraViewState extends State<MobileCameraView>
   @override
   Widget build(BuildContext context) {
     if (_selectedDevice == null) {
-      return SafeArea(
+      return Center(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(
               _devices.length,
               (i) => GestureDetector(
