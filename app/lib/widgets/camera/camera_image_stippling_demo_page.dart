@@ -17,11 +17,21 @@ class _CameraImageStipplingDemoPageState
   static const defaultMinStroke = 7.0;
   static const defaultMaxStroke = 30.0;
   static const defaultShowColors = true;
+  late int _pointsCount;
 
   StippleMode _mode = defaultMode;
   double _minStroke = defaultMinStroke;
   double _maxStroke = defaultMaxStroke;
   bool _showColors = defaultShowColors;
+
+  int getDefaultSeedPointsCount(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return size.width < 500
+        ? 700
+        : size.width < 1000
+            ? 1000
+            : 2000;
+  }
 
   void _handleReset() {
     setState(() {
@@ -29,17 +39,25 @@ class _CameraImageStipplingDemoPageState
       _minStroke = defaultMinStroke;
       _maxStroke = defaultMaxStroke;
       _showColors = defaultShowColors;
+      _pointsCount = getDefaultSeedPointsCount(context);
     });
+  }
+
+  bool _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      _pointsCount = getDefaultSeedPointsCount(context);
+    }
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final pointsCount = size.width < 500
-        ? 700
-        : size.width < 1000
-            ? 1000
-            : 2000;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -52,7 +70,7 @@ class _CameraImageStipplingDemoPageState
             maxStroke: _maxStroke,
             wiggleFactor: 1,
             paintColors: _showColors,
-            pointsCount: pointsCount,
+            pointsCount: _pointsCount,
           ),
           Positioned(
             right: -2,
@@ -63,6 +81,12 @@ class _CameraImageStipplingDemoPageState
                 onReset: _handleReset,
                 selectedStippleMode: _mode,
                 colored: _showColors,
+                selectedPointsCount: _pointsCount,
+                onPointsCountChanged: (value) {
+                  setState(() {
+                    _pointsCount = value;
+                  });
+                },
                 onColoredChanged: (value) {
                   setState(() {
                     _showColors = value;

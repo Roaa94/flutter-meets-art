@@ -28,6 +28,8 @@ class CameraImageStipplingControls extends StatefulWidget {
     this.onReset,
     this.colored = true,
     this.onColoredChanged,
+    this.selectedPointsCount = 1000,
+    this.onPointsCountChanged,
   });
 
   final StippleMode selectedStippleMode;
@@ -39,6 +41,8 @@ class CameraImageStipplingControls extends StatefulWidget {
   final VoidCallback? onReset;
   final bool colored;
   final ValueChanged<bool>? onColoredChanged;
+  final int selectedPointsCount;
+  final ValueChanged<int>? onPointsCountChanged;
 
   @override
   State<CameraImageStipplingControls> createState() =>
@@ -169,6 +173,24 @@ class _CameraImageStipplingControlsState
                   ],
                 ),
                 const SizedBox(height: 20),
+                const Text('Seed point count', style: labelTextStyle),
+                const SizedBox(height: 10),
+                Controls(
+                  value: widget.selectedPointsCount,
+                  onMinus: () {
+                    if (widget.selectedPointsCount > 500) {
+                      widget.onPointsCountChanged
+                          ?.call(widget.selectedPointsCount - 500);
+                    }
+                  },
+                  onPlus: () {
+                    if (widget.selectedPointsCount < 10000) {
+                      widget.onPointsCountChanged
+                          ?.call(widget.selectedPointsCount + 500);
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
                 Opacity(
                   opacity: polygonModeSelected ? 0.3 : 1,
                   child: IgnorePointer(
@@ -247,7 +269,7 @@ class Controls extends StatelessWidget {
     this.onMinus,
   });
 
-  final double value;
+  final num value;
   final VoidCallback? onPlus;
   final VoidCallback? onMinus;
 
@@ -281,7 +303,7 @@ class Controls extends StatelessWidget {
               color: primaryColor,
               border: Border.all(color: Colors.white, width: 0.5),
             ),
-            width: 50,
+            width: 70,
             padding: const EdgeInsets.all(10),
             child: Center(
               child: Text(

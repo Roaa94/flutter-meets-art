@@ -40,7 +40,7 @@ class CameraImageStipplingDemoPainter extends CustomPainter {
             : mode == StippleMode.polygons
                 ? Colors.black
                 : Colors.white
-        ..strokeWidth = 2
+        ..strokeWidth = mode == StippleMode.polygonsOutlined ? 2 : 1
         ..style = PaintingStyle.stroke;
       secondaryStipplePaints.add(secondaryPaint);
     }
