@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
+const frameRate = 10;
+
 class MacOSCameraView extends StatefulWidget {
   const MacOSCameraView({
     super.key,
@@ -21,6 +23,7 @@ class MacOSCameraView extends StatefulWidget {
 
 class _MacOSCameraViewState extends State<MacOSCameraView>
     with SingleTickerProviderStateMixin {
+  static const tickInterval = Duration(milliseconds: 1000 ~/ frameRate);
   late final Ticker _ticker;
 
   CameraMacOSController? macOSController;
@@ -28,6 +31,8 @@ class _MacOSCameraViewState extends State<MacOSCameraView>
   GlobalKey cameraRenderBoxKey = GlobalKey();
   List<CameraMacOSDevice> _videoDevices = [];
   String? _selectedVideoDeviceId;
+
+  Duration _lastTick = Duration.zero;
 
   Future<void> _loadPixelsFromRepaintBoundary() async {
     if (cameraRenderBoxKey.currentContext == null) return;
@@ -64,7 +69,11 @@ class _MacOSCameraViewState extends State<MacOSCameraView>
   }
 
   void _onTick(Duration elapsed) {
-    _loadPixelsFromRepaintBoundary();
+    final elapsedDelta = elapsed - _lastTick;
+    if (elapsedDelta >= tickInterval) {
+      _lastTick += tickInterval;
+      _loadPixelsFromRepaintBoundary();
+    }
   }
 
   @override

@@ -173,7 +173,7 @@ class _CameraImageStipplingControlsState
                   ],
                 ),
                 const SizedBox(height: 20),
-                const Text('Seed point count', style: labelTextStyle),
+                const Text('Points count', style: labelTextStyle),
                 const SizedBox(height: 10),
                 Controls(
                   value: widget.selectedPointsCount,

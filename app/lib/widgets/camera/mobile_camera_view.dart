@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
+const frameRate = 10;
+
 class MobileCameraView extends StatefulWidget {
   const MobileCameraView({
     super.key,
@@ -21,10 +23,13 @@ class MobileCameraView extends StatefulWidget {
 
 class _MobileCameraViewState extends State<MobileCameraView>
     with SingleTickerProviderStateMixin {
+  static const tickInterval = Duration(milliseconds: 1000 ~/ frameRate);
   late final Ticker _ticker;
   CameraController? _cameraController;
   List<CameraDescription> _devices = [];
   CameraDescription? _selectedDevice;
+
+  Duration _lastTick = Duration.zero;
 
   final GlobalKey cameraRenderBoxKey = GlobalKey();
 
@@ -85,7 +90,11 @@ class _MobileCameraViewState extends State<MobileCameraView>
   }
 
   void _onTick(Duration elapsed) {
-    _loadPixelsFromRepaintBoundary();
+    final elapsedDelta = elapsed - _lastTick;
+    if (elapsedDelta >= tickInterval) {
+      _lastTick += tickInterval;
+      _loadPixelsFromRepaintBoundary();
+    }
   }
 
   @override
