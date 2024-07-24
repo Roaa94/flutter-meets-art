@@ -5,7 +5,7 @@ import 'package:app/algorithms/voronoi_relaxation.dart';
 import 'package:app/enums.dart';
 import 'package:app/utils/painting_utils.dart';
 import 'package:app/widgets/camera/adaptive_camera_view.dart';
-import 'package:app/widgets/camera/camera_image_stippling_painter.dart';
+import 'package:app/widgets/camera/stippling_painter.dart';
 import 'package:flutter/material.dart';
 
 class CameraImageStipplingDemo extends StatefulWidget {
@@ -102,7 +102,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
         if (_relaxation != null)
           Positioned.fill(
             child: CustomPaint(
-              painter: CameraImageStipplingDemoPainter(
+              painter: StipplingPainter(
                 relaxation: _relaxation!,
                 mode: widget.mode,
                 paintColors: widget.paintColors,

@@ -5,8 +5,8 @@ import 'package:app/enums.dart';
 import 'package:app/utils/math_utils.dart';
 import 'package:flutter/material.dart';
 
-class CameraImageStipplingDemoPainter extends CustomPainter {
-  CameraImageStipplingDemoPainter({
+class StipplingPainter extends CustomPainter {
+  StipplingPainter({
     required this.relaxation,
     this.paintColors = false,
     this.mode = StippleMode.dots,
