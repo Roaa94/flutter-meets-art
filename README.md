@@ -1,6 +1,8 @@
 # Flutter Meets Art
 Slides and demos created for the talk "**Code Meets Art: Flutter for Creative Coding**" done in [FlutterCon Berlin 2024](https://fluttercon.dev/roaa-khaddam/)
 
+Slides built with [flutter_deck](https://pub.dev/packages/flutter_deck) 🪄
+
 > During tech conferences, people attende talks and workshops to learn about crucial topics that they will hopefully take home and apply in their day-to-day careers to build better apps and software. With this talk, however, my goal is to inspire at least one person from the audience to go home, put aside all their responsibilities, their full time job, clients, product specs, and deadlines, and write code that has one goal and one goal only:
 >
 >*It paints beautiful pixels on the screen.*
@@ -20,7 +22,7 @@ https://github.com/user-attachments/assets/b62402a7-8911-49e2-85f6-222e0f351c9e
 The demo can be found in the [`app`](https://github.com/Roaa94/flutter-meets-art/tree/main/app) folder of this repo, particularly in the [`camera_image_stippling_demo_page.dart`](https://github.com/Roaa94/flutter-meets-art/blob/main/app/lib/widgets/camera/camera_image_stippling_demo_page.dart) file.
 I've also added controls to the demo UI. So you can run it, and adjust things like the stippling mode (dots, circles, voronoi polygons, ...etc), the points count (how far can you go before your machine goes 💥? 🫢), colors, dot sizes, ..etc. And you can take a screenshot and share it if you like!
 
-...
+
 
 ### Side story 📖
 
