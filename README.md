@@ -22,6 +22,13 @@ https://github.com/user-attachments/assets/b62402a7-8911-49e2-85f6-222e0f351c9e
 The demo can be found in the [`app`](https://github.com/Roaa94/flutter-meets-art/tree/main/app) folder of this repo, particularly in the [`camera_image_stippling_demo_page.dart`](https://github.com/Roaa94/flutter-meets-art/blob/main/app/lib/widgets/camera/camera_image_stippling_demo_page.dart) file.
 I've also added controls to the demo UI. So you can run it, and adjust things like the stippling mode (dots, circles, voronoi polygons, ...etc), the points count (how far can you go before your machine goes 💥? 🫢), colors, dot sizes, ..etc. And you can take a screenshot and share it if you like!
 
+https://github.com/user-attachments/assets/232211f3-9049-47ac-888a-91e289e79a77
+
+
+https://github.com/user-attachments/assets/069e6ca1-7b83-42c8-b4d1-916245b4f9ad
+
+
+https://github.com/user-attachments/assets/1f7cc2a8-c7d4-4b47-a174-3b392ab3a5c7
 
 
 ### Side story 📖
