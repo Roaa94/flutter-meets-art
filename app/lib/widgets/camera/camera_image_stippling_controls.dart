@@ -184,7 +184,7 @@ class _CameraImageStipplingControlsState
                     }
                   },
                   onPlus: () {
-                    if (widget.selectedPointsCount < 10000) {
+                    if (widget.selectedPointsCount < 20000) {
                       widget.onPointsCountChanged
                           ?.call(widget.selectedPointsCount + 500);
                     }
@@ -303,7 +303,7 @@ class Controls extends StatelessWidget {
               color: primaryColor,
               border: Border.all(color: Colors.white, width: 0.5),
             ),
-            width: 70,
+            width: 80,
             padding: const EdgeInsets.all(10),
             child: Center(
               child: Text(
