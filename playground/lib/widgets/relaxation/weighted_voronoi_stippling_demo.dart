@@ -1,12 +1,12 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:playground/algorithms/voronoi_relaxation.dart';
 import 'package:playground/app.dart';
 import 'package:playground/utils/image_utils.dart';
 import 'package:playground/widgets/camera/stippling_painter.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 
 class WeightedVoronoiStipplingDemo extends StatefulWidget {
   const WeightedVoronoiStipplingDemo({
@@ -105,7 +105,9 @@ class _WeightedVoronoiStipplingDemoState
         return;
       }
       _init();
-      _ticker.start();
+      if (widget.trigger) {
+        _ticker.start();
+      }
     });
   }
 
