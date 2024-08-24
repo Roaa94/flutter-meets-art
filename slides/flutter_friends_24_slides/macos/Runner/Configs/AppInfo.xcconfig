@@ -5,7 +5,7 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = FlutterConEU 24 Slides
+PRODUCT_NAME = Flutter & Friends 24 Slides
 
 // The application's bundle identifier
 PRODUCT_BUNDLE_IDENTIFIER = com.example.slides
