@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
+import 'package:app/app.dart';
 import 'package:app/utils/image_utils.dart';
-import 'package:app/widgets/relaxation/weighted_voronoi_stippling_painter.dart';
+import 'package:app/widgets/camera/stippling_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +25,6 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
     this.minStroke = 6,
     this.maxStroke = 15,
     this.wiggleFactor,
-    this.pointsColor = Colors.black,
   });
 
   final int pointsCount;
@@ -41,7 +41,6 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
   final double minStroke;
   final double maxStroke;
   final double? wiggleFactor;
-  final Color pointsColor;
 
   @override
   State<WeightedVoronoiStipplingDemo> createState() =>
@@ -76,7 +75,7 @@ class _WeightedVoronoiStipplingDemoState
   }
 
   void _update() {
-    _relaxation?.update(0.1, wiggleFactor: widget.wiggleFactor);
+    _relaxation?.update(1, wiggleFactor: widget.wiggleFactor);
     setState(() {});
   }
 
@@ -106,6 +105,7 @@ class _WeightedVoronoiStipplingDemoState
         return;
       }
       _init();
+      _ticker.start();
     });
   }
 
@@ -149,18 +149,19 @@ class _WeightedVoronoiStipplingDemoState
             if (_relaxation != null)
               Positioned.fill(
                 child: CustomPaint(
-                  painter: WeightedVoronoiStipplingPainter(
+                  painter: StipplingPainter(
                     relaxation: _relaxation!,
-                    bytes: _imageBytes!,
                     paintColors: widget.paintColors,
-                    showVoronoiPolygons: widget.showVoronoiPolygons,
-                    showPoints: widget.showPoints,
+                    mode: widget.showVoronoiPolygons
+                        ? StippleMode.polygons
+                        : widget.showPoints
+                            ? widget.strokePaintingStyle
+                                ? StippleMode.circles
+                                : StippleMode.dots
+                            : StippleMode.polygons,
                     pointStrokeWidth: widget.pointStrokeWidth,
-                    strokePaintingStyle: widget.strokePaintingStyle,
-                    weightedStrokes: widget.weightedStrokes,
                     minStroke: widget.minStroke,
                     maxStroke: widget.maxStroke,
-                    pointsColor: widget.pointsColor,
                   ),
                 ),
               ),

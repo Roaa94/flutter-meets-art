@@ -2,8 +2,9 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:app/algorithms/voronoi_relaxation.dart';
+import 'package:app/enums.dart';
 import 'package:app/utils/image_utils.dart';
-import 'package:app/widgets/relaxation/weighted_voronoi_stippling_painter.dart';
+import 'package:app/widgets/camera/stippling_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
@@ -135,15 +136,17 @@ class _StippledWidgetState extends State<StippledWidget>
               child: ColoredBox(
                 color: Colors.black,
                 child: CustomPaint(
-                  painter: WeightedVoronoiStipplingPainter(
+                  painter: StipplingPainter(
                     relaxation: _relaxation!,
-                    bytes: _sceneBytes!,
                     paintColors: widget.paintColors,
-                    showVoronoiPolygons: widget.showVoronoiPolygons,
-                    showPoints: widget.showPoints,
+                    mode: widget.showVoronoiPolygons
+                        ? StippleMode.polygons
+                        : widget.showPoints
+                            ? StippleMode.dots
+                            : widget.strokePaintingStyle
+                                ? StippleMode.circles
+                                : StippleMode.polygons,
                     pointStrokeWidth: widget.pointStrokeWidth,
-                    strokePaintingStyle: widget.strokePaintingStyle,
-                    weightedStrokes: widget.weightedStrokes,
                     minStroke: widget.minStroke,
                     maxStroke: widget.maxStroke,
                   ),

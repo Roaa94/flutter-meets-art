@@ -14,7 +14,6 @@ class StipplingPainter extends CustomPainter {
     this.minStroke = 4,
     this.maxStroke = 15,
   }) {
-    bgPaint.color = Colors.black;
     stipplePaints = <Paint>[];
     secondaryStipplePaints = <Paint>[];
     weightedStrokes = Float32List(relaxation.coords.length ~/ 2);
@@ -57,7 +56,7 @@ class StipplingPainter extends CustomPainter {
   late final List<Paint> stipplePaints;
   late final List<Paint> secondaryStipplePaints;
   late final Float32List weightedStrokes;
-  final bgPaint = Paint();
+  final bgPaint = Paint()..color = Colors.black;
 
   @override
   void paint(Canvas canvas, Size size) {
