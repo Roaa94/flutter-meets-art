@@ -52,7 +52,6 @@ class SlidesApp extends StatelessWidget {
       configuration: const FlutterDeckConfiguration(
         showProgress: false,
         background: FlutterDeckBackgroundConfiguration(
-          // Todo: add bg image (stipple pattern?) & pick better color
           dark: FlutterDeckBackground.solid(Colors.black),
         ),
         transition: FlutterDeckTransition.fade(),
