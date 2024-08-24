@@ -411,7 +411,7 @@ packages:
   playground:
     dependency: "direct main"
     description:
-      path: "../playground"
+      path: "../../playground"
       relative: true
     source: path
     version: "0.1.0"
