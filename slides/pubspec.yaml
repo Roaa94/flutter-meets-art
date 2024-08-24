@@ -11,8 +11,8 @@ dependencies:
     sdk: flutter
   flutter_deck: ^0.15.0
   google_fonts: ^6.2.1
-  app:
-    path: ../app
+  playground:
+    path: ../playground
   device_frame: ^1.2.0
   syntax_highlight: ^0.4.0
   flutter_riverpod: ^2.5.1

@@ -1,4 +1,4 @@
-import 'package:app/app.dart';
+import 'package:playground/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/demos/image_pixel_sorting_demo.dart';

@@ -1,4 +1,4 @@
-import 'package:app/app.dart';
+import 'package:playground/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/templates/build_template_slide.dart';

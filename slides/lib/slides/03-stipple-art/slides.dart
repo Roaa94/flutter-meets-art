@@ -1,4 +1,4 @@
-import 'package:app/widgets/voronoi/voronoi_painter_wrapper.dart';
+import 'package:playground/widgets/voronoi/voronoi_painter_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:slides/slides/03-stipple-art/animated_voronoi_relaxation_slide.dart';

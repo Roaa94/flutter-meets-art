@@ -1,4 +1,4 @@
-import 'package:app/widgets/relaxation/weighted_voronoi_stippling_demo.dart';
+import 'package:playground/widgets/relaxation/weighted_voronoi_stippling_demo.dart';
 import 'package:flutter/material.dart';
 
 class StippledDash extends StatelessWidget {

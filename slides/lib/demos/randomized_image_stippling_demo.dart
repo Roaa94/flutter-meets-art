@@ -1,4 +1,4 @@
-import 'package:app/app.dart';
+import 'package:playground/app.dart';
 import 'package:flutter/material.dart';
 import 'package:slides/styles/app_colors.dart';
 import 'package:slides/widgets/controls.dart';

@@ -1,4 +1,4 @@
-import 'package:app/widgets/relaxation/weighted_voronoi_stippling_demo.dart';
+import 'package:playground/widgets/relaxation/weighted_voronoi_stippling_demo.dart';
 import 'package:flutter/material.dart';
 
 class StippledFlutterLogo extends StatelessWidget {
@@ -28,6 +28,7 @@ class StippledFlutterLogo extends StatelessWidget {
             weightedStrokes: true,
             minStroke: 8,
             wiggleFactor: 0.5,
+            trigger: false,
             imagePath: 'assets/images/flutter-logo.png',
             maxStroke: 20,
             // strokePaintingStyle: true,
