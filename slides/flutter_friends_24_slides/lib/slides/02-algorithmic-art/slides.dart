@@ -47,11 +47,6 @@ final algorithmicArtSlides = <FlutterDeckSlideWidget>[
     delaunayClassInputCode,
     title: 'Delaunay Class',
   ),
-  // 64
-  CodeSlide(
-    randomRawPointsGenerationCode,
-    title: 'Delaunay Coordinates Generation',
-  ),
   // 65
   CodeSlide(
     initDelaunayCode,

@@ -5,20 +5,6 @@ class Delaunay {
   //...
 }''';
 
-const randomRawPointsGenerationCode = '''
-Float32List generateRandomPoints({
-  required Random random,
-  required Size canvasSize,
-  required int count,
-}) {
-  final points = Float32List(count * 2);
-  for (int i = 0; i < points.length; i += 2) {
-    points[i] = random.nextDouble() * canvasSize.width;
-    points[i + 1] = random.nextDouble() * canvasSize.height;
-  }
-  return points;
-}''';
-
 const initDelaunayCode = '''
 final seedPoints = generateRandomPoints(
   random: random,

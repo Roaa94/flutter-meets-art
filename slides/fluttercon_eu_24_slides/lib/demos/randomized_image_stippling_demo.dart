@@ -36,7 +36,7 @@ class _RandomizedImageStipplingDemoState
             child: SizedBox.expand(
               child: ColoredBox(
                 color: Colors.white,
-                child: WeightedVoronoiStipplingDemo(
+                child: WeightedVoronoiStipplingDemoRaw(
                   showImage: showImage,
                   showVoronoiPolygons: false,
                   pointsCount: 2000,

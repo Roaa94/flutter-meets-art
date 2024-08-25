@@ -61,15 +61,31 @@ for (int i = 0; i < imageBytes.lengthInBytes; i += 4) {
   pixelColors.add(color);
 }''';
 
-const generateRandomPointsFromPixelsCode = '''
-final coords = Float32List(pointsCount * 2);
-for (int i = 0; i < pointsCount; i++) {
-  final x = size.width * random.nextDouble();
-  final y = size.height * random.nextDouble();
-  final offset = Offset(x, y);
-  final color =
-      getPixelColorFromBytes(bytes: bytes, offset: offset, size: size);
-  final brightness = color.computeLuminance();
-  coords[i] = offset.dx;
-  coords[i + 1] = offset.dy;
+const generateRandomlyDistributedPointsCode1 = '''
+import 'dart:typed_data';
+
+// [x1, y1, x2, y2, x3, y3, ..... ]
+final points = Float32List(count * 2);                    
+
+
+
+''';
+
+const generateRandomlyDistributedPointsCode2 = '''
+import 'dart:typed_data';
+
+// [x1, y1, x2, y2, x3, y3, ..... ]
+final points = Float32List(count * 2);
+for (int i = 0; i < points.length; i += 2) {
+  points[i] = random.nextDouble() * canvasSize.width;
+  points[i + 1] = random.nextDouble() * canvasSize.height;
+}''';
+
+const generateRandomlyDistributedPointsCode3 = '''
+for (int i = 0; i < points; i += 2) {
+  canvas.drawCircle(
+    Offset(points[i], points[i + 1]),
+    1,
+    _paint,
+  );
 }''';

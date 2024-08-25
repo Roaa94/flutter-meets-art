@@ -2,7 +2,7 @@ import 'package:flutter_deck/flutter_deck.dart';
 import 'package:flutter_friends_24_slides/slides/00-introduction/agenda_slide.dart';
 import 'package:flutter_friends_24_slides/slides/01-bitmaps/code.dart';
 import 'package:flutter_friends_24_slides/slides/01-bitmaps/image_pixels_painter_slide.dart';
-import 'package:flutter_friends_24_slides/slides/01-bitmaps/randomized_image_stippling_slide.dart';
+import 'package:flutter_friends_24_slides/slides/01-bitmaps/randomly_distributed_points_slide.dart';
 import 'package:flutter_friends_24_slides/templates/code_slide.dart';
 import 'package:flutter_friends_24_slides/templates/image_slide.dart';
 import 'package:flutter_friends_24_slides/templates/section_title_slide.dart';
@@ -63,11 +63,23 @@ final bitmapsSlides = <FlutterDeckSlideWidget>[
   // 41
   const ImagePixelsPainterSlide(),
   AgendaSlide(step: 3, completed: 1),
+  // Randomly distributed points
   CodeSlide(
-    generateRandomPointsFromPixelsCode,
-    title: 'Image Pixels Random Point Generation',
-    codeFontSize: 20,
+    generateRandomlyDistributedPointsCode1,
+    title: 'Random point distribution',
+    route: 'random-points-1',
   ),
-  const RandomizedImageStipplingSlide(),
+  // Randomly distributed points
+  CodeSlide(
+    generateRandomlyDistributedPointsCode2,
+    title: 'Random point distribution',
+    route: 'random-points-2',
+  ),
+  CodeSlide(
+    generateRandomlyDistributedPointsCode3,
+    title: 'Random point distribution',
+    route: 'random-points-3',
+  ),
+  const RandomlyDistributedPointsSlide(),
   AgendaSlide(step: 3, completed: 2),
 ];

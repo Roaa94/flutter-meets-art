@@ -39,7 +39,7 @@ class AgendaSlide extends FlutterDeckSlideWidget {
             Opacity(
               opacity: step >= 2 ? 1 : 0,
               child: Text(
-                '${completed >= 2 ? '✅' : '☑️'} Lay-out seed points in a random-ish distribution',
+                '${completed >= 2 ? '✅' : '☑️'} Lay-out seed points in a random distribution',
                 style: TextStyles.subtitleSM,
                 textAlign: TextAlign.left,
               ),

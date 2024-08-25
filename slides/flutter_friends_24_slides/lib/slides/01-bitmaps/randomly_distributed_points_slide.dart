@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
-import 'package:flutter_friends_24_slides/demos/randomized_image_stippling_demo.dart';
+import 'package:flutter_friends_24_slides/demos/randomly_distributed_point_demo.dart';
 import 'package:flutter_friends_24_slides/templates/build_template_slide.dart';
 
-class RandomizedImageStipplingSlide extends FlutterDeckSlideWidget {
-  const RandomizedImageStipplingSlide()
+class RandomlyDistributedPointsSlide extends FlutterDeckSlideWidget {
+  const RandomlyDistributedPointsSlide()
       : super(
           configuration: const FlutterDeckSlideConfiguration(
-            route: '/randomized-image-stippling',
-            title: 'Randomized Image Stippling',
+            route: '/randomly-distributed-points',
+            title: 'Randomly Distributed Points',
           ),
         );
 
@@ -17,8 +17,8 @@ class RandomizedImageStipplingSlide extends FlutterDeckSlideWidget {
     return buildTemplateSlide(
       context,
       showHeader: true,
-      title: 'Randomized Image Stippling',
-      content: const RandomizedImageStipplingDemo(),
+      title: 'Random point distribution',
+      content: const RandomlyDistributedPointsDemo(),
     );
   }
 }
