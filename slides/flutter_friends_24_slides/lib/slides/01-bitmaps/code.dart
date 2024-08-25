@@ -1,4 +1,16 @@
-const loadImageBytesCode = '''
+const loadImageBytesCode1 = '''
+import 'dart:typed_data';
+
+
+final ByteData img = await rootBundle.load('path/to/image');
+
+
+''';
+
+const loadImageBytesCode2 = '''
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 final ByteData img = await rootBundle.load('path/to/image');
 final ui.Image decodedImage = 
     await decodeImageFromList(img.buffer.asUint8List());
@@ -28,7 +40,7 @@ void paint(Canvas canvas, Size size) {
     double y = i / imageSize.width;
     canvas.drawRect(
       Rect.fromLTWH(x, y, 1, 1),
-      Paint()..color = pixelColors[i],
+      _paint..color = pixels[i],
     );
   }
 }''';
@@ -40,4 +52,17 @@ for (int i = 0; i < imageBytes.lengthInBytes; i += 4) {
   // Use `HSL` colors 👇🏻
   final color = HSLColor.fromColor(Color(rgbaToArgb(rgbaColor)));
   pixelColors.add(color);
+}''';
+
+const generateRandomPointsFromPixelsCode = '''
+final coords = Float32List(pointsCount * 2);
+for (int i = 0; i < pointsCount; i++) {
+  final x = size.width * random.nextDouble();
+  final y = size.height * random.nextDouble();
+  final offset = Offset(x, y);
+  final color =
+      getPixelColorFromBytes(bytes: bytes, offset: offset, size: size);
+  final brightness = color.computeLuminance();
+  coords[i] = offset.dx;
+  coords[i + 1] = offset.dy;
 }''';

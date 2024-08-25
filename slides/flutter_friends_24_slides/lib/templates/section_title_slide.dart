@@ -15,7 +15,7 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
             route: route != null
                 ? '/$route'
                 : '/${title.toLowerCase().replaceAll(' ', '-')}',
-            title: '$title${subtitle == null ? '' : ' - $subtitle'}',
+            title: title,
           ),
         );
 
@@ -37,10 +37,25 @@ class SectionTitleSlide extends FlutterDeckSlideWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 200.0),
               child: Center(
-                child: Text(
-                  title,
-                  style: isSubtitle ? TextStyles.subtitle : TextStyles.title,
-                  textAlign: TextAlign.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      title,
+                      style:
+                          isSubtitle ? TextStyles.subtitle : TextStyles.title,
+                      textAlign: TextAlign.center,
+                    ),
+                    if (subtitle != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Text(
+                          subtitle!,
+                          style: TextStyles.subtitleSM,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ),

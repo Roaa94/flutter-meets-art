@@ -112,6 +112,8 @@ class ImagePixelsDemoPainter extends CustomPainter {
   final bool greyScale;
   final bool threshold;
 
+  final _paint = Paint();
+
   @override
   void paint(Canvas canvas, Size size) {
     for (int i = 0; i < pixels.length; i++) {
@@ -119,7 +121,7 @@ class ImagePixelsDemoPainter extends CustomPainter {
       double y = i / imageSize.width;
       canvas.drawRect(
         Rect.fromLTWH(x, y, 1.1, 1.1),
-        Paint()..color = pixels[i],
+        _paint..color = pixels[i],
       );
     }
 

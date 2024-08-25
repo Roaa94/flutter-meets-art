@@ -35,7 +35,7 @@ FlutterDeckSlide buildTemplateSlide(
         ),
         child: Row(
           children: [
-            // Todo: add FlutterCon logo
+            // Todo: add Flutter&Friends logo
             Expanded(child: Container()),
             Expanded(
               child: Align(

@@ -141,19 +141,6 @@ Float32List lerpPoints(Float32List a, Float32List b, double value) {
 const voronoiRelaxationTickerCode = '''
 _ticker = createTicker((_) => _update());''';
 
-const generateRandomPointsFromPixelsCode = '''
-final coords = Float32List(pointsCount * 2);
-for (int i = 0; i < pointsCount; i++) {
-  final x = size.width * random.nextDouble();
-  final y = size.height * random.nextDouble();
-  final offset = Offset(x, y);
-  final color =
-      getPixelColorFromBytes(bytes: bytes, offset: offset, size: size);
-  final brightness = color.computeLuminance();
-  coords[i] = offset.dx;
-  coords[i + 1] = offset.dy;
-}''';
-
 const cameraImageStreamCode1 = '''
 CameraMacOSView(
     //...

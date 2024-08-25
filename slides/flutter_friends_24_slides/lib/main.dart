@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_friends_24_slides/slides/00-introduction/slides.dart';
-import 'package:flutter_friends_24_slides/slides/01-cc-as-as-learning-tool/slides.dart';
-import 'package:flutter_friends_24_slides/slides/02-pixel-sorting/slides.dart';
-import 'package:flutter_friends_24_slides/slides/03-stipple-art/slides.dart';
+import 'package:flutter_friends_24_slides/slides/01-bitmaps/slides.dart';
+import 'package:flutter_friends_24_slides/slides/02-algorithmic-art/slides.dart';
 import 'package:flutter_friends_24_slides/slides/06-conclusion/slides.dart';
+import 'package:flutter_friends_24_slides/slides/slides.dart';
+import 'package:flutter_friends_24_slides/slides/title_slide.dart';
+import 'package:flutter_friends_24_slides/templates/placeholder_slide.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
 final highlighterProvider = Provider<Highlighter>(
@@ -56,13 +58,7 @@ class FlutterFriends24SlidesApp extends StatelessWidget {
         ),
         transition: FlutterDeckTransition.fade(),
       ),
-      slides: [
-        ...introductionSlides,
-        ...creativeCodingAsALearningToolSlides,
-        ...pixelSortingSlides,
-        ...stippleArtSlides,
-        ...conclusionSlides,
-      ],
+      slides: slides,
     );
   }
 }

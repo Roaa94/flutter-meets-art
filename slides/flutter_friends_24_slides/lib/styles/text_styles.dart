@@ -33,6 +33,12 @@ class TextStyles {
     fontWeight: FontWeight.w500,
   );
 
+  static const subtitleSM = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 45,
+    fontWeight: FontWeight.w500,
+  );
+
   static const titleXL = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 100,

@@ -39,6 +39,7 @@ class _RandomizedImageStipplingDemoState
                 child: WeightedVoronoiStipplingDemo(
                   showImage: showImage,
                   showVoronoiPolygons: false,
+                  strokePaintingStyle: false,
                   pointsCount: 2000,
                   showPoints: showPoints,
                   paintColors: false,
