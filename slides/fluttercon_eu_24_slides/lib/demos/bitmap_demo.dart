@@ -25,7 +25,7 @@ class _BitmapDemoState extends State<BitmapDemo> {
               label: '100x100 Bitmap',
               child: ColoredBox(
                 color: Colors.white,
-                child: ImagePixelsDemo(
+                child: ImageBitmapDemo(
                   imagePath: 'assets/images/dash-100x100.jpg',
                   zoom: zoom,
                 ),

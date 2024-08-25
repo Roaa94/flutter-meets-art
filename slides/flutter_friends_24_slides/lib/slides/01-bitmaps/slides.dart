@@ -15,53 +15,50 @@ final bitmapsSlides = <FlutterDeckSlideWidget>[
   ),
   // 34
   ImageSlide(
-    title: 'Reading Pixel Colors from Image Bitmaps',
+    title: 'Image Bitmaps',
     path: 'assets/images/image-3x3.png',
-    route: 'reading-image-pixels-illustration-2',
+    route: 'image-bitmaps-illustration-2',
     width: 400,
   ),
   // 35
   ImageSlide(
-    title: 'Reading Pixel Colors from Image Bitmaps',
+    title: 'Image Bitmaps',
     path: 'assets/images/image-3x3-rgba.png',
-    route: 'reading-image-pixels-illustration-3',
+    route: 'image-bitmaps-illustration-3',
     width: 900,
   ),
   // 36
   ImageSlide(
-    title: 'Reading Pixel Colors from Image Bitmaps',
+    title: 'Image Bitmaps',
     path: 'assets/images/image-lists.png',
-    route: 'reading-image-pixels-illustration-4',
+    route: 'image-bitmaps-illustration-4',
     width: 1000,
   ),
   // 37
   CodeSlide(
     loadImageBytesCode1,
-    title: 'Reading Pixel Colors from Image Bitmaps',
+    title: 'Reading an Image\'s Bitmap',
     route: 'reading-image-bytes-code-1',
   ),
   // 37
   CodeSlide(
     loadImageBytesCode2,
-    title: 'Reading Pixel Colors from Image Bitmaps',
+    title: 'Reading an Image\'s Bitmap',
     route: 'reading-image-bytes-code-2',
-  ),
-  // 38
-  CodeSlide(
-    getColorsListFromImageCode1,
-    title: 'Reading Pixel Colors from Image Bitmaps',
-    route: 'reading-image-pixel-colors-code-1',
-  ),
-  // 39
-  CodeSlide(
-    getColorsListFromImageCode2,
-    title: 'Reading Pixel Colors from Image Bitmaps',
-    route: 'reading-image-pixel-colors-code-2',
   ),
   // 40
   CodeSlide(
-    paintImagePixelsCode,
-    title: 'Painting Image Pixel',
+    paintImagePixelsCode1,
+    title: 'Painting Image Pixels',
+    route: 'paint-image-pixels-code-1',
+    codeFontSize: 24,
+  ),
+  // 40
+  CodeSlide(
+    paintImagePixelsCode2,
+    title: 'Painting Image Pixels',
+    route: 'paint-image-pixels-code-2',
+    codeFontSize: 24,
   ),
   // 41
   const ImagePixelsPainterSlide(),

@@ -156,11 +156,9 @@ class _WeightedVoronoiStipplingDemoState
                     paintColors: widget.paintColors,
                     mode: widget.showVoronoiPolygons
                         ? StippleMode.polygons
-                        : widget.showPoints
-                            ? widget.strokePaintingStyle
-                                ? StippleMode.circles
-                                : StippleMode.dots
-                            : StippleMode.polygons,
+                        : widget.strokePaintingStyle
+                            ? StippleMode.circles
+                            : StippleMode.dots,
                     pointStrokeWidth: widget.pointStrokeWidth,
                     minStroke: widget.minStroke,
                     maxStroke: widget.maxStroke,
