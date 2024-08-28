@@ -14,33 +14,30 @@ final seedPoints = generateRandomPoints(
 final delaunay = Delaunay(seedPoints);
 delaunay.update();''';
 
-const paintDelaunayTrianglesCode = '''
-final triangles = delaunay.triangles;
+const delaunayVoronoiExtensionCode1 = '''
+class Voronoi {
+  //...
+  
+  List<List<Offset>> get cells => _cells;
+}
 
-for (int i = 0; i < triangles.length; i += 3) {
-  final t1 = triangles[i];
-  final t2 = triangles[i + 1];
-  final t3 = triangles[i + 2];
-
-  final x = delaunay.getPoint(t1);
-  final y = delaunay.getPoint(t2);
-  final z = delaunay.getPoint(t3);
-
-  canvas.drawPath(
-    Path()
-      ..moveTo(x.x, x.y)
-      ..lineTo(y.x, y.y)..lineTo(z.x, z.y)
-      ..close(),
-    Paint()
-      ..color = Colors.black,
-  );
+extension VoronoiExtension on Delaunay {
+  // Bounds: Point(x1, y1) => Point(x2, y2)
+  voronoi(Point min, Point max) { // ⬅️
+    return Voronoi(delaunay: this, min: min, max: max);
+  }
 }''';
 
-const delaunayVoronoiExtensionCode = '''
-class Delaunay {
-  Delaunay(Float32List coords);
+
+const delaunayVoronoiExtensionCode2 = '''
+class Voronoi {
   //...
-  //...
+  
+  List<List<Offset>> get cells => _cells; // ⬅️
+}
+
+extension VoronoiExtension on Delaunay {
+  // Bounds: Point(x1, y1) => Point(x2, y2)
   voronoi(Point min, Point max) {
     return Voronoi(delaunay: this, min: min, max: max);
   }
@@ -90,6 +87,40 @@ for (int j = 0; j < voronoi.cells.length; j++) {
       ..color = Colors.black,
   );
 }''';
+
+const voronoiGridPatternCode = '''
+final cols = (size.width / cellSize).floor();
+final rows = (size.height / cellSize).floor();
+final coords = Float32List(cols * rows * 2);
+
+for (int i = 0; i < cols * rows; i++) {
+  final col = i % cols;
+  final row = i ~/ cols;
+
+  final centerX = col * cellSize + cellSize / 2 +
+      (row.isOdd ? cellSize * cellIncrementFactor : 0);
+  final centerY = row * cellSize + cellSize / 2 +
+      (col.isOdd ? cellSize * cellIncrementFactor : 0);
+
+  coords[i * 2] = centerX;
+  coords[i * 2 + 1] = centerY;
+}''';
+
+const voronoiSpiralPatternCode = '''
+double radius = 0.0, angle = 0.0;
+for (int i = 0; i < pointsCount; i++) {
+  final double x = center.dx + radius * cos(angle); // ⬅️ Math 🫢
+  final double y = center.dy + radius * sin(angle); // ⬅️ Math 🫢
+
+  if (x >= 0 && x <= bounds.width && y >= 0 && y <= bounds.height) {
+    coords[actualPointsCount * 2] = x;
+    coords[actualPointsCount * 2 + 1] = y;
+  }
+
+  radius += radiusIncrement;
+  angle += angleIncrement;
+}
+//...''';
 
 const voronoiRelaxationInitializationCode = '''
 void _calculate() {

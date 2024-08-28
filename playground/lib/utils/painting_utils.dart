@@ -8,23 +8,26 @@ Float32List generateGridPoints({
   double cellSize = 50,
   double cellIncrementFactor = 0.1,
 }) {
-  final coords = <double>[];
   final cols = (canvasSize.width / cellSize).floor();
   final rows = (canvasSize.height / cellSize).floor();
+  final coords = Float32List(cols * rows * 2);
 
-  for (int row = 0; row < rows; row++) {
-    for (int col = 0; col < cols; col++) {
-      final centerX = col * cellSize +
-          cellSize / 2 +
-          (row.isOdd ? cellSize * cellIncrementFactor : 0);
-      final centerY = row * cellSize +
-          cellSize / 2 +
-          (col.isOdd ? cellSize * cellIncrementFactor : 0);
-      coords.addAll([centerX, centerY]);
-    }
+  for (int i = 0; i < cols * rows; i++) {
+    final col = i % cols;
+    final row = i ~/ cols;
+
+    final centerX = col * cellSize +
+        cellSize / 2 +
+        (row.isOdd ? cellSize * cellIncrementFactor : 0);
+    final centerY = row * cellSize +
+        cellSize / 2 +
+        (col.isOdd ? cellSize * cellIncrementFactor : 0);
+
+    coords[i * 2] = centerX;
+    coords[i * 2 + 1] = centerY;
   }
 
-  return Float32List.fromList(coords);
+  return coords;
 }
 
 Float32List generateSpiralPoints({
@@ -34,9 +37,9 @@ Float32List generateSpiralPoints({
   Offset center = Offset.zero,
   required Size bounds,
 }) {
-  final List<double> points = [];
-  double radius = 0.0;
-  double angle = 0.0;
+  final coords = Float32List(pointsCount * 2);
+  int actualPointsCount = 0;
+  double radius = 0.0, angle = 0.0;
 
   for (int i = 0; i < pointsCount; i++) {
     final double x = center.dx + radius * cos(angle);
@@ -44,15 +47,17 @@ Float32List generateSpiralPoints({
 
     // Check if the point is within the bounds
     if (x >= 0 && x <= bounds.width && y >= 0 && y <= bounds.height) {
-      points.add(x);
-      points.add(y);
+      coords[actualPointsCount * 2] = x;
+      coords[actualPointsCount * 2 + 1] = y;
+      actualPointsCount++;
     }
 
     radius += radiusIncrement;
     angle += angleIncrement;
   }
 
-  return Float32List.fromList(points);
+  // Return a sublist if fewer points were added
+  return coords.sublist(0, actualPointsCount * 2);
 }
 
 Float32List generateRandomPoints({

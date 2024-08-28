@@ -4,16 +4,17 @@ import 'package:flutter_friends_24_slides/styles/text_styles.dart';
 import 'package:flutter_friends_24_slides/templates/build_template_slide.dart';
 
 class AgendaSlide extends FlutterDeckSlideWidget {
-  AgendaSlide({this.step = 1, this.completed = 0})
+  AgendaSlide({this.step = 1, this.completed = 0, this.route})
       : super(
           configuration: FlutterDeckSlideConfiguration(
-            route: '/agenda-$step-$completed',
+            route: route != null ? '/$route' : '/agenda-$step-$completed',
             title: 'Goals',
           ),
         );
 
   final int step;
   final int completed;
+  final String? route;
 
   @override
   FlutterDeckSlide build(BuildContext context) {

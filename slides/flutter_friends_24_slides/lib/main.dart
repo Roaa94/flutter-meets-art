@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:flutter_friends_24_slides/slides/00-introduction/slides.dart';
 import 'package:flutter_friends_24_slides/slides/01-bitmaps/slides.dart';
-import 'package:flutter_friends_24_slides/slides/02-algorithmic-art/slides.dart';
+import 'package:flutter_friends_24_slides/slides/02-voronoi/slides.dart';
 import 'package:flutter_friends_24_slides/slides/06-conclusion/slides.dart';
 import 'package:flutter_friends_24_slides/slides/slides.dart';
 import 'package:flutter_friends_24_slides/slides/title_slide.dart';

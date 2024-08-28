@@ -60,7 +60,7 @@ class StipplingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // canvas.drawPaint(bgPaint);
+    canvas.drawPaint(bgPaint);
     if (mode == StippleMode.polygons || mode == StippleMode.polygonsOutlined) {
       final cells = relaxation.voronoi.cells;
       for (int j = 0; j < cells.length; j++) {
