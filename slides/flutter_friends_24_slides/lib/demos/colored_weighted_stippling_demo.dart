@@ -31,75 +31,86 @@ class _ColoredWeightedStipplingDemoState
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
-      child: Stack(
-        children: [
-          WindowFrame(
-            label: 'Weighted Stippling',
-            child: SizedBox.expand(
-              child: ColoredBox(
-                color: Colors.white,
-                child: WeightedVoronoiStipplingDemo(
-                  showImage: false,
-                  showVoronoiPolygons: false,
-                  pointsCount: 2000,
-                  paintColors: true,
-                  trigger: trigger,
-                  weightedCentroids: true,
-                  weightedStrokes: weightedStrokes,
-                  strokePaintingStyle: strokePaintingStyle,
-                  // wiggleFactor: 0.5,
+      child: Center(
+        child: SizedBox(
+          width: 800,
+          height: 640,
+          child: Stack(
+            children: [
+              WindowFrame(
+                label: 'Weighted Stippling',
+                child: SizedBox.expand(
+                  child: ColoredBox(
+                    color: Colors.white,
+                    child: WeightedVoronoiStipplingDemo(
+                      showImage: false,
+                      showVoronoiPolygons: false,
+                      pointsCount: 3000,
+                      paintColors: true,
+                      trigger: trigger,
+                      maxStroke: 10,
+                      minStroke: 4,
+                      pointStrokeWidth: 4,
+                      weightedCentroids: true,
+                      weightedStrokes: weightedStrokes,
+                      strokePaintingStyle: strokePaintingStyle,
+                      randomSeed: true,
+                      lerpFactor: 0.1,
+                      // wiggleFactor: 0.5,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              Positioned(
+                bottom: 1,
+                right: 0,
+                left: 0,
+                child: RepaintBoundary(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ControlsButton(
+                        onTap: () => setState(() => trigger = !trigger),
+                        size: controlsSize,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(borderRadius),
+                          topRight: Radius.circular(borderRadius),
+                        ),
+                        iconSize: iconSize,
+                        icon: Icons.play_arrow,
+                      ),
+                      const SizedBox(width: 10),
+                      ControlsButton(
+                        onTap: () => setState(() => weightedStrokes = !weightedStrokes),
+                        size: controlsSize,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(borderRadius),
+                          topRight: Radius.circular(borderRadius),
+                        ),
+                        iconSize: iconSize,
+                        icon: Icons.line_weight,
+                        color: weightedStrokes ? activeColor : Colors.black,
+                      ),
+                      const SizedBox(width: 10),
+                      ControlsButton(
+                        onTap: () => setState(() => strokePaintingStyle = !strokePaintingStyle),
+                        size: controlsSize,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(borderRadius),
+                          topRight: Radius.circular(borderRadius),
+                        ),
+                        iconSize: iconSize,
+                        icon: Icons.circle_outlined,
+                        color: strokePaintingStyle ? activeColor : Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
-          Positioned(
-            bottom: 1,
-            right: 0,
-            left: 0,
-            child: RepaintBoundary(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  ControlsButton(
-                    onTap: () => setState(() => trigger = !trigger),
-                    size: controlsSize,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(borderRadius),
-                      topRight: Radius.circular(borderRadius),
-                    ),
-                    iconSize: iconSize,
-                    icon: Icons.play_arrow,
-                  ),
-                  const SizedBox(width: 10),
-                  ControlsButton(
-                    onTap: () => setState(() => weightedStrokes = !weightedStrokes),
-                    size: controlsSize,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(borderRadius),
-                      topRight: Radius.circular(borderRadius),
-                    ),
-                    iconSize: iconSize,
-                    icon: Icons.line_weight,
-                    color: weightedStrokes ? activeColor : Colors.black,
-                  ),
-                  const SizedBox(width: 10),
-                  ControlsButton(
-                    onTap: () => setState(() => strokePaintingStyle = !strokePaintingStyle),
-                    size: controlsSize,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(borderRadius),
-                      topRight: Radius.circular(borderRadius),
-                    ),
-                    iconSize: iconSize,
-                    icon: Icons.circle_outlined,
-                    color: strokePaintingStyle ? activeColor : Colors.black,
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

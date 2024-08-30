@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:playground/algorithms/voronoi_relaxation.dart';
 import 'package:playground/enums.dart';
 import 'package:playground/utils/math_utils.dart';
-import 'package:flutter/material.dart';
 
 class StipplingPainter extends CustomPainter {
   StipplingPainter({
@@ -13,18 +13,26 @@ class StipplingPainter extends CustomPainter {
     this.pointStrokeWidth = 5,
     this.minStroke = 4,
     this.maxStroke = 15,
+    this.weightedPoints = false,
+    this.pointsColor = Colors.white,
+    this.bgColor = Colors.black,
   }) {
     stipplePaints = <Paint>[];
     secondaryStipplePaints = <Paint>[];
     weightedStrokes = Float32List(relaxation.coords.length ~/ 2);
     for (int i = 0; i < relaxation.colors.length; i++) {
       final color = Color(relaxation.colors[i]);
-      final paint = Paint()..color = paintColors ? color : Colors.white;
+      final paint = Paint()
+        ..color = paintColors
+            ? color
+            : mode == StippleMode.polygons
+                ? bgColor
+                : pointsColor;
       double stroke = pointStrokeWidth;
-      if (relaxation.weighted) {
+      if (relaxation.weighted && weightedPoints) {
         stroke = map(relaxation.strokeWeights[i], 0, 1, minStroke, maxStroke);
-        weightedStrokes[i] = stroke;
       }
+      weightedStrokes[i] = stroke;
       if (mode == StippleMode.circles) {
         paint
           ..strokeWidth = stroke * 0.1
@@ -51,16 +59,19 @@ class StipplingPainter extends CustomPainter {
   final double pointStrokeWidth;
   final double minStroke;
   final double maxStroke;
+  final bool weightedPoints;
+  final Color pointsColor;
+  final Color bgColor;
 
   final circlesPaint = Paint();
   late final List<Paint> stipplePaints;
   late final List<Paint> secondaryStipplePaints;
   late final Float32List weightedStrokes;
-  final bgPaint = Paint()..color = Colors.black;
+  final bgPaint = Paint();
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawPaint(bgPaint);
+    canvas.drawPaint(bgPaint..color = bgColor);
     if (mode == StippleMode.polygons || mode == StippleMode.polygonsOutlined) {
       final cells = relaxation.voronoi.cells;
       for (int j = 0; j < cells.length; j++) {

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/animated_voronoi_relaxation_slide.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/code.dart';
@@ -6,10 +5,9 @@ import 'package:flutter_friends_24_slides/slides/03-relaxation/colored_weighted_
 import 'package:flutter_friends_24_slides/slides/03-relaxation/voronoi_relaxation_slide.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/weighted_stippling_slide.dart';
 import 'package:flutter_friends_24_slides/templates/code_slide.dart';
-import 'package:flutter_friends_24_slides/templates/demo_slide.dart';
 import 'package:flutter_friends_24_slides/templates/image_slide.dart';
+import 'package:flutter_friends_24_slides/templates/placeholder_slide.dart';
 import 'package:flutter_friends_24_slides/templates/section_title_slide.dart';
-import 'package:playground/widgets/voronoi/voronoi_painter_wrapper.dart';
 
 final relaxationSlides = <FlutterDeckSlideWidget>[
   SectionTitleSlide(
@@ -54,22 +52,12 @@ final relaxationSlides = <FlutterDeckSlideWidget>[
   const VoronoiRelaxationSlide(),
   const AnimatedVoronoiRelaxationSlide(),
   SectionTitleSlide('Weighted Voronoi Stippling'),
-  DemoSlide(
-    'Weighted Centroids Calculation',
-    route: 'weighted-image-calculation',
-    child: ColoredBox(
-      color: Colors.white,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return VoronoiPainterWrapper(
-            size: constraints.biggest,
-            showSeedPoints: true,
-            pointsCount: 40,
-            paintVoronoiPolygonEdges: true,
-          );
-        },
-      ),
-    ),
+  ImageSlide(
+    title: 'Weighted Centroids Calculation',
+    path: 'assets/images/weighted-voronoi.png',
+  ),
+  PlaceholderSlide(
+    'WEIGHTED STIPPLING STEPS',
   ),
   const WeightedStipplingSlide(),
   const ColoredWeightedStipplingSlide(),

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:playground/algorithms/voronoi_relaxation.dart';
 import 'package:playground/app.dart';
 import 'package:playground/utils/image_utils.dart';
+import 'package:playground/utils/painting_utils.dart';
 import 'package:playground/widgets/camera/stippling_painter.dart';
 
 class WeightedVoronoiStipplingDemo extends StatefulWidget {
@@ -25,6 +26,10 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
     this.minStroke = 6,
     this.maxStroke = 15,
     this.wiggleFactor,
+    this.randomSeed = false,
+    this.lerpFactor = 1.0,
+    this.pointsColor = Colors.white,
+    this.bgColor = Colors.black,
   });
 
   final int pointsCount;
@@ -41,6 +46,10 @@ class WeightedVoronoiStipplingDemo extends StatefulWidget {
   final double minStroke;
   final double maxStroke;
   final double? wiggleFactor;
+  final bool randomSeed;
+  final double lerpFactor;
+  final Color pointsColor;
+  final Color bgColor;
 
   @override
   State<WeightedVoronoiStipplingDemo> createState() =>
@@ -59,12 +68,18 @@ class _WeightedVoronoiStipplingDemoState
   VoronoiRelaxation? _relaxation;
 
   void _init() {
-    final points = generateRandomPointsFromPixels(
-      _imageBytes!,
-      _imageSize,
-      widget.pointsCount,
-      random,
-    );
+    final points = widget.randomSeed
+        ? generateRandomPoints(
+            random: random,
+            canvasSize: _imageSize,
+            count: widget.pointsCount,
+          )
+        : generateRandomPointsFromPixels(
+            _imageBytes!,
+            _imageSize,
+            widget.pointsCount,
+            random,
+          );
     _relaxation = VoronoiRelaxation(
       points,
       min: const Point(0, 0),
@@ -75,7 +90,10 @@ class _WeightedVoronoiStipplingDemoState
   }
 
   void _update() {
-    _relaxation?.update(1, wiggleFactor: widget.wiggleFactor);
+    _relaxation?.update(
+      widget.lerpFactor,
+      wiggleFactor: widget.wiggleFactor,
+    );
     setState(() {});
   }
 
@@ -94,6 +112,8 @@ class _WeightedVoronoiStipplingDemoState
       _imageSize = Size(imgWidth.toDouble(), imgHeight.toDouble());
       _isLoadingImage = false;
     });
+    print('_imageSize');
+    print(_imageSize);
   }
 
   @override
@@ -154,14 +174,19 @@ class _WeightedVoronoiStipplingDemoState
                   painter: StipplingPainter(
                     relaxation: _relaxation!,
                     paintColors: widget.paintColors,
+                    weightedPoints: widget.weightedStrokes,
                     mode: widget.showVoronoiPolygons
                         ? StippleMode.polygons
                         : widget.strokePaintingStyle
-                            ? StippleMode.circles
+                            ? widget.showVoronoiPolygons
+                                ? StippleMode.polygonsOutlined
+                                : StippleMode.circles
                             : StippleMode.dots,
                     pointStrokeWidth: widget.pointStrokeWidth,
                     minStroke: widget.minStroke,
                     maxStroke: widget.maxStroke,
+                    pointsColor: widget.pointsColor,
+                    bgColor: widget.bgColor,
                   ),
                 ),
               ),
