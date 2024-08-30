@@ -1,8 +1,7 @@
-import 'package:playground/app.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_friends_24_slides/styles/app_colors.dart';
 import 'package:flutter_friends_24_slides/widgets/controls.dart';
 import 'package:flutter_friends_24_slides/widgets/window_frame.dart';
+import 'package:playground/app.dart';
 
 class VoronoiRelaxationSlideDemo extends StatefulWidget {
   const VoronoiRelaxationSlideDemo({super.key});
@@ -12,11 +11,11 @@ class VoronoiRelaxationSlideDemo extends StatefulWidget {
       _VoronoiRelaxationSlideDemoState();
 }
 
-class _VoronoiRelaxationSlideDemoState extends State<VoronoiRelaxationSlideDemo> {
+class _VoronoiRelaxationSlideDemoState
+    extends State<VoronoiRelaxationSlideDemo> {
   static const double iconSize = 30;
   static const double controlsSize = 52;
   static const double borderRadius = 15;
-  static const Color activeColor = AppColors.primary;
 
   bool showVoronoi = true;
   bool showCentroids = true;
@@ -37,7 +36,7 @@ class _VoronoiRelaxationSlideDemoState extends State<VoronoiRelaxationSlideDemo>
                   builder: (context, constraints) {
                     return VoronoiRelaxationDemo(
                       size: constraints.biggest,
-                      pointsCount: 30,
+                      pointsCount: 40,
                       showCentroids: showCentroids,
                       showPolygons: showVoronoi,
                       trigger: trigger,
@@ -56,40 +55,17 @@ class _VoronoiRelaxationSlideDemoState extends State<VoronoiRelaxationSlideDemo>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  // ControlsButton(
-                  //   onTap: () => setState(() => showCentroids = !showCentroids),
-                  //   size: controlsSize,
-                  //   borderRadius: const BorderRadius.only(
-                  //     topLeft: Radius.circular(borderRadius),
-                  //     topRight: Radius.circular(borderRadius),
-                  //   ),
-                  //   iconSize: iconSize,
-                  //   icon: Icons.circle,
-                  //   color: showCentroids ? activeColor : Colors.black,
-                  // ),
-                  // const SizedBox(width: 10),
-                  // ControlsButton(
-                  //   onTap: () => setState(() => showVoronoi = !showVoronoi),
-                  //   size: controlsSize,
-                  //   borderRadius: const BorderRadius.only(
-                  //     topLeft: Radius.circular(borderRadius),
-                  //     topRight: Radius.circular(borderRadius),
-                  //   ),
-                  //   iconSize: iconSize,
-                  //   icon: Icons.square_outlined,
-                  //   color: showVoronoi ? activeColor : Colors.black,
-                  // ),
-                  // const SizedBox(width: 10),
-                  ControlsButton(
-                    onTap: () => setState(() => trigger = !trigger),
-                    size: controlsSize,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(borderRadius),
-                      topRight: Radius.circular(borderRadius),
+                  if (!trigger)
+                    ControlsButton(
+                      onTap: () => setState(() => trigger = !trigger),
+                      size: controlsSize,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(borderRadius),
+                        topRight: Radius.circular(borderRadius),
+                      ),
+                      iconSize: iconSize,
+                      icon: Icons.play_arrow,
                     ),
-                    iconSize: iconSize,
-                    icon: Icons.play_arrow,
-                  ),
                 ],
               ),
             ),

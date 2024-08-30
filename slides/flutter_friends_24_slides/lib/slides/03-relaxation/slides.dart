@@ -1,42 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deck/flutter_deck.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/animated_voronoi_relaxation_slide.dart';
-import 'package:flutter_friends_24_slides/slides/02-voronoi/code.dart';
+import 'package:flutter_friends_24_slides/slides/03-relaxation/code.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/colored_weighted_stippling_slide.dart';
-import 'package:flutter_friends_24_slides/slides/03-relaxation/randomized_image_stippling_relaxation_slide.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/voronoi_relaxation_slide.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/weighted_stippling_slide.dart';
 import 'package:flutter_friends_24_slides/templates/code_slide.dart';
 import 'package:flutter_friends_24_slides/templates/demo_slide.dart';
+import 'package:flutter_friends_24_slides/templates/image_slide.dart';
 import 'package:flutter_friends_24_slides/templates/section_title_slide.dart';
 import 'package:playground/widgets/voronoi/voronoi_painter_wrapper.dart';
 
 final relaxationSlides = <FlutterDeckSlideWidget>[
-  SectionTitleSlide('LLoyd\'s Algorithm'),
-  const VoronoiRelaxationSlide(),
-  CodeSlide(
-    voronoiRelaxationInitializationCode,
-    title: 'Voronoi Relaxation Data Initialization',
-    route: 'voronoi-data-initialization-1',
-    codeFontSize: 20,
+  SectionTitleSlide(
+    'LLoyd\'s Algorithm',
+    subtitle: 'Voronoi Iteration/Relaxation',
+  ),
+  ImageSlide(
+    title: 'Lloyd\'s Relaxation Algorithm',
+    path: 'assets/images/relaxation-algorithm.png',
+    width: 500,
   ),
   CodeSlide(
-    voronoiRelaxationUpdateCode,
-    title: 'Lerp Seed Points to Voronoi Centroids',
-    route: 'lerp-1',
+    voronoiRelaxationCode1,
+    title: 'Lloyd\'s Relaxation Algorithm',
+    route: 'voronoi-relaxation-code-1',
+  ),
+  CodeSlide(
+    voronoiRelaxationCode2,
+    title: 'Lloyd\'s Relaxation Algorithm',
+    route: 'voronoi-relaxation-code-2',
+  ),
+  CodeSlide(
+    voronoiRelaxationCode3,
+    title: 'Lloyd\'s Relaxation Algorithm',
+    route: 'voronoi-relaxation-code-3',
+  ),
+  CodeSlide(
+    voronoiRelaxationCode4,
+    title: 'Lloyd\'s Relaxation Algorithm',
+    route: 'voronoi-relaxation-code-4',
   ),
   CodeSlide(
     lerpPointsCode,
-    title: 'Lerp Seed Points to Voronoi Centroids',
-    route: 'lerp-2',
+    title: 'Lloyd\'s Relaxation Algorithm',
+    route: 'voronoi-relaxation-code-5',
   ),
   CodeSlide(
     voronoiRelaxationTickerCode,
-    title: 'Use Ticker to Update',
+    title: 'Lloyd\'s Relaxation Algorithm',
+    route: 'voronoi-relaxation-code-6',
   ),
+  const VoronoiRelaxationSlide(),
   const AnimatedVoronoiRelaxationSlide(),
   SectionTitleSlide('Weighted Voronoi Stippling'),
-  const RandomizedImageStipplingRelaxationSlide(),
   DemoSlide(
     'Weighted Centroids Calculation',
     route: 'weighted-image-calculation',

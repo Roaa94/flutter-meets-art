@@ -1,10 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:playground/algorithms/voronoi_relaxation.dart';
-import 'package:playground/utils/painting_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:playground/algorithms/voronoi_relaxation.dart';
+import 'package:playground/utils/painting_utils.dart';
 
 class VoronoiRelaxationDemo extends StatefulWidget {
   const VoronoiRelaxationDemo({
@@ -14,6 +14,7 @@ class VoronoiRelaxationDemo extends StatefulWidget {
     this.trigger = false,
     this.showCentroids = true,
     this.showPolygons = true,
+    this.lerpFactor = 0.01,
   });
 
   final Size size;
@@ -21,6 +22,7 @@ class VoronoiRelaxationDemo extends StatefulWidget {
   final bool trigger;
   final bool showCentroids;
   final bool showPolygons;
+  final double lerpFactor;
 
   @override
   State<VoronoiRelaxationDemo> createState() => _VoronoiRelaxationDemoState();
@@ -34,7 +36,7 @@ class _VoronoiRelaxationDemoState extends State<VoronoiRelaxationDemo>
   VoronoiRelaxation? _relaxation;
 
   void _update() {
-    _relaxation?.update(0.01);
+    _relaxation?.update(widget.lerpFactor);
     setState(() {});
   }
 

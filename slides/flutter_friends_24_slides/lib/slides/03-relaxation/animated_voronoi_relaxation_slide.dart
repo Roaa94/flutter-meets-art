@@ -9,7 +9,7 @@ class AnimatedVoronoiRelaxationSlide extends FlutterDeckSlideWidget {
       : super(
           configuration: const FlutterDeckSlideConfiguration(
             route: '/animated-voronoi-relaxation',
-            title: 'Animated Voronoi Relaxation',
+            title: 'Lloyd\'s Relaxation Algorithm Demo',
           ),
         );
 
@@ -19,7 +19,7 @@ class AnimatedVoronoiRelaxationSlide extends FlutterDeckSlideWidget {
       context,
       showHeader: true,
       content: WindowFrame(
-        label: 'Voronoi Relaxation',
+        label: 'Lloyd',
         margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
         child: SizedBox.expand(
           child: ColoredBox(
@@ -29,7 +29,7 @@ class AnimatedVoronoiRelaxationSlide extends FlutterDeckSlideWidget {
               builder: (context, constraints) {
                 return VoronoiRelaxationDemo(
                   size: constraints.biggest,
-                  pointsCount: 1000,
+                  pointsCount: 2000,
                   trigger: true,
                   showPolygons: false,
                   showCentroids: false,

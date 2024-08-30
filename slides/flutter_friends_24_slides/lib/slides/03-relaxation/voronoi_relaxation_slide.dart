@@ -8,7 +8,7 @@ class VoronoiRelaxationSlide extends FlutterDeckSlideWidget {
       : super(
           configuration: const FlutterDeckSlideConfiguration(
             route: '/voronoi-relaxation',
-            title: 'Voronoi Relaxation',
+            title: 'Lloyd\'s Relaxation Algorithm Demo',
           ),
         );
 
@@ -17,7 +17,7 @@ class VoronoiRelaxationSlide extends FlutterDeckSlideWidget {
     return buildTemplateSlide(
       context,
       showHeader: true,
-      title: 'Voronoi Relaxation (Lloyd\'s Algorithm)',
+      title: 'Lloyd\'s Relaxation Algorithm Demo',
       content: const VoronoiRelaxationSlideDemo(),
     );
   }
