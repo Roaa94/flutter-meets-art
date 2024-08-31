@@ -2,10 +2,10 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:playground/algorithms/delaunay.dart';
 import 'package:playground/algorithms/voronoi.dart';
 import 'package:playground/utils/math_utils.dart';
-import 'package:flutter/material.dart';
 
 class VoronoiPainter extends CustomPainter {
   VoronoiPainter({
@@ -76,8 +76,44 @@ class VoronoiPainter extends CustomPainter {
       }
     }
 
-    if (paintVoronoiPolygonEdges || paintVoronoiPolygonFills) {
-      final cells = voronoi.cells;
+    final cells = voronoi.cells;
+    if (paintVoronoiPolygonFills) {
+      // Convert polygons to triangles
+      List<Offset> triangles = [];
+      for (var cell in cells) {
+        if (cell.length < 3) continue; // Skip if not enough points to form a triangle
+
+        // Take the first point as the common point in the fan
+        Offset first = cell[0];
+
+        // Create triangles by iterating over the rest of the points
+        for (int i = 1; i < cell.length - 1; i++) {
+          triangles.add(first);
+          triangles.add(cell[i]);
+          triangles.add(cell[i + 1]);
+        }
+      }
+
+      // Convert the list of Offsets to Float32List
+      final vertices = Float32List(triangles.length * 2);
+      for (int i = 0; i < triangles.length; i++) {
+        vertices[i * 2] = triangles[i].dx;
+        vertices[i * 2 + 1] = triangles[i].dy;
+      }
+
+      // Create color data for each vertex
+      final colorsRaw = Int32List.fromList(
+          List.filled(vertices.length ~/ 2, Colors.pink.value));
+
+      final verticesRaw = Vertices.raw(
+        VertexMode.triangles,
+        vertices,
+        colors: colorsRaw,
+      );
+      canvas.drawVertices(verticesRaw, BlendMode.src, Paint());
+    }
+
+    if (paintVoronoiPolygonEdges) {
       for (int j = 0; j < cells.length; j++) {
         final path = Path()..moveTo(cells[j][0].dx, cells[j][0].dy);
         for (int i = 1; i < cells[j].length; i++) {
@@ -85,24 +121,14 @@ class VoronoiPainter extends CustomPainter {
         }
         path.close();
 
-        if (paintVoronoiPolygonFills && colors != null) {
-          canvas.drawPath(
-            path,
-            Paint()..color = colors![j],
-          );
-        }
-
-        if (paintVoronoiPolygonEdges) {
-          canvas.drawPath(
-            path,
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 3
-              ..color = paintDelaunayTriangles
-                  ? const Color(0xff35aee7)
-                  : Colors.black,
-          );
-        }
+        canvas.drawPath(
+          path,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 3
+            ..color =
+                paintDelaunayTriangles ? const Color(0xff35aee7) : Colors.black,
+        );
       }
     }
 

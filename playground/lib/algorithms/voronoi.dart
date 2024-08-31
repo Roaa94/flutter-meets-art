@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:playground/algorithms/delaunay.dart';
 import 'package:flutter/material.dart';
+import 'package:playground/algorithms/delaunay.dart';
 
 /// An implementation of the Voronoi diagram that works by extending the
 /// Delaunay class
@@ -136,8 +136,16 @@ class Voronoi {
         final triangles = edges.map(triangleOfEdge);
         final vertices =
             triangles.map((t) => triangleCenter(_reflectedDelaunay, t));
-        final offsets = vertices.map((v) => Offset(v.x, v.y)).toList();
-        final insideBounds = offsets.every((offset) {
+        final allOffsets = vertices
+            .map((v) => Offset(v.x < 1e-9 ? 0 : v.x, v.y < 1e-9 ? 0 : v.y))
+            .toList();
+        final uniqueOffsets = <Offset>[];
+        for (final offset in allOffsets) {
+          if(!uniqueOffsets.contains(offset)) {
+            uniqueOffsets.add(offset);
+          }
+        }
+        final insideBounds = uniqueOffsets.every((offset) {
           final approxOffset = Offset(
             offset.dx.abs() < 1e-9 ? 0 : offset.dx,
             offset.dy.abs() < 1e-9 ? 0 : offset.dy,
@@ -145,7 +153,7 @@ class Voronoi {
           final value = (_size + const Offset(0.1, 0.1)).contains(approxOffset);
           return value;
         });
-        if (insideBounds) _cells.add(offsets);
+        if (insideBounds) _cells.add(uniqueOffsets);
       }
     }
     if (cellPolygons.isNotEmpty) _cells.add(cellPolygons);
