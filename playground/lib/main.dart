@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:playground/app.dart';
+import 'package:playground/widgets/camera/camera_image_stippling_demo_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
-      home: VoronoiInteractiveDemoPage(),
+      home: CameraImageStipplingDemoPage(),
     );
   }
 }

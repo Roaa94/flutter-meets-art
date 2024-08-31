@@ -13,7 +13,7 @@ class StipplingPainter extends CustomPainter {
     this.pointStrokeWidth = 5,
     this.minStroke = 4,
     this.maxStroke = 15,
-    this.weightedPoints = false,
+    this.weightedPoints = true,
     this.pointsColor = Colors.white,
     this.bgColor = Colors.black,
   }) {
