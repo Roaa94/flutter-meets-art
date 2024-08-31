@@ -136,24 +136,21 @@ class Voronoi {
         final triangles = edges.map(triangleOfEdge);
         final vertices =
             triangles.map((t) => triangleCenter(_reflectedDelaunay, t));
-        final allOffsets = vertices
-            .map((v) => Offset(v.x < 1e-9 ? 0 : v.x, v.y < 1e-9 ? 0 : v.y))
-            .toList();
-        final uniqueOffsets = <Offset>[];
-        for (final offset in allOffsets) {
-          if(!uniqueOffsets.contains(offset)) {
-            uniqueOffsets.add(offset);
+        final offsets = <Offset>[];
+        for (final vertex in vertices) {
+          final offset = Offset(
+            vertex.x < 1e-9 ? 0 : vertex.x,
+            vertex.y < 1e-9 ? 0 : vertex.y,
+          );
+          if (!offsets.contains(offset)) {
+            offsets.add(offset);
           }
         }
-        final insideBounds = uniqueOffsets.every((offset) {
-          final approxOffset = Offset(
-            offset.dx.abs() < 1e-9 ? 0 : offset.dx,
-            offset.dy.abs() < 1e-9 ? 0 : offset.dy,
-          );
-          final value = (_size + const Offset(0.1, 0.1)).contains(approxOffset);
+        final insideBounds = offsets.every((offset) {
+          final value = (_size + const Offset(0.1, 0.1)).contains(offset);
           return value;
         });
-        if (insideBounds) _cells.add(uniqueOffsets);
+        if (insideBounds) _cells.add(offsets);
       }
     }
     if (cellPolygons.isNotEmpty) _cells.add(cellPolygons);
