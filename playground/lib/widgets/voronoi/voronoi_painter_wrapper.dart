@@ -1,10 +1,10 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:playground/utils/color_utils.dart';
 import 'package:playground/utils/painting_utils.dart';
 import 'package:playground/widgets/voronoi/voronoi_painter.dart';
-import 'package:flutter/material.dart';
 
 class VoronoiPainterWrapper extends StatefulWidget {
   const VoronoiPainterWrapper({
@@ -16,6 +16,7 @@ class VoronoiPainterWrapper extends StatefulWidget {
     this.paintCircumcircles = false,
     this.paintVoronoiPolygonEdges = false,
     this.paintVoronoiPolygonFills = false,
+    this.useVertexMode = false,
   });
 
   final Size size;
@@ -25,6 +26,7 @@ class VoronoiPainterWrapper extends StatefulWidget {
   final bool paintCircumcircles;
   final bool paintVoronoiPolygonEdges;
   final bool paintVoronoiPolygonFills;
+  final bool useVertexMode;
 
   @override
   State<VoronoiPainterWrapper> createState() => _VoronoiPainterWrapperState();
@@ -83,6 +85,7 @@ class _VoronoiPainterWrapperState extends State<VoronoiPainterWrapper> {
           paintCircumcircles: widget.paintCircumcircles,
           paintVoronoiPolygonEdges: widget.paintVoronoiPolygonEdges,
           paintVoronoiPolygonFills: widget.paintVoronoiPolygonFills,
+          useVertexMode: widget.useVertexMode,
         ),
       ),
     );

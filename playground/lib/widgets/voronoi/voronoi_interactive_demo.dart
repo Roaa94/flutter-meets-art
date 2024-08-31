@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:playground/widgets/voronoi/voronoi_painter_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:playground/widgets/voronoi/voronoi_painter_wrapper.dart';
 
 class VoronoiInteractiveDemoPage extends StatelessWidget {
   const VoronoiInteractiveDemoPage({super.key});
@@ -30,11 +30,12 @@ class VoronoiInteractiveDemo extends StatefulWidget {
 class _VoronoiInteractiveDemoState extends State<VoronoiInteractiveDemo> {
   final random = Random(3);
   int _pointsCount = 100;
-  bool _showSeedPoints = true;
+  bool _showSeedPoints = false;
   bool _paintDelaunayTriangles = false;
   bool _paintCircumcircles = false;
+  bool _useVertexMode = false;
   bool _paintVoronoiPolygonEdges = true;
-  bool _paintVoronoiPolygonFills = false;
+  bool _paintVoronoiPolygonFills = true;
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +107,16 @@ class _VoronoiInteractiveDemoState extends State<VoronoiInteractiveDemo> {
                         title: const Text('Show circumcircles'),
                         controlAffinity: ListTileControlAffinity.leading,
                       ),
+                      CheckboxListTile(
+                        value: _useVertexMode,
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() => _useVertexMode = value);
+                          }
+                        },
+                        title: const Text('Use vertex mode'),
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
                     ],
                   ),
                 ),
@@ -157,6 +168,7 @@ class _VoronoiInteractiveDemoState extends State<VoronoiInteractiveDemo> {
                 paintCircumcircles: _paintCircumcircles,
                 paintVoronoiPolygonEdges: _paintVoronoiPolygonEdges,
                 paintVoronoiPolygonFills: _paintVoronoiPolygonFills,
+                useVertexMode: _useVertexMode,
               ),
             ),
           ),

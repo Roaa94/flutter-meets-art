@@ -16,6 +16,7 @@ class VoronoiPainter extends CustomPainter {
     this.paintCircumcircles = false,
     this.paintVoronoiPolygonEdges = false,
     this.paintVoronoiPolygonFills = false,
+    this.useVertexMode = false,
   });
 
   final Float32List seedPoints;
@@ -25,6 +26,7 @@ class VoronoiPainter extends CustomPainter {
   final bool paintCircumcircles;
   final bool paintVoronoiPolygonEdges;
   final bool paintVoronoiPolygonFills;
+  final bool useVertexMode;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -77,33 +79,8 @@ class VoronoiPainter extends CustomPainter {
     }
 
     final cells = voronoi.cells;
-    if (paintVoronoiPolygonFills) {
-      // Convert polygons to triangles
-      List<Offset> triangles = [];
-      for (var cell in cells) {
-        if (cell.length < 3) continue; // Skip if not enough points to form a triangle
-
-        // Take the first point as the common point in the fan
-        Offset first = cell[0];
-
-        // Create triangles by iterating over the rest of the points
-        for (int i = 1; i < cell.length - 1; i++) {
-          triangles.add(first);
-          triangles.add(cell[i]);
-          triangles.add(cell[i + 1]);
-        }
-      }
-
-      // Convert the list of Offsets to Float32List
-      final vertices = Float32List(triangles.length * 2);
-      for (int i = 0; i < triangles.length; i++) {
-        vertices[i * 2] = triangles[i].dx;
-        vertices[i * 2 + 1] = triangles[i].dy;
-      }
-
-      // Create color data for each vertex
-      final colorsRaw = Int32List.fromList(
-          List.filled(vertices.length ~/ 2, Colors.pink.value));
+    if (paintVoronoiPolygonFills && useVertexMode) {
+      final (colorsRaw, vertices) = getVoronoiVertices(cells, colors);
 
       final verticesRaw = Vertices.raw(
         VertexMode.triangles,
@@ -113,7 +90,8 @@ class VoronoiPainter extends CustomPainter {
       canvas.drawVertices(verticesRaw, BlendMode.src, Paint());
     }
 
-    if (paintVoronoiPolygonEdges) {
+    if (paintVoronoiPolygonEdges ||
+        (paintVoronoiPolygonFills && !useVertexMode)) {
       for (int j = 0; j < cells.length; j++) {
         final path = Path()..moveTo(cells[j][0].dx, cells[j][0].dy);
         for (int i = 1; i < cells[j].length; i++) {
@@ -121,14 +99,24 @@ class VoronoiPainter extends CustomPainter {
         }
         path.close();
 
-        canvas.drawPath(
-          path,
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 3
-            ..color =
-                paintDelaunayTriangles ? const Color(0xff35aee7) : Colors.black,
-        );
+        if (!useVertexMode && paintVoronoiPolygonFills && colors != null) {
+          canvas.drawPath(
+            path,
+            Paint()..color = colors![j],
+          );
+        }
+
+        if (paintVoronoiPolygonEdges) {
+          canvas.drawPath(
+            path,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 3
+              ..color = paintDelaunayTriangles
+                  ? const Color(0xff35aee7)
+                  : Colors.black,
+          );
+        }
       }
     }
 
@@ -148,4 +136,47 @@ class VoronoiPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
+}
+
+(Int32List colors, Float32List vertices) getVoronoiVertices(
+  List<List<Offset>> cells,
+  List<Color>? colors,
+) {
+  List<Offset> triangles = [];
+  List<int> verticesColors = [];
+  // Loop through each cell and color
+  for (int cellIndex = 0; cellIndex < cells.length; cellIndex++) {
+    List<Offset> cell = cells[cellIndex];
+    Color color = colors != null ? colors[cellIndex] : Colors.pink;
+
+    if (cell.length < 3) {
+      continue; // Skip if not enough points to form a triangle
+    }
+
+    // Take the first point as the common point in the fan
+    Offset first = cell[0];
+
+    // Create triangles and assign color
+    for (int i = 1; i < cell.length - 1; i++) {
+      triangles.add(first);
+      triangles.add(cell[i]);
+      triangles.add(cell[i + 1]);
+
+      // Assign the same color to each vertex of the triangle
+      int colorValue = color.value;
+      verticesColors.add(colorValue);
+      verticesColors.add(colorValue);
+      verticesColors.add(colorValue);
+    }
+  }
+  // Convert the list of Offsets to Float32List
+  final vertices = Float32List(triangles.length * 2);
+  for (int i = 0; i < triangles.length; i++) {
+    vertices[i * 2] = triangles[i].dx;
+    vertices[i * 2 + 1] = triangles[i].dy;
+  }
+
+  // Create color data for each vertex
+  final colorsRaw = Int32List.fromList(verticesColors);
+  return (colorsRaw, vertices);
 }
