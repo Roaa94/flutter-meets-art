@@ -18,6 +18,7 @@ class CameraImageStipplingDemo extends StatefulWidget {
     this.wiggleFactor = 0.2,
     this.pointsCount = 2000,
     required this.size,
+    this.weightedPoints = true,
   });
 
   final bool paintColors;
@@ -27,6 +28,7 @@ class CameraImageStipplingDemo extends StatefulWidget {
   final double wiggleFactor;
   final int pointsCount;
   final Size size;
+  final bool weightedPoints;
 
   @override
   CameraImageStipplingDemoState createState() =>
@@ -109,6 +111,7 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
                 pointStrokeWidth: 10,
                 minStroke: widget.minStroke,
                 maxStroke: widget.maxStroke,
+                weightedPoints: widget.weightedPoints,
               ),
             ),
           ),

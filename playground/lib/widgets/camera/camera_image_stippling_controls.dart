@@ -1,5 +1,5 @@
-import 'package:playground/app.dart';
 import 'package:flutter/material.dart';
+import 'package:playground/app.dart';
 
 const primaryColor = Colors.pinkAccent;
 
@@ -30,6 +30,8 @@ class CameraImageStipplingControls extends StatefulWidget {
     this.onColoredChanged,
     this.selectedPointsCount = 1000,
     this.onPointsCountChanged,
+    this.onWeightedPointsChanged,
+    this.weightedPoints = true,
   });
 
   final StippleMode selectedStippleMode;
@@ -41,6 +43,8 @@ class CameraImageStipplingControls extends StatefulWidget {
   final VoidCallback? onReset;
   final bool colored;
   final ValueChanged<bool>? onColoredChanged;
+  final bool weightedPoints;
+  final ValueChanged<bool>? onWeightedPointsChanged;
   final int selectedPointsCount;
   final ValueChanged<int>? onPointsCountChanged;
 
@@ -160,13 +164,31 @@ class _CameraImageStipplingControlsState
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    const Text('Paint Colors', style: labelTextStyle),
+                    const Expanded(
+                      child: Text('Paint Colors', style: labelTextStyle),
+                    ),
                     Checkbox(
                       value: widget.colored,
                       activeColor: primaryColor,
                       onChanged: (value) {
                         if (value != null) {
                           widget.onColoredChanged?.call(value);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Text('Weighted points', style: labelTextStyle),
+                    ),
+                    Checkbox(
+                      value: widget.weightedPoints,
+                      activeColor: primaryColor,
+                      onChanged: (value) {
+                        if (value != null) {
+                          widget.onWeightedPointsChanged?.call(value);
                         }
                       },
                     ),
