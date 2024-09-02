@@ -112,8 +112,6 @@ class _WeightedVoronoiStipplingDemoState
       _imageSize = Size(imgWidth.toDouble(), imgHeight.toDouble());
       _isLoadingImage = false;
     });
-    print('_imageSize');
-    print(_imageSize);
   }
 
   @override

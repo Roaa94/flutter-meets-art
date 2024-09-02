@@ -112,6 +112,8 @@ class CameraImageStipplingDemoState extends State<CameraImageStipplingDemo> {
                 minStroke: widget.minStroke,
                 maxStroke: widget.maxStroke,
                 weightedPoints: widget.weightedPoints,
+                bgColor: widget.paintColors ? Colors.black: Colors.white,
+                pointsColor: Colors.black
               ),
             ),
           ),

@@ -17,7 +17,7 @@ class _CameraImageStipplingDemoPageState
   static const defaultMinStroke = 7.0;
   static const defaultMaxStroke = 30.0;
   static const defaultShowColors = true;
-  static const defaultWeightedPoints = false;
+  static const defaultWeightedPoints = true;
   late int _pointsCount;
 
   StippleMode _mode = defaultMode;
