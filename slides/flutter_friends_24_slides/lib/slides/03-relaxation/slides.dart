@@ -4,9 +4,9 @@ import 'package:flutter_friends_24_slides/slides/03-relaxation/code.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/colored_weighted_stippling_slide.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/voronoi_relaxation_slide.dart';
 import 'package:flutter_friends_24_slides/slides/03-relaxation/weighted_stippling_slide.dart';
+import 'package:flutter_friends_24_slides/slides/03-relaxation/weighted_stippling_steps_slide.dart';
 import 'package:flutter_friends_24_slides/templates/code_slide.dart';
 import 'package:flutter_friends_24_slides/templates/image_slide.dart';
-import 'package:flutter_friends_24_slides/templates/placeholder_slide.dart';
 import 'package:flutter_friends_24_slides/templates/section_title_slide.dart';
 
 final relaxationSlides = <FlutterDeckSlideWidget>[
@@ -56,10 +56,10 @@ final relaxationSlides = <FlutterDeckSlideWidget>[
     title: 'Weighted Centroids Calculation',
     path: 'assets/images/weighted-voronoi.png',
   ),
-  PlaceholderSlide(
-    'WEIGHTED STIPPLING STEPS',
-  ),
+  // Todo: consider diagram instead.
+  WeightedStipplingStepsSlide(),
   const WeightedStipplingSlide(),
+  // PlaceholderSlide('Performance'),
   const ColoredWeightedStipplingSlide(),
   SectionTitleSlide(
     'What if you are the Art?',
@@ -69,10 +69,7 @@ final relaxationSlides = <FlutterDeckSlideWidget>[
     cameraImageStreamCode1,
     title: 'Camera Image Stream',
     route: 'camera-code-1',
+    codeFontSize: 24,
   ),
-  CodeSlide(
-    cameraImageStreamCode2,
-    title: 'Camera Image Stream',
-    route: 'camera-code-2',
-  ),
+  SectionTitleSlide('DEMO'),
 ];

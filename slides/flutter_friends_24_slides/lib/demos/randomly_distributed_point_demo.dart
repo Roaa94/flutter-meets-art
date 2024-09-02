@@ -9,14 +9,15 @@ class RandomlyDistributedPointsDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 40),
-      child: Stack(
-        children: [
-          WindowFrame(
-            label: 'Random',
-            child: SizedBox.expand(
-              child: ColoredBox(
-                color: Colors.white,
-                child: WeightedVoronoiStipplingDemoRaw(
+      child: Center(
+        child: SizedBox(
+          width: 800,
+          height: 640,
+          child: Stack(
+            children: [
+              WindowFrame(
+                label: 'Random',
+                child: WeightedVoronoiStipplingDemo(
                   showImage: true,
                   showVoronoiPolygons: false,
                   strokePaintingStyle: false,
@@ -26,11 +27,13 @@ class RandomlyDistributedPointsDemo extends StatelessWidget {
                   trigger: false,
                   weightedCentroids: true,
                   randomSeed: true,
+                  bgColor: Colors.white,
+                  pointsColor: Colors.black,
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

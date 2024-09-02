@@ -13,7 +13,5 @@ final slides = [
   ...bitmapsSlides,
   ...voronoiSlides,
   ...relaxationSlides,
-  PlaceholderSlide('UI & Art'),
-  PlaceholderSlide('Performance'),
   ...conclusionSlides,
 ];

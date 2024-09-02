@@ -2,7 +2,7 @@ const voronoiRelaxationCode1 = '''
 void _calculate() {
   delaunay = Delaunay(points);
   delaunay.update();
-  voronoi = delaunay.voronoi(...);             
+  voronoi = delaunay.voronoi(...);           
 
 
 }
@@ -18,7 +18,7 @@ void _calculate() {
   delaunay.update();
   voronoi = delaunay.voronoi(...);
   // (Some boring math 👇🏻)  
-  centroids = calcCentroids(voronoi.cells);
+  centroids = calcCentroids(voronoi.cells); 
 }
 
 
@@ -72,6 +72,8 @@ const voronoiRelaxationTickerCode = '''
 _ticker = createTicker((_) => _update());''';
 
 const cameraImageStreamCode1 = '''
+import 'package:camera_macos/camera_macos.dart';
+
 CameraMacOSView(
     //...
     onCameraInizialized: (CameraMacOSController controller) {
@@ -83,10 +85,11 @@ CameraMacOSView(
       });
     },
     //...
-)
-''';
+)''';
 
 const cameraImageStreamCode2 = '''
+import 'package:camera_macos/camera_macos.dart';
+
 Future<void> _loadPixelsFromStreamedImage(
   CameraImageData? streamedImage,
 ) async {
@@ -98,5 +101,4 @@ Future<void> _loadPixelsFromStreamedImage(
     _cameraImagePixels = imageBytes;
     // relaxation algorithm
   }
-}
-''';
+}''';

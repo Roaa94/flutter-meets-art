@@ -71,6 +71,7 @@ final voronoiSlides = <FlutterDeckSlideWidget>[
     title: 'Voronoi Grid Patterns',
     codeFontSize: 22,
   ),
+  SectionTitleSlide('Voronoi Art', isSubtitle: true),
   const VoronoiGridPatternSlide(),
   CodeSlide(
     voronoiSpiralPatternCode,
