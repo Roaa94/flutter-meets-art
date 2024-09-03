@@ -36,6 +36,11 @@ final conclusionSlides = <FlutterDeckSlideWidget>[
     title: 'Avenger Dash',
     path: 'assets/images/fading-dash.gif',
   ),
+  ImageSlide(
+    title: 'Shout out to flutter_deck!',
+    path: 'assets/images/flutter-deck.png',
+    width: 1000,
+  ),
   SectionTitleSlide(
     'Thank you!',
     route: 'last',

@@ -61,7 +61,6 @@ final bitmapsSlides = <FlutterDeckSlideWidget>[
     codeFontSize: 24,
   ),
   // 41
-  const ImagePixelsPainterSlide(),
   AgendaSlide(step: 3, completed: 1),
   // Randomly distributed points
   CodeSlide(

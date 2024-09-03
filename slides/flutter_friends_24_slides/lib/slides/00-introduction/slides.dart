@@ -18,16 +18,25 @@ final introductionSlides = <FlutterDeckSlideWidget>[
     title: 'Broad Street cholera outbreak - 1854',
     path: 'assets/images/cholera.png',
     width: 900,
+    route: 'broadstreet-1',
     label:
         'Original map by John Snow showing the clusters of cholera cases (1854) - Wikipedia',
   ),
   ImageSlide(
-    title: 'John Snow\'s Map',
-    path: 'assets/images/cholera-voronoi.png',
-    width: 700,
+    title: 'Broad Street cholera outbreak - 1854',
+    path: 'assets/images/cholera-pumps.png',
+    width: 900,
+    route: 'broadstreet-2',
     label:
-        'Remaking John Snow\'s map of Broad Street cholera, 1854 - sciencedirect.com',
+        'Original map by John Snow showing the clusters of cholera cases (1854) - Wikipedia',
   ),
+  // ImageSlide(
+  //   title: 'John Snow\'s Map',
+  //   path: 'assets/images/cholera-voronoi.png',
+  //   width: 700,
+  //   label:
+  //       'Remaking John Snow\'s map of Broad Street cholera, 1854 - sciencedirect.com',
+  // ),
   ImageSlide(
     title: 'Early, unofficial examples of a Voronoi Diagram ',
     path: 'assets/images/rene-and-snow.png',

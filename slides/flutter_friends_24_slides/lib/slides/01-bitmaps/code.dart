@@ -27,10 +27,6 @@ void paint(Canvas canvas, Size size) {
       final rgbaColor = bytes.getUint32(i * 4); // ⬅️ byte offset     
 
 
-
-
-
-
     }
 }''';
 
@@ -44,11 +40,7 @@ void paint(Canvas canvas, Size size) {
 
       final rgbaColor = bytes.getUint32(i * 4);
       _paint.color = Color(rgbaToArgb(rgbaColor)); //  ⬅️ RGBA => ARGB
-
-      canvas.drawRect(
-        Rect.fromLTWH(x, y, 1, 1),
-        _paint,
-      );
+      //...
     }
 }''';
 
